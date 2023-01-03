@@ -56,8 +56,8 @@ model VerificationToken {
 }
 
 model Match {
-    id String @id @default(cuid())
-    date DateTime
+    id         String   @id @default(cuid())
+    date       DateTime
     teamA_name String
     teamB_name String
     teamA_odds Int

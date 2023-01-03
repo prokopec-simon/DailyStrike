@@ -1,5 +1,5 @@
 import { t } from "../trpc";
-import { z } from "zod";
+import { number, z } from "zod";
 import HLTV from "hltv-api";
 import cheerio from "cheerio";
 import fetch from "node-fetch";
@@ -39,6 +39,8 @@ interface ITeam {
 interface IMatch {
   id: number;
   time: string;
+  oddsA: number;
+  oddsB: number;
   event: IEvent;
   stars: number;
   maps: string;
@@ -48,7 +50,7 @@ interface IMatch {
 const USER_AGENT = new UserAgent().toString();
 
 export const exampleRouter = t.router({
-  getRandomMaxStarMatchInUpcomingDay: t.procedure.query(async () => {
+  getRandomMaxStarMatchInUpcomingDay: t.procedure.query(async ({ ctx }) => {
     try {
       const body = await (
         await fetch(CONFIG.BASE + "/" + CONFIG.MATCHES, {
@@ -106,6 +108,8 @@ export const exampleRouter = t.router({
           stars,
           maps: MAPS[map] || map,
           teams: [team1, team2],
+          oddsA: 0,
+          oddsB: 0,
         };
 
         matches[matches.length] = response;
@@ -135,6 +139,63 @@ export const exampleRouter = t.router({
       );
       const randomMatch =
         bestRatedMatches[Math.floor(Math.random() * bestRatedMatches.length)];
+
+      const bodyDetail = await (
+        await fetch(
+          CONFIG.BASE + "/" + CONFIG.MATCHES + "/" + randomMatch?.id + "/_",
+          {
+            headers: { "User-Agent": USER_AGENT },
+          }
+        )
+      ).text();
+      const $Detail = cheerio.load(bodyDetail, {});
+      const allContentDetail = $Detail(".match-betting-list")
+        .find(".table")
+        .first()
+        .children("tbody");
+      const list2 = allContentDetail.children("tr").not(".header-row");
+
+      list2.each((i, element) => {
+        const el = $(element);
+        const bettingProvider = el.find("td").first().find("a");
+        const providerNameStripper = bettingProvider
+          .attr("aria-label")
+          ?.toString()
+          .replace("Go to ", "");
+        const oddsTeamA = el.find(".odds-cell").get(0);
+        const oddsTeamB = el.find(".odds-cell").get(2);
+        if (providerNameStripper == "pinnacle") {
+          const oddsTeamANum = Number($(oddsTeamA).text());
+          const oddsTeamBNum = Number($(oddsTeamB).text());
+
+          const impliedProbA = (1 / oddsTeamANum) * 100;
+          const impliedProbB = (1 / oddsTeamBNum) * 100;
+
+          const combinedProb = impliedProbA + impliedProbB;
+
+          const cleanProbA = impliedProbA / 100 / (combinedProb / 100);
+          const cleanProbB = impliedProbB / 100 / (combinedProb / 100);
+
+          const cleanOddsA = 100 / cleanProbA;
+          const cleanOddsB = 100 / cleanProbB;
+
+          randomMatch!.oddsA = cleanOddsA / 100;
+          randomMatch!.oddsB = cleanOddsB / 100;
+          console.log("New:" + cleanOddsA / 100 + "," + cleanOddsB / 100);
+
+          const saveRes = ctx.prisma.match.create({
+            data: {
+              teamA_odds: cleanOddsA,
+              teamB_odds: cleanOddsB,
+              teamA_name: randomMatch!.teams[0]!.name,
+              teamB_name: randomMatch!.teams[1]!.name,
+              date: new Date(),
+            },
+          });
+          console.log("safe:" + JSON.stringify(saveRes));
+        }
+      });
+
       return randomMatch;
     } catch (error) {
       throw new Error(error as any);
