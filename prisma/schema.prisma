@@ -60,13 +60,15 @@ model VerificationToken {
 }
 
 model Match {
-  id          String   @id @default(cuid())
-  teamA_name  String
-  teamB_name  String
-  teamA_odds  Decimal
-  teamB_odds  Decimal
-  bestOf      Int
-  dateAndTime DateTime
-  hltvUrl     String
-  winner      Int      @default(0)
+  id            String   @id @default(cuid())
+  teamA_name    String
+  teamB_name    String
+  teamA_odds    Decimal
+  teamB_odds    Decimal
+  teamA_logoUrl String?
+  teamB_logoUrl String?
+  bestOf        Int
+  dateAndTime   DateTime
+  hltvUrl       String
+  winner        Int      @default(0)
 }
