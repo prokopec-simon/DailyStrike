@@ -5,11 +5,16 @@ import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
 import { Decimal } from "@prisma/client/runtime";
+import HistoryMatches from "../components/HistoryMatches";
+
+//const { data: session, status } = useSession();
 
 const Home = () => {
-  const { data: upcomingMatch, isLoading } =
+  const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
     trpc.matches.getUpcomingMatch.useQuery();
-  //const { data: session, status } = useSession();
+  const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
+    trpc.matches.getLastNMatches.useQuery({ matchCount: 3 });
+
   return (
     <>
       <Head>
@@ -19,15 +24,15 @@ const Home = () => {
       </Head>
       <Header />
       <div className="flex w-full items-center justify-center pt-6 text-2xl">
-        {isLoading == true ? <div>Loading...</div> : null}
-        {upcomingMatch != null ? (
-          <DailyMatchComponent
-            teamAName={upcomingMatch.teamA_name}
-            teamBName={upcomingMatch.teamB_name}
-            teamAOdds={upcomingMatch.teamA_odds}
-            teamBOdds={upcomingMatch.teamB_odds}
-            matchTime={upcomingMatch.dateAndTime.toString()}
-          ></DailyMatchComponent>
+        {isLoadingUpcomingMatch ? <div>Loading...</div> : null}
+        {upcomingMatch ? (
+          <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>
+        ) : null}
+      </div>
+      <div className="flex w-full items-center justify-center pt-6">
+        {isLoadingLastNMatches ? <div>Loading...</div> : null}
+        {lastNMatches ? (
+          <HistoryMatches Matches={lastNMatches}></HistoryMatches>
         ) : null}
       </div>
     </>
@@ -35,11 +40,3 @@ const Home = () => {
 };
 
 export default Home;
-
-export type DailyMatchupData = {
-  teamAName: string;
-  teamBName: string;
-  teamAOdds: Decimal;
-  teamBOdds: Decimal;
-  matchTime: string;
-};

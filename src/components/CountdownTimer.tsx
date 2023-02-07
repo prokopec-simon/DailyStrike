@@ -1,50 +1,56 @@
 import React, { useEffect, useState } from "react";
+const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
+  const currentDate = new Date();
+  const targetDate = props.targetDate;
+  const timeDifferenceInMs = targetDate.getTime() - currentDate.getTime();
 
-type CountdownTimerInput = {
-  EventTime: string;
-};
+  const totalSeconds = Math.floor(timeDifferenceInMs / 1000);
+  const seconds = totalSeconds % 60;
+  const totalMinutes = Math.floor(timeDifferenceInMs / (1000 * 60));
+  const minutes = totalMinutes % 60;
+  const totalHours = Math.floor(timeDifferenceInMs / (1000 * 60 * 60));
+  const hours = totalHours % 24;
 
-const CountdownTimer = ({ EventTime }: CountdownTimerInput) => {
-  const now = new Date();
-  const targetTime = new Date(EventTime);
-  const timeDifference = targetTime.getTime() - now.getTime();
+  const [remainingHours, setRemainingHours] = useState(hours);
+  const [remainingMinutes, setRemainingMinutes] = useState(minutes);
+  const [remainingSeconds, setRemainingSeconds] = useState(seconds);
 
-  const secondsA = Math.floor(timeDifference / 1000) % 60;
-  const minutesA = Math.floor(timeDifference / (1000 * 60)) % 60;
-  const hoursA = Math.floor(timeDifference / (1000 * 60 * 60)) % 24;
-
-  const [hours, setHours] = useState(hoursA);
-  const [minutes, setMinutes] = useState(minutesA);
-  const [seconds, setSeconds] = useState(secondsA);
   useEffect(() => {
-    const myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          if (hours === 0) {
-            clearInterval(myInterval);
+    const intervalId = setInterval(() => {
+      if (remainingSeconds > 0) {
+        setRemainingSeconds(remainingSeconds - 1);
+      } else {
+        if (remainingMinutes === 0) {
+          if (remainingHours === 0) {
+            clearInterval(intervalId);
+          } else {
+            setRemainingHours(remainingHours - 1);
+            setRemainingMinutes(59);
+            setRemainingSeconds(59);
           }
-          setHours(hours - 1);
-          setMinutes(59);
-          setSeconds(59);
         } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+          setRemainingMinutes(remainingMinutes - 1);
+          setRemainingSeconds(59);
         }
       }
     }, 1000);
     return () => {
-      clearInterval(myInterval);
+      clearInterval(intervalId);
     };
   });
 
+  const formattedMinutes =
+    remainingMinutes < 10 ? `0${remainingMinutes}` : remainingMinutes;
+  const formattedSeconds =
+    remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
+
   return (
     <div>
-      {minutes === 0 && seconds === 0 && hours == 0 ? null : (
+      {remainingHours === 0 &&
+      remainingMinutes === 0 &&
+      remainingSeconds === 0 ? null : (
         <h1>
-          {hours}h {minutes}m {seconds}s
+          {remainingHours}h {formattedMinutes}m {formattedSeconds}s
         </h1>
       )}
     </div>
