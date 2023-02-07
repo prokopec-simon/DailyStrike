@@ -1,6 +1,4 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import React from "react";
 
 import DailyMatchComponent from "../components/DailyMatchup";

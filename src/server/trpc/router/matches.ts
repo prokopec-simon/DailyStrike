@@ -2,7 +2,7 @@ import { t } from "../trpc";
 import { z } from "zod";
 
 export const matchesRouter = t.router({
-  getUpcomingMatch: t.procedure.query(async ({ ctx }) => {
+  getUpcomingMatch: t.procedure.query(async () => {
     return await prisma?.match.findFirst({ where: { winner: 0 } });
   }),
 
