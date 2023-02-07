@@ -19,7 +19,7 @@ const DailyMatchComponent = ({
       <div className="row-span-2 h-20 w-20 bg-gray-700"></div>
       <div className="text-left">{teamAOdds}</div>
       <div className="flex items-start justify-center">
-        <CountdownTimer EventTime={matchTime!}></CountdownTimer>
+        <CountdownTimer EventTime={matchTime}></CountdownTimer>
       </div>
       <div className="text-right">{teamBOdds}</div>
     </div>

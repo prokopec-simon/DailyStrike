@@ -39,9 +39,9 @@ const Home: NextPage = () => {
 export default Home;
 
 export type DailyMatchupData = {
-  teamAName: string | undefined;
-  teamBName: string | undefined;
-  teamAOdds: string | undefined;
-  teamBOdds: string | undefined;
-  matchTime: string | undefined;
+  teamAName: string;
+  teamBName: string;
+  teamAOdds: string;
+  teamBOdds: string;
+  matchTime: string;
 };

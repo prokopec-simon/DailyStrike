@@ -1,12 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
@@ -22,17 +15,17 @@ const Header = () => {
       </div>
 
       <div className="flex flex-1 items-center justify-end">
-        {sessionData ? (
+        {sessionData && sessionData.user && sessionData.user.image ? (
           <>
             <Image
-              loader={() => sessionData!.user!.image!}
-              src={"src"}
+              alt="userProfilePicture"
+              src={sessionData.user.image}
               width={30}
               height={30}
             ></Image>
             <Menu>
               <MenuButton>
-                {sessionData!.user!.name}
+                {sessionData.user.name}
                 <ChevronDownIcon />
               </MenuButton>
               <MenuList>
