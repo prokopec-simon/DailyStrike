@@ -8,7 +8,8 @@ import React, { useState, useEffect } from "react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import next from "next";
 import CountdownTimer from "../components/CountdownTimer";
-import DailyMatchComponent from "../components/DailyMatchupComponent";
+import DailyMatchComponent from "../components/DailyMatchup";
+import Header from "../components/Header";
 
 const Home: NextPage = () => {
   //const nextMatch = trpc.example.getRandomMaxStarMatchInUpcomingDay.useQuery();
@@ -43,31 +44,4 @@ export type DailyMatchupData = {
   teamAOdds: string | undefined;
   teamBOdds: string | undefined;
   matchTime: string | undefined;
-};
-
-const Header = () => {
-  const { data: sessionData } = useSession();
-  return (
-    <nav className="flex h-16">
-      <div className="flex flex-1 items-center"></div>
-      <div className="flex flex-1 items-center justify-center">
-        <a href="#" className="text-3xl font-bold text-indigo-600">
-          Daily CS:GO
-        </a>
-      </div>
-
-      <div className="flex flex-1 items-center justify-end">
-        {sessionData ? (
-          <button
-            onClick={() => signIn()}
-            className=" mt-1 mr-4 rounded border border-solid border-indigo-600 p-2 text-center text-indigo-600 transition-colors duration-300 hover:bg-indigo-600 hover:text-white"
-          >
-            {sessionData ? "Sign out" : "Sign in"}
-          </button>
-        ) : (
-          <div>huh</div>
-        )}
-      </div>
-    </nav>
-  );
 };

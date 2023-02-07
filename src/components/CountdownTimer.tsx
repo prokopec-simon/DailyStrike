@@ -43,9 +43,9 @@ const CountdownTimer = ({ EventTime }: CountdownTimerInput) => {
 
   return (
     <div>
-      {minutes === 0 && seconds === 0 ? null : (
+      {minutes === 0 && seconds === 0 && hours == 0 ? null : (
         <h1>
-          {hours}:{minutes}:{seconds}
+          {hours}h {minutes}m {seconds}s
         </h1>
       )}
     </div>

@@ -13,7 +13,7 @@ const DailyMatchComponent = ({
       <div className="row-span-2 h-20 w-20 justify-self-end bg-gray-700"></div>
       <div>{teamAName}</div>
       <div className="flex items-end justify-center">
-        <div className="text-lg">live in:</div>
+        <div className="text-lg">starts in:</div>
       </div>
       <div className="text-right">{teamBName}</div>
       <div className="row-span-2 h-20 w-20 bg-gray-700"></div>
