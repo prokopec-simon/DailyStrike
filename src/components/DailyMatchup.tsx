@@ -17,11 +17,11 @@ const DailyMatchComponent = ({
       </div>
       <div className="text-right">{teamBName}</div>
       <div className="row-span-2 h-20 w-20 bg-gray-700"></div>
-      <div className="text-left">{teamAOdds}</div>
+      <div className="text-left">{teamAOdds.toString()}</div>
       <div className="flex items-start justify-center">
         <CountdownTimer EventTime={matchTime}></CountdownTimer>
       </div>
-      <div className="text-right">{teamBOdds}</div>
+      <div className="text-right">{teamBOdds.toString()}</div>
     </div>
   );
 };

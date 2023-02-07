@@ -5,18 +5,17 @@ type CountdownTimerInput = {
 };
 
 const CountdownTimer = ({ EventTime }: CountdownTimerInput) => {
-  const {
-    initialMinute = 0,
-    initialSeconds = 0,
-    initialHour = 0,
-  } = {
-    initialMinute: 1,
-    initialSeconds: 30,
-    initialHour: 1,
-  };
-  const [hours, setHours] = useState(initialHour);
-  const [minutes, setMinutes] = useState(initialMinute);
-  const [seconds, setSeconds] = useState(initialSeconds);
+  const now = new Date();
+  const targetTime = new Date(EventTime);
+  const timeDifference = targetTime.getTime() - now.getTime();
+
+  const secondsA = Math.floor(timeDifference / 1000) % 60;
+  const minutesA = Math.floor(timeDifference / (1000 * 60)) % 60;
+  const hoursA = Math.floor(timeDifference / (1000 * 60 * 60)) % 24;
+
+  const [hours, setHours] = useState(hoursA);
+  const [minutes, setMinutes] = useState(minutesA);
+  const [seconds, setSeconds] = useState(secondsA);
   useEffect(() => {
     const myInterval = setInterval(() => {
       if (seconds > 0) {
