@@ -20,6 +20,7 @@ const theme = extendTheme({
       body: {
         color: "default",
         bg: "#1D1D1D",
+        height: "100vh",
       },
     }),
   },
