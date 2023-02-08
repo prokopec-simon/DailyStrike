@@ -47,6 +47,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  balance       BigInt    @default(100)
   accounts      Account[]
   sessions      Session[]
 }
