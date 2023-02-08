@@ -9,9 +9,12 @@ import { env } from "../../../env/server.mjs";
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+        const name = await prisma.user.findFirst();
+        session.user.balance = Number(name!.balance);
+        console.log("Hello from nextauth -" + name?.balance);
       }
       return session;
     },

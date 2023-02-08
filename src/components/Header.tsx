@@ -25,8 +25,12 @@ const Header = () => {
             ></Image>
             <Menu>
               <MenuButton>
-                {sessionData.user.name}
-                <ChevronDownIcon />
+                <div className="flex flex-col items-start text-white">
+                  <div>
+                    {sessionData.user.name} <ChevronDownIcon />
+                  </div>
+                  <div className="text-xs">{sessionData.user.balance}</div>
+                </div>
               </MenuButton>
               <MenuList>
                 <MenuItem>Profile</MenuItem>
