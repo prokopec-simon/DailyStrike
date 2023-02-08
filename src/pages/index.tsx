@@ -4,7 +4,6 @@ import React from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
-import { Decimal } from "@prisma/client/runtime";
 import HistoryMatches from "../components/HistoryMatches";
 
 //const { data: session, status } = useSession();
