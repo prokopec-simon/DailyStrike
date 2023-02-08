@@ -22,7 +22,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex w-full items-center justify-center pt-6 text-2xl">
+      <div className="m-0 flex w-full justify-center p-0 align-middle">
         {isLoadingUpcomingMatch ? <div>Loading...</div> : null}
         {upcomingMatch ? (
           <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>

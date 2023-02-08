@@ -9,7 +9,7 @@ const Header = () => {
     <nav className="flex h-16">
       <div className="flex flex-1 items-center"></div>
       <div className="flex flex-1 items-center justify-center">
-        <a href="#" className="text-3xl font-bold text-indigo-600">
+        <a href="#" className="text-2xl text-orange-500">
           Daily CS:GO
         </a>
       </div>

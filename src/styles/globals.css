@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: lightgray;
-  width: 100%;
-  height:100vh;
+html, body{ 
+  min-width:100%;
+  min-height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  background: #1D1D1D;
 }
