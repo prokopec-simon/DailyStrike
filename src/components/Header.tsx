@@ -1,6 +1,13 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  createMultiStyleConfigHelpers,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { menuAnatomy } from "@chakra-ui/anatomy";
 import Image from "next/image";
 
 const Header = () => {
@@ -32,9 +39,13 @@ const Header = () => {
                   <div className="text-xs">{sessionData.user.balance}</div>
                 </div>
               </MenuButton>
-              <MenuList>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem onClick={() => signOut()}>Logout</MenuItem>
+              <MenuList bg={"pink"}>
+                <MenuItem bg={"pink"} _hover={{ bg: "red" }}>
+                  Profile
+                </MenuItem>
+                <MenuItem bg={"pink"} onClick={() => signOut()}>
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
           </>

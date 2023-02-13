@@ -4,7 +4,7 @@ import React from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
-import HistoryMatches from "../components/HistoryMatches";
+import HistoryMatch from "../components/HistoryMatch";
 
 //const { data: session, status } = useSession();
 
@@ -13,7 +13,6 @@ const Home = () => {
     trpc.matches.getUpcomingMatch.useQuery();
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.matches.getLastNMatches.useQuery({ matchCount: 3 });
-
   return (
     <>
       <Head>
@@ -23,16 +22,17 @@ const Home = () => {
       </Head>
       <Header />
       <div className="m-0 flex w-full justify-center p-0 align-middle">
-        {isLoadingUpcomingMatch ? <div>Loading...</div> : null}
         {upcomingMatch ? (
           <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>
         ) : null}
       </div>
-      <div className="flex w-full items-center justify-center pt-6">
-        {isLoadingLastNMatches ? <div>Loading...</div> : null}
-        {lastNMatches ? (
-          <HistoryMatches Matches={lastNMatches}></HistoryMatches>
-        ) : null}
+
+      <div className="flex w-full flex-col items-center justify-center">
+        {lastNMatches
+          ? lastNMatches.map((match, index) => (
+              <HistoryMatch key={index} match={match}></HistoryMatch>
+            ))
+          : null}
       </div>
     </>
   );

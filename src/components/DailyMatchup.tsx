@@ -7,7 +7,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
   return (
-    <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white">
+    <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
       <div
         className={`flex h-full w-1/3 cursor-pointer flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamA_name
