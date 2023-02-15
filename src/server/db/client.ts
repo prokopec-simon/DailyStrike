@@ -14,6 +14,7 @@ export const prisma =
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
 
+//TODO: Check if this is the correct way to have prisma in production.
 //if (env.NODE_ENV !== "production") {
 global.prisma = prisma;
 //}

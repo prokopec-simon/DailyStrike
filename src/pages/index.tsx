@@ -1,12 +1,10 @@
 import Head from "next/head";
 import React from "react";
-
 import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
 import HistoryMatch from "../components/HistoryMatch";
-
-//const { data: session, status } = useSession();
+import { Spinner } from "@chakra-ui/react";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
@@ -17,16 +15,18 @@ const Home = () => {
     <>
       <Head>
         <title>Daily CS:GO</title>
-        <meta name="description" content="Daily CS:GO Betting" />
+        <meta name="description" content="Daily CS:GO Match predicting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
       <div className="m-0 flex w-full justify-center p-0 align-middle">
+        {isLoadingUpcomingMatch || isLoadingLastNMatches ? (
+          <Spinner color="white" size="xl" />
+        ) : null}
         {upcomingMatch ? (
           <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>
         ) : null}
       </div>
-
       <div className="flex w-full flex-col items-center justify-center">
         {lastNMatches
           ? lastNMatches.map((match, index) => (
