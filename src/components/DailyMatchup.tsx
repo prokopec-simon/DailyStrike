@@ -1,10 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
 import { Match } from "@prisma/client";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useState } from "react";
 import CountdownTimer from "./CountdownTimer";
+
+const PredictingBlock: React.FC<{
+  match: Match;
+  selectedTeam: string;
+}> = ({ match, selectedTeam }) => {
+  const [input, setInput] = useState("");
+
+  const teamAOdds = Number(match.teamA_odds);
+  const teamBOdds = Number(match.teamB_odds);
+  const winProbability =
+    selectedTeam === match.teamA_name
+      ? teamAOdds * Number(input)
+      : teamBOdds * Number(input);
+
+  const setInputCallback = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInput(e.target.value);
+    },
+    []
+  );
+
+  return (
+    <div>
+      <div>Expected win: {winProbability.toFixed(3)}</div>
+      <input
+        className="h-8 w-2/5 rounded bg-zinc-600 px-2 text-right"
+        onInput={setInputCallback}
+      />
+      <button className="mt-1 mr-4 w-2/5 rounded bg-orange-500 p-1 px-4 text-center text-sm text-white">
+        Predict
+      </button>
+    </div>
+  );
+};
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const session = useSession();
 
   return (
     <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
@@ -30,8 +66,16 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
         <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 text-sm text-white">
           BO{props.match.bestOf}
         </div>
-        <div className="mt-3 text-white">
+        <div className="w-100 mt-3 flex flex-col items-center text-white">
           <CountdownTimer targetDate={props.match.dateAndTime}></CountdownTimer>
+          {session.data && selectedTeam ? (
+            <div className="flex flex-col">
+              <PredictingBlock
+                match={props.match}
+                selectedTeam={selectedTeam}
+              ></PredictingBlock>
+            </div>
+          ) : null}
         </div>
       </div>
       <div

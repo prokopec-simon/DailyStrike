@@ -54,7 +54,7 @@ const Header = () => {
         {!sessionData && (
           <button
             onClick={() => signIn()}
-            className=" mt-1 mr-4 rounded border border-solid border-indigo-600 p-2 text-center text-indigo-600 transition-colors duration-300 hover:bg-indigo-600 hover:text-white"
+            className="mt-1 mr-4 rounded bg-orange-500 p-1 px-4 text-center text-sm text-white"
           >
             Sign in
           </button>
