@@ -8,7 +8,7 @@ const TeamInfo: React.FC<{
   logoUrl: string | null;
 }> = (props) => {
   return (
-    <div className="flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700">
+    <div className="flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 border-solid border-orange-500">
       <img
         alt="team logo"
         className="h-1/2 p-1 pt-2"
