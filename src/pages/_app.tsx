@@ -4,12 +4,18 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
-
-import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
-import { config } from "@fortawesome/fontawesome-svg-core";
 import { ConfigProvider, theme } from "antd";
 
-config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
+const customTheme = {
+  algorithm: theme.darkAlgorithm,
+  token: {
+    colorPrimary: "#52C41A",
+    colorInfo: "#49aa19",
+    colorInfoTextActive: "#ffffff",
+    colorPrimaryTextActive: "#ffffff",
+    colorPrimaryActive: "#ffffff",
+  },
+};
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,11 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ConfigProvider
-        theme={{
-          algorithm: theme.darkAlgorithm,
-        }}
-      >
+      <ConfigProvider theme={customTheme}>
         <Component {...pageProps} />
       </ConfigProvider>
     </SessionProvider>
