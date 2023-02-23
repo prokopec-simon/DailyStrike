@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ProfileDropdown } from "./ProfileDropdown";
 
 const Header = () => {
-  const { data: sessionData } = useSession();
+  const { data: sessionData, status: sessionStatus } = useSession();
   return (
     <nav className="flex h-16">
       <div className="flex flex-1 items-center"></div>
@@ -23,28 +23,10 @@ const Header = () => {
               height={30}
             ></Image>
             <ProfileDropdown user={sessionData.user}></ProfileDropdown>
-            {/* <Menu>
-              <MenuButton>
-                <div className="flex flex-col items-start text-white">
-                  <div>
-                    {sessionData.user.name} <ChevronDownIcon />
-                  </div>
-                  <div className="text-xs">{sessionData.user.balance}</div>
-                </div>
-              </MenuButton>
-              <MenuList bg={"pink"}>
-                <MenuItem bg={"pink"} _hover={{ bg: "red" }}>
-                  Profile
-                </MenuItem>
-                <MenuItem bg={"pink"} onClick={() => signOut()}>
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu> */}
           </>
         ) : null}
 
-        {!sessionData && (
+        {sessionStatus == "unauthenticated" && (
           <button
             onClick={() => signIn()}
             className="mt-1 mr-4 rounded bg-orange-500 p-1 px-4 text-center text-sm text-white"
