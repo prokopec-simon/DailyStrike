@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Match } from "@prisma/client";
-import { CompetitorCard } from "./CompetitorCard";
+import { CompetitorCard } from "./TeamInfo";
 
 export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
   return (
