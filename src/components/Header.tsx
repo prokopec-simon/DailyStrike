@@ -1,5 +1,4 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import { ProfileDropdown } from "./ProfileDropdown";
 
 const Header: React.FC = () => {
@@ -14,16 +13,8 @@ const Header: React.FC = () => {
       </div>
 
       <div className="mr-4 flex flex-1 items-center justify-end">
-        {sessionData && sessionData.user && sessionData.user.image ? (
-          <>
-            <Image
-              alt="userProfilePicture"
-              src={sessionData.user.image}
-              width={30}
-              height={30}
-            ></Image>
-            <ProfileDropdown user={sessionData.user}></ProfileDropdown>
-          </>
+        {sessionData && sessionData.user ? (
+          <ProfileDropdown user={sessionData.user}></ProfileDropdown>
         ) : null}
 
         {sessionStatus == "unauthenticated" && (
