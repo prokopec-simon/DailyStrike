@@ -4,7 +4,7 @@ import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
 import HistoryMatch from "../components/HistoryMatch";
-import { Spinner } from "@chakra-ui/react";
+import { Spin } from "antd";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
@@ -20,9 +20,7 @@ const Home = () => {
       </Head>
       <Header />
       <div className="m-0 flex w-full justify-center p-0 align-middle">
-        {isLoadingUpcomingMatch || isLoadingLastNMatches ? (
-          <Spinner color="white" size="xl" />
-        ) : null}
+        {isLoadingUpcomingMatch || isLoadingLastNMatches ? <Spin /> : null}
         {upcomingMatch ? (
           <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>
         ) : null}

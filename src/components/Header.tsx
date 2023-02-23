@@ -1,14 +1,6 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  createMultiStyleConfigHelpers,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { menuAnatomy } from "@chakra-ui/anatomy";
 import Image from "next/image";
+import { ProfileDropdown } from "./ProfileDropdown";
 
 const Header = () => {
   const { data: sessionData } = useSession();
@@ -30,7 +22,8 @@ const Header = () => {
               width={30}
               height={30}
             ></Image>
-            <Menu>
+            <ProfileDropdown user={sessionData.user}></ProfileDropdown>
+            {/* <Menu>
               <MenuButton>
                 <div className="flex flex-col items-start text-white">
                   <div>
@@ -47,7 +40,7 @@ const Header = () => {
                   Logout
                 </MenuItem>
               </MenuList>
-            </Menu>
+            </Menu> */}
           </>
         ) : null}
 
