@@ -3,8 +3,8 @@ import React from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import Header from "../components/Header";
 import { trpc } from "../utils/trpc";
-import HistoryMatch from "../components/HistoryMatch";
 import { Spin } from "antd";
+import { HistoryMatch } from "../components/HistoryMatch";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =

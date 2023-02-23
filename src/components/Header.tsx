@@ -2,18 +2,18 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { ProfileDropdown } from "./ProfileDropdown";
 
-const Header = () => {
+const Header: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
   return (
     <nav className="flex h-16">
-      <div className="flex flex-1 items-center"></div>
+      <div className="ml-4 flex flex-1 items-center"></div>
       <div className="flex flex-1 items-center justify-center">
         <a href="#" className="text-2xl text-orange-500">
           Daily CS:GO
         </a>
       </div>
 
-      <div className="flex flex-1 items-center justify-end">
+      <div className="mr-4 flex flex-1 items-center justify-end">
         {sessionData && sessionData.user && sessionData.user.image ? (
           <>
             <Image
