@@ -1,11 +1,23 @@
 import { Match } from "@prisma/client";
+import { Button } from "antd";
+import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
+import { trpc } from "../utils/trpc";
 
 export const PredictingBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
   const [input, setInput] = useState("");
+  const { data: sessionData, status: sessionStatus } = useSession();
+
+  const placePrediction = () => {
+    trpc.matches.placePrediction.useMutation().mutate({
+      userId: sessionData?.user?.id ?? "",
+      pickedTeam: 0,
+      predictionOdds: 0,
+    });
+  };
 
   const teamAOdds = Number(match.teamA_odds);
   const teamBOdds = Number(match.teamB_odds);
@@ -29,9 +41,7 @@ export const PredictingBlock: React.FC<{
         className="h-8 w-2/5 rounded bg-zinc-600 px-2 text-right"
         onInput={setInputCallback}
       />
-      <button className="mt-1 mr-4 w-2/5 rounded bg-orange-500 p-1 px-4 text-center text-sm text-white">
-        Predict
-      </button>
+      <Button onClick={() => placePrediction()}>Predict</Button>
     </div>
   );
 };
