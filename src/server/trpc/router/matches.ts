@@ -15,4 +15,19 @@ export const matchesRouter = t.router({
         take: input.matchCount,
       });
     }),
+
+  placePrediction: t.procedure
+    .input(
+      z.object({
+        userId: z.string(),
+        matchId: z.string(),
+        pickedTeam: z.number().int(),
+        predictionOdds: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const predictionInDb = prisma?.userMatchPrediction.create({
+        data: { ...input, balanceResult: null },
+      });
+    }),
 });

@@ -12,6 +12,7 @@ const items: MenuProps["items"] = [
   {
     label: <a href="https://www.antgroup.com">Profile</a>,
     key: "0",
+    disabled: true,
     icon: <UserOutlined />,
   },
   {
@@ -48,12 +49,12 @@ export const ProfileDropdown: React.FC = () => {
                 height={35}
                 className="rounded-md"
               />
-              <div className="ml-2">
+              <div className="ml-2 text-white">
                 <div className="text-sm">{sessionData?.user?.name}</div>
-                <div className="text-xs">123.123</div>
+                <div className="text-xs">{sessionData?.user?.balance}</div>
               </div>
             </div>
-            <DownOutlined className="ml-2" />
+            <DownOutlined className="ml-2 text-white" />
           </div>
         </Dropdown>
       ) : (

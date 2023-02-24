@@ -2,6 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider = "zod-prisma-types"
+}
+
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
@@ -42,14 +46,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  balance       BigInt    @default(100)
-  accounts      Account[]
-  sessions      Session[]
+  id                  String                @id @default(cuid())
+  name                String?
+  email               String?               @unique
+  emailVerified       DateTime?
+  image               String?
+  balance             BigInt                @default(100)
+  accounts            Account[]
+  sessions            Session[]
+  UserMatchPrediction UserMatchPrediction[]
 }
 
 model VerificationToken {
@@ -61,15 +66,30 @@ model VerificationToken {
 }
 
 model Match {
-  id            String   @id @default(cuid())
-  teamA_name    String
-  teamB_name    String
-  teamA_odds    Decimal
-  teamB_odds    Decimal
-  teamA_logoUrl String?
-  teamB_logoUrl String?
-  bestOf        Int
-  dateAndTime   DateTime
-  hltvUrl       String
-  winner        Int      @default(0)
+  id                  String                @id @default(cuid())
+  teamA_name          String
+  teamB_name          String
+  teamA_odds          Decimal
+  teamB_odds          Decimal
+  teamA_logoUrl       String?
+  teamB_logoUrl       String?
+  bestOf              Int
+  dateAndTime         DateTime
+  hltvUrl             String
+  winner              Int                   @default(0)
+  UserMatchPrediction UserMatchPrediction[]
+}
+
+model UserMatchPrediction {
+  userId         String
+  matchId        String
+  user           User     @relation(fields: [userId], references: [id])
+  match          Match    @relation(fields: [matchId], references: [id])
+  pickedTeam     Int
+  predictionOdds Decimal
+  balanceResult  Decimal?
+
+  @@id([userId, matchId])
+  @@index([matchId])
+  @@index([userId])
 }
