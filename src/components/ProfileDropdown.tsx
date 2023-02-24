@@ -36,36 +36,32 @@ const items: MenuProps["items"] = [
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
 
+  if (sessionStatus === "loading") {
+    return null;
+  }
+
+  if (sessionStatus === "unauthenticated") {
+    return <Button onClick={() => signIn()}>Sign in</Button>;
+  }
+
   return (
-    <>
-      {sessionStatus != "unauthenticated" ? (
-        <Dropdown menu={{ items }} trigger={["click"]}>
-          <div className="flex cursor-pointer items-center">
-            <div className="mr-2 flex items-center">
-              <Image
-                alt="userProfilePicture"
-                src={sessionData?.user?.image ?? ""}
-                width={35}
-                height={35}
-                className="rounded-md"
-              />
-              <div className="ml-2 text-white">
-                <div className="text-sm">{sessionData?.user?.name}</div>
-                <div className="text-xs">{sessionData?.user?.balance}</div>
-              </div>
-            </div>
-            <DownOutlined className="ml-2 text-white" />
+    <Dropdown menu={{ items }} trigger={["click"]}>
+      <div className="flex cursor-pointer items-center">
+        <div className="mr-2 flex items-center">
+          <Image
+            alt="userProfilePicture"
+            src={sessionData?.user?.image ?? ""}
+            width={35}
+            height={35}
+            className="rounded-md"
+          />
+          <div className="ml-2 text-white">
+            <div className="text-sm">{sessionData?.user?.name}</div>
+            <div className="text-xs">{sessionData?.user?.balance}</div>
           </div>
-        </Dropdown>
-      ) : (
-        <Button
-          onClick={() => {
-            signIn();
-          }}
-        >
-          Sign in
-        </Button>
-      )}
-    </>
+        </div>
+        <DownOutlined className="ml-2 text-white" />
+      </div>
+    </Dropdown>
   );
 };

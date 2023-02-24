@@ -1,5 +1,5 @@
 import { Match } from "@prisma/client";
-import { Button, Modal, Spin } from "antd";
+import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { trpc } from "../utils/trpc";
@@ -63,14 +63,25 @@ const PredictingBlock: React.FC<{
         maskClosable={predictionMutation.status == "loading" ? false : true}
         footer=<></>
       >
-        {predictionMutation.status == "loading" ? <Spin /> : <div></div>}
+        <div className="flex">
+          <>
+            {predictionMutation.status == "loading" ? (
+              <Spin className="self-center" size="large" />
+            ) : null}
+            {predictionMutation.status == "success"
+              ? predictionMutation.data?.predictionOdds
+              : null}
+            {predictionMutation.status == "error"
+              ? predictionMutation.error.message
+              : null}
+          </>
+        </div>
       </Modal>
       <div>Expected win: {winProbability.toFixed(3)}</div>
-      <input
-        type="number"
-        className="h-8 w-2/5 rounded bg-zinc-600 px-2 text-right"
-        onInput={setInputCallback}
-      />
+      <InputNumber
+        controls={false}
+        onInput={() => setInputCallback}
+      ></InputNumber>
       <Button onClick={() => placePrediction()}>Predict</Button>
     </div>
   );
