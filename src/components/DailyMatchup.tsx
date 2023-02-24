@@ -3,7 +3,7 @@ import { Match } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import CountdownTimer from "./CountdownTimer";
-import { PredictingBlock } from "./PredictingBlock";
+import PredictingBlock from "./PredictingBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -39,7 +39,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             <div className="flex flex-col">
               <PredictingBlock
                 match={props.match}
-                selectedTeam={selectedTeam}
+                selectedTeam={selectedTeam}   
               ></PredictingBlock>
             </div>
           ) : null}

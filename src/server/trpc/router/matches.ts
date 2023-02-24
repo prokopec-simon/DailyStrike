@@ -22,6 +22,7 @@ export const matchesRouter = t.router({
         userId: z.string(),
         pickedTeam: z.number().int(),
         predictionOdds: z.number(),
+        predictionAmount: z.number(),
       })
     )
     .mutation(async ({ input }) => {

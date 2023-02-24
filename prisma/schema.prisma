@@ -77,13 +77,14 @@ model Match {
 }
 
 model UserMatchPrediction {
-  userId         String
-  matchId        String
-  user           User     @relation(fields: [userId], references: [id])
-  match          Match    @relation(fields: [matchId], references: [id])
-  pickedTeam     Int
-  predictionOdds Decimal
-  balanceResult  Decimal?
+  userId           String
+  matchId          String
+  user             User     @relation(fields: [userId], references: [id])
+  match            Match    @relation(fields: [matchId], references: [id])
+  pickedTeam       Int
+  predictionOdds   Decimal
+  predictionAmount Decimal
+  balanceResult    Decimal?
 
   @@id([userId, matchId])
   @@index([matchId])
