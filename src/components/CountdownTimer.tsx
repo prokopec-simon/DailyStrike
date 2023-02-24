@@ -48,7 +48,9 @@ const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
     <div>
       {remainingHours === 0 &&
       remainingMinutes === 0 &&
-      remainingSeconds === 0 ? null : (
+      remainingSeconds === 0 ? (
+        <div>Live!</div>
+      ) : (
         <h1>
           {remainingHours}h {formattedMinutes}m {formattedSeconds}s
         </h1>

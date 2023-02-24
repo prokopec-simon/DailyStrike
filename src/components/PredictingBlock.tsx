@@ -14,8 +14,11 @@ export const PredictingBlock: React.FC<{
   const placePrediction = () => {
     trpc.matches.placePrediction.useMutation().mutate({
       userId: sessionData?.user?.id ?? "",
-      pickedTeam: 0,
-      predictionOdds: 0,
+      pickedTeam: selectedTeam == match.teamA_name ? 0 : 1,
+      predictionOdds:
+        selectedTeam == match.teamA_name
+          ? Number(match.teamA_odds)
+          : Number(match.teamB_odds),
     });
   };
 
