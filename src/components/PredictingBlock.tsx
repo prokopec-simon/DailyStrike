@@ -49,12 +49,29 @@ const PredictingBlock: React.FC<{
   return (
     <div>
       <Modal
-        title="Prediction placement modal"
+        title={<div>Placing prediction</div>}
         onOk={handleOk}
         onCancel={handleCancel}
+        open={isModalOpen}
         closable={predictionMutation.status !== "loading"}
         maskClosable={predictionMutation.status !== "loading"}
-        //footer={null}
+        footer={
+          predictionMutation.status === "success" ? (
+            <div>
+              <Button>Ok</Button>
+            </div>
+          ) : (
+            <div>
+              {predictionMutation.status === "error" && (
+                <>
+                  <Button>Send report</Button>
+                  <Button>Ok</Button>
+                </>
+              )}
+            </div>
+          )
+        }
+        maskStyle={{ backgroundColor: "rgba(160,160,160, 0.7)" }}
       >
         {predictionMutation.status === "loading" && (
           <div className="flex">
