@@ -10,23 +10,23 @@ const PredictingBlock: React.FC<{
 }> = ({ match, selectedTeam }) => {
   const [input, setInput] = useState<number>(0);
   const { data: sessionData, status: sessionStatus } = useSession();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const predictionMutation = trpc.matches.placePrediction.useMutation();
 
   const handleOk = () => setIsModalOpen(false);
   const handleCancel = () => setIsModalOpen(false);
-
-  const placePrediction = () => {
+  const showModal = () => {
     setIsModalOpen(true);
+  };
+  const placePrediction = () => {
+    showModal();
 
     const pickedTeam = selectedTeam === match.teamA_name ? 0 : 1;
     const predictionOdds =
       selectedTeam === match.teamA_name
         ? Number(match.teamA_odds)
         : Number(match.teamB_odds);
-
-
     predictionMutation
       .mutateAsync({
         userId: sessionData?.user?.id ?? "",
@@ -42,7 +42,9 @@ const PredictingBlock: React.FC<{
       ? Number(match.teamA_odds) * input
       : Number(match.teamB_odds) * input;
 
-  const setInputCallback = useCallback((value: number) => setInput(value), []);
+  const setInputCallback = useCallback((value: number) => {
+    setInput(value);
+  }, []);
 
   return (
     <div>
@@ -52,7 +54,7 @@ const PredictingBlock: React.FC<{
         onCancel={handleCancel}
         closable={predictionMutation.status !== "loading"}
         maskClosable={predictionMutation.status !== "loading"}
-        footer={null}
+        //footer={null}
       >
         {predictionMutation.status === "loading" && (
           <div className="flex">
@@ -83,7 +85,7 @@ const PredictingBlock: React.FC<{
       <div>Expected win: {winProbability.toFixed(3)}</div>
       <InputNumber
         value={input}
-        onChange={() => setInputCallback}
+        onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
         controls={false}
       />
       <Button onClick={() => placePrediction()}>Predict</Button>
