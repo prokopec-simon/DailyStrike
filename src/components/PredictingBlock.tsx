@@ -8,82 +8,87 @@ const PredictingBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<number>(0);
   const { data: sessionData, status: sessionStatus } = useSession();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const predictionMutation = trpc.matches.placePrediction.useMutation();
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const handleOk = () => setIsModalOpen(false);
+  const handleCancel = () => setIsModalOpen(false);
 
   const placePrediction = () => {
-    showModal();
-    predictionMutation.mutate({
-      userId: sessionData?.user?.id ?? "",
-      pickedTeam: selectedTeam == match.teamA_name ? 0 : 1,
-      predictionOdds:
-        selectedTeam == match.teamA_name
-          ? Number(match.teamA_odds)
-          : Number(match.teamB_odds),
-      predictionAmount: Number(input),
-    });
+    setIsModalOpen(true);
+
+    const pickedTeam = selectedTeam === match.teamA_name ? 0 : 1;
+    const predictionOdds =
+      selectedTeam === match.teamA_name
+        ? Number(match.teamA_odds)
+        : Number(match.teamB_odds);
+
+
+    predictionMutation
+      .mutateAsync({
+        userId: sessionData?.user?.id ?? "",
+        pickedTeam,
+        predictionOdds,
+        predictionAmount: input,
+      })
+      .catch((error) => console.error("Error placing prediction", error));
   };
 
-  const teamAOdds = Number(match.teamA_odds);
-  const teamBOdds = Number(match.teamB_odds);
   const winProbability =
     selectedTeam === match.teamA_name
-      ? teamAOdds * Number(input)
-      : teamBOdds * Number(input);
+      ? Number(match.teamA_odds) * input
+      : Number(match.teamB_odds) * input;
 
-  const setInputCallback = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInput(e.target.value);
-    },
-    []
-  );
+  const setInputCallback = useCallback((value: number) => setInput(value), []);
 
   return (
     <div>
       <Modal
         title="Prediction placement modal"
-        open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        closeIcon=<></>
-        maskClosable={predictionMutation.status == "loading" ? false : true}
-        footer=<></>
+        closable={predictionMutation.status !== "loading"}
+        maskClosable={predictionMutation.status !== "loading"}
+        footer={null}
       >
-        <div className="flex">
-          <>
-            {predictionMutation.status == "loading" ? (
-              <Spin className="self-center" size="large" />
-            ) : null}
-            {predictionMutation.status == "success"
-              ? predictionMutation.data?.predictionOdds
-              : null}
-            {predictionMutation.status == "error"
-              ? predictionMutation.error.message
-              : null}
-          </>
-        </div>
+        {predictionMutation.status === "loading" && (
+          <div className="flex">
+            <Spin className="self-center" size="large" />
+          </div>
+        )}
+        {predictionMutation.status === "success" && (
+          <div>
+            <>
+              Prediction placed successfully, placed amount:
+              {predictionMutation.data?.predictionAmount} at
+              {predictionMutation.data?.predictionOdds}. Possible win:
+              {(
+                Number(predictionMutation.data?.predictionAmount) *
+                Number(predictionMutation.data?.predictionOdds)
+              ).toFixed(3)}
+              Good luck!
+            </>
+          </div>
+        )}
+        {predictionMutation.status === "error" && (
+          <div>
+            There was an error while placing your bet. Details:
+            {predictionMutation.error?.message}
+          </div>
+        )}
       </Modal>
       <div>Expected win: {winProbability.toFixed(3)}</div>
       <InputNumber
+        value={input}
+        onChange={() => setInputCallback}
         controls={false}
-        onInput={() => setInputCallback}
-      ></InputNumber>
+      />
       <Button onClick={() => placePrediction()}>Predict</Button>
     </div>
   );
 };
+
 export default PredictingBlock;
