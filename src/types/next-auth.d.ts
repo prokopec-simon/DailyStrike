@@ -8,6 +8,8 @@ declare module "next-auth" {
     user?: {
       id: string;
       balance: number;
+      livePredictionTeam: number?;
+      livePredictionAmount: number?;
     } & DefaultSession["user"];
   }
 }

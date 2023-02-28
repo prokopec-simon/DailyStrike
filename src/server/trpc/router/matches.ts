@@ -29,6 +29,10 @@ export const matchesRouter = t.router({
       const matchId = (await prisma?.match.findFirst({ where: { winner: 0 } }))
         ?.id;
 
+      await prisma?.user.update({
+        where: { id: input.userId },
+        data: { balance: { decrement: input.predictionAmount } },
+      });
       const predictionInDb = await prisma?.userMatchPrediction.create({
         data: { ...input, balanceResult: null, matchId: matchId ?? "" },
       });

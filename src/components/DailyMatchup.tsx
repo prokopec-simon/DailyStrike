@@ -6,18 +6,30 @@ import CountdownTimer from "./CountdownTimer";
 import PredictingBlock from "./PredictingBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const session = useSession();
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(
+    session.data?.user?.livePredictionTeam == 0
+      ? props.match.teamA_name
+      : props.match.teamB_name
+  );
 
   return (
     <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
       <div
-        className={`flex h-full w-1/3 cursor-pointer flex-col items-center rounded-lg bg-zinc-700 ${
+        className={`${
+          session.data?.user?.livePredictionAmount == null
+            ? "cursor-pointer"
+            : ""
+        } flex h-full w-1/3  flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamA_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
-        onClick={() => setSelectedTeam(props.match.teamA_name)}
+        onClick={() =>
+          session.data?.user?.livePredictionAmount == null
+            ? setSelectedTeam(props.match.teamA_name)
+            : null
+        }
       >
         <img
           alt="team A logo"
@@ -39,19 +51,27 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             <div className="flex flex-col">
               <PredictingBlock
                 match={props.match}
-                selectedTeam={selectedTeam}   
+                selectedTeam={selectedTeam}
               ></PredictingBlock>
             </div>
           ) : null}
         </div>
       </div>
       <div
-        className={`flex h-full w-1/3 cursor-pointer flex-col items-center rounded-lg bg-zinc-700 ${
+        className={`${
+          session.data?.user?.livePredictionAmount == null
+            ? "cursor-pointer"
+            : ""
+        } flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamB_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
-        onClick={() => setSelectedTeam(props.match.teamB_name)}
+        onClick={() =>
+          session.data?.user?.livePredictionAmount == null
+            ? setSelectedTeam(props.match.teamB_name)
+            : null
+        }
       >
         <img
           alt="team A logo"

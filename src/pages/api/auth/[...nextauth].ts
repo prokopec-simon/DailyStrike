@@ -14,7 +14,20 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
         const name = await prisma.user.findFirst();
         session.user.balance = Number(name!.balance);
-        console.log("Hello from nextauth -" + name?.balance);
+        session.user.livePredictionAmount = Number(
+          (
+            await prisma.userMatchPrediction.findFirst({
+              where: { userId: name?.id },
+            })
+          )?.predictionAmount
+        );
+        session.user.livePredictionTeam = Number(
+          (
+            await prisma.userMatchPrediction.findFirst({
+              where: { userId: name?.id },
+            })
+          )?.pickedTeam
+        );
       }
       return session;
     },

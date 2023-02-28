@@ -8,13 +8,16 @@ const PredictingBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
-  const [input, setInput] = useState<number>(0);
   const { data: sessionData, status: sessionStatus } = useSession();
+  const [input, setInput] = useState<number>(
+    sessionData?.user?.livePredictionAmount ?? 0
+  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const predictionMutation = trpc.matches.placePrediction.useMutation();
 
-  const handleOk = () => setIsModalOpen(false);
+  const handleOk = () => {setIsModalOpen(false)};
   const handleCancel = () => setIsModalOpen(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -102,10 +105,16 @@ const PredictingBlock: React.FC<{
       <div>Expected win: {winProbability.toFixed(3)}</div>
       <InputNumber
         value={input}
+        disabled={sessionData?.user?.livePredictionAmount != null}
         onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
         controls={false}
       />
-      <Button onClick={() => placePrediction()}>Predict</Button>
+      <Button
+        disabled={sessionData?.user?.livePredictionAmount != null}
+        onClick={() => placePrediction()}
+      >
+        Predict
+      </Button>
     </div>
   );
 };
