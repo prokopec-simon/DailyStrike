@@ -8,9 +8,9 @@ import Header from "../components/Header";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
-    trpc.matches.getUpcomingMatch.useQuery();
+    trpc.match.getUpcomingMatch.useQuery();
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
-    trpc.matches.getLastNMatches.useQuery({ matchCount: 3 });
+    trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
   return (
     <>
       <Head>

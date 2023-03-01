@@ -7,6 +7,8 @@ import {
 import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useContext } from "react";
+import { Context } from "../pages/_app";
 
 const items: MenuProps["items"] = [
   {
@@ -35,6 +37,7 @@ const items: MenuProps["items"] = [
 ];
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
+  const userName = useContext(Context);
 
   if (sessionStatus === "loading") {
     return null;
@@ -57,7 +60,7 @@ export const ProfileDropdown: React.FC = () => {
           />
           <div className="ml-2 text-white">
             <div className="text-sm">{sessionData?.user?.name}</div>
-            <div className="text-xs">{sessionData?.user?.balance}</div>
+            <div className="text-xs">{userName}</div>
           </div>
         </div>
         <DownOutlined className="ml-2 text-white" />
