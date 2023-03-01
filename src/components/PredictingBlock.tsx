@@ -15,7 +15,7 @@ const PredictingBlock: React.FC<{
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const predictionMutation = trpc.matches.placePrediction.useMutation();
+  const predictionMutation = trpc.match.placePrediction.useMutation();
 
   const handleOk = () => {setIsModalOpen(false)};
   const handleCancel = () => setIsModalOpen(false);
