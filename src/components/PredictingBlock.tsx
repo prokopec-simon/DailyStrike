@@ -1,7 +1,8 @@
 import { Match } from "@prisma/client";
 import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import { Context } from "../pages/_app";
 import { trpc } from "../utils/trpc";
 
 const PredictingBlock: React.FC<{
@@ -14,6 +15,7 @@ const PredictingBlock: React.FC<{
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const a = useContext(Context);
 
   const predictionMutation = trpc.match.placePrediction.useMutation();
 
