@@ -5,12 +5,15 @@ import { trpc } from "../utils/trpc";
 import { Spin } from "antd";
 import { HistoryMatch } from "../components/HistoryMatch";
 import Header from "../components/Header";
+import { useBalance } from "../contexts/userContext";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
     trpc.match.getUpcomingMatch.useQuery();
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
+
+  const balance = useBalance();
   return (
     <>
       <Head>
@@ -18,6 +21,7 @@ const Home = () => {
         <meta name="description" content="Daily CS:GO Match predicting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      Balance:{Number(balance.predictionInfo?.balance)}
       <Header />
       <div className="m-0 flex w-full justify-center p-0 align-middle">
         {isLoadingUpcomingMatch || isLoadingLastNMatches ? <Spin /> : null}

@@ -60,7 +60,7 @@ export const ProfileDropdown: React.FC = () => {
           />
           <div className="ml-2 text-white">
             <div className="text-sm">{sessionData?.user?.name}</div>
-            <div className="text-xs">{userName}</div>
+            <div className="text-xs">{sessionData?.user?.balance}</div>
           </div>
         </div>
         <DownOutlined className="ml-2 text-white" />
