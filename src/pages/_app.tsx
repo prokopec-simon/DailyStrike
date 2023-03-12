@@ -6,6 +6,7 @@ import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import { ConfigProvider, theme } from "antd";
 import { createContext, useState } from "react";
+import { UserContext } from "../contexts/userContext";
 
 const customTheme = {
   algorithm: theme.darkAlgorithm,
@@ -18,19 +19,16 @@ const customTheme = {
   },
 };
 
-export const Context = createContext({});
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const [balance, setBalance] = useState(1);
   return (
     <SessionProvider session={session}>
       <ConfigProvider theme={customTheme}>
-        <Context.Provider value={{ balance, setBalance }}>
+        <UserContext.Provider value={null}>
           <Component {...pageProps} />
-        </Context.Provider>
+        </UserContext.Provider>
       </ConfigProvider>
     </SessionProvider>
   );

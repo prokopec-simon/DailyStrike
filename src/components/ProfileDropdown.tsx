@@ -7,8 +7,7 @@ import {
 import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext } from "react";
-import { Context } from "../pages/_app";
+import { useContext, useEffect } from "react";
 
 const items: MenuProps["items"] = [
   {
@@ -37,14 +36,21 @@ const items: MenuProps["items"] = [
 ];
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
-  const userName = useContext(Context);
 
   if (sessionStatus === "loading") {
     return null;
   }
 
   if (sessionStatus === "unauthenticated") {
-    return <Button onClick={() => signIn()}>Sign in</Button>;
+    return (
+      <Button
+        onClick={() => {
+          signIn();
+        }}
+      >
+        Sign in
+      </Button>
+    );
   }
 
   return (

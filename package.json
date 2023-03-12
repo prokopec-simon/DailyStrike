@@ -35,7 +35,8 @@
     "superjson": "1.9.1",
     "user-agent": "^1.0.4",
     "user-agents": "^1.0.1172",
-    "zod": "^3.18.0"
+    "zod": "^3.18.0",
+    "zustand": "^4.3.6"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
