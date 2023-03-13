@@ -1,27 +1,39 @@
 import Head from "next/head";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import { trpc } from "../utils/trpc";
 import { Button, Spin } from "antd";
 import { HistoryMatch } from "../components/HistoryMatch";
 import Header from "../components/Header";
-import { getSession, useSession } from "next-auth/react";
-import { UserContext } from "../contexts/userContext";
-import { PrismaClientUnknownRequestError } from "@prisma/client/runtime";
+import { useSession } from "next-auth/react";
+import {
+  GlobalUserContext,
+  useGlobalContext,
+  userContextSchema,
+} from "../contexts/userContext";
 
 const Home = () => {
-  const { data: sessionData, status: sessionStatus } = useSession();
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
     trpc.match.getUpcomingMatch.useQuery();
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
 
-  const userContext = useContext(UserContext);
+  const { user, setUser } = useGlobalContext();
+
+  const { data: sessionData, status: sessionStatus } = useSession();
+
+  const { data: userData, isLoading: isUserLoading } =
+    trpc.user.getUserData.useQuery(sessionData?.user?.id ?? "");
+
   useEffect(() => {
     if (sessionStatus == "authenticated") {
-      // userContext.setName({ name: sessionData.user?.name ?? "" });
+      console.log("session status changed to authenticated");
+      console.log(sessionData);
+      console.log(userData);
+      setUser({ name: "a", balance: 1 });
     }
   }, [sessionStatus]);
+
   return (
     <>
       <Head>
