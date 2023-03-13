@@ -8,7 +8,7 @@ import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useContext, useEffect } from "react";
-import { GlobalUserContext } from "../contexts/userContext";
+import { GlobalUserContext, useGlobalContext } from "../contexts/userContext";
 
 const items: MenuProps["items"] = [
   {
@@ -38,6 +38,7 @@ const items: MenuProps["items"] = [
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
   const user = useContext(GlobalUserContext);
+  const { copy, setCopy } = useGlobalContext();
 
   if (sessionStatus === "loading") {
     return null;
@@ -67,10 +68,8 @@ export const ProfileDropdown: React.FC = () => {
             className="rounded-md"
           />
           <div className="ml-2 text-white">
-            <div className="text-sm">{user?.userContextValue?.user?.name}</div>
-            <div className="text-xs">
-              {user?.userContextValue?.user?.balance}
-            </div>
+            <div className="text-sm">{copy.name}</div>
+            <div className="text-xs">{copy.name}</div>
           </div>
         </div>
         <DownOutlined className="ml-2 text-white" />

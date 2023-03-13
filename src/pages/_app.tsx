@@ -6,7 +6,12 @@ import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import { ConfigProvider, theme } from "antd";
 import { createContext, useEffect, useState } from "react";
-import { GlobalUserContext, userContextSchema } from "../contexts/userContext";
+import {
+  GlobalUserContext,
+  MyGlobalContext,
+  userContextSchema,
+  userModel,
+} from "../contexts/userContext";
 
 const customTheme = {
   algorithm: theme.darkAlgorithm,
@@ -24,16 +29,19 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const [userContextValue, setUserContextValue] =
-  useState<userContextSchema | null>(null);
+    useState<userContextSchema | null>(null);
+
+  const [copy, setCopy] = useState<userModel>({ name: "Unknown" });
 
   return (
     <SessionProvider session={session}>
       <ConfigProvider theme={customTheme}>
-        <GlobalUserContext.Provider
+        {/* <GlobalUserContext.Provider
           value={{ userContextValue, setUserContextValue }}
-        >
+        > */}
+        <MyGlobalContext.Provider value={{ copy, setCopy }}>
           <Component {...pageProps} />
-        </GlobalUserContext.Provider>
+        </MyGlobalContext.Provider>
       </ConfigProvider>
     </SessionProvider>
   );

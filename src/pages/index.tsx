@@ -18,21 +18,16 @@ const Home = () => {
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
 
-  const { user, setUser } = useGlobalContext();
-
+  const { copy, setCopy } = useGlobalContext();
   const { data: sessionData, status: sessionStatus } = useSession();
-
-  const { data: userData, isLoading: isUserLoading } =
+  const { data: userData, isLoading: userLoading } =
     trpc.user.getUserData.useQuery(sessionData?.user?.id ?? "");
 
   useEffect(() => {
-    if (sessionStatus == "authenticated") {
-      console.log("session status changed to authenticated");
-      console.log(sessionData);
-      console.log(userData);
-      setUser({ name: "a", balance: 1 });
+    if (userData && sessionStatus === "authenticated") {
+      setCopy({ name: userData.name! });
     }
-  }, [sessionStatus]);
+  }, [userData, sessionStatus]);
 
   return (
     <>
