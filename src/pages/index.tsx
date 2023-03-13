@@ -1,16 +1,12 @@
 import Head from "next/head";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import { trpc } from "../utils/trpc";
-import { Button, Spin } from "antd";
+import { Spin } from "antd";
 import { HistoryMatch } from "../components/HistoryMatch";
 import Header from "../components/Header";
 import { useSession } from "next-auth/react";
-import {
-  GlobalUserContext,
-  useGlobalContext,
-  userContextSchema,
-} from "../contexts/userContext";
+import { useGlobalContext } from "../contexts/userContext";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
@@ -25,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     if (userData && sessionStatus === "authenticated") {
-      setCopy({ name: userData.name!, balance: Number(userData.balance) });
+      setCopy({ name: userData.name, balance: Number(userData.balance) });
     }
   }, [userData, sessionStatus]);
 

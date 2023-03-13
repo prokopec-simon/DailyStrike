@@ -7,8 +7,7 @@ import {
 import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useEffect } from "react";
-import { GlobalUserContext, useGlobalContext } from "../contexts/userContext";
+import { useGlobalContext } from "../contexts/userContext";
 
 const items: MenuProps["items"] = [
   {
@@ -37,8 +36,7 @@ const items: MenuProps["items"] = [
 ];
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
-  const user = useContext(GlobalUserContext);
-  const { copy, setCopy } = useGlobalContext();
+  const { copy } = useGlobalContext();
 
   if (sessionStatus === "loading") {
     return null;

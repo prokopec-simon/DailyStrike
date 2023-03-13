@@ -1,17 +1,15 @@
-import NextAuth, { Session, User, type NextAuthOptions } from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
-import { useContext } from "react";
-import { trpc } from "../../../utils/trpc";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session: async ({ session, token, user }) => {
+    session: async ({ session, user }) => {
       if (session?.user) {
         session.user.id = user.id;
       }

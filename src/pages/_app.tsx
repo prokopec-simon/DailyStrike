@@ -1,17 +1,12 @@
 // src/pages/_app.tsx
 import "../styles/globals.css";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import { ConfigProvider, theme } from "antd";
-import { createContext, useEffect, useState } from "react";
-import {
-  GlobalUserContext,
-  MyGlobalContext,
-  userContextSchema,
-  userModel,
-} from "../contexts/userContext";
+import { useState } from "react";
+import { MyGlobalContext, userModel } from "../contexts/userContext";
 
 const customTheme = {
   algorithm: theme.darkAlgorithm,
