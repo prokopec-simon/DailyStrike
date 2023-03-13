@@ -28,17 +28,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const [userContextValue, setUserContextValue] =
-    useState<userContextSchema | null>(null);
-
-  const [copy, setCopy] = useState<userModel>({ name: "Unknown" });
+  const [copy, setCopy] = useState<userModel>({ name: null, balance: null });
 
   return (
     <SessionProvider session={session}>
       <ConfigProvider theme={customTheme}>
-        {/* <GlobalUserContext.Provider
-          value={{ userContextValue, setUserContextValue }}
-        > */}
         <MyGlobalContext.Provider value={{ copy, setCopy }}>
           <Component {...pageProps} />
         </MyGlobalContext.Provider>

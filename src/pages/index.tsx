@@ -25,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     if (userData && sessionStatus === "authenticated") {
-      setCopy({ name: userData.name! });
+      setCopy({ name: userData.name!, balance: Number(userData.balance) });
     }
   }, [userData, sessionStatus]);
 

@@ -2,6 +2,7 @@ import { Match } from "@prisma/client";
 import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
 import { useCallback, useContext, useState } from "react";
+import { useGlobalContext } from "../contexts/userContext";
 import { trpc } from "../utils/trpc";
 
 const PredictingBlock: React.FC<{
@@ -12,6 +13,8 @@ const PredictingBlock: React.FC<{
   const [input, setInput] = useState<number>(
     sessionData?.user?.livePredictionAmount ?? 0
   );
+
+  const { copy, setCopy } = useGlobalContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -32,7 +35,7 @@ const PredictingBlock: React.FC<{
       selectedTeam === match.teamA_name
         ? Number(match.teamA_odds)
         : Number(match.teamB_odds);
-    const result = await predictionMutation
+    const result: any = await predictionMutation
       .mutateAsync({
         userId: sessionData?.user?.id ?? "",
         pickedTeam,
@@ -40,7 +43,7 @@ const PredictingBlock: React.FC<{
         predictionAmount: input,
       })
       .catch((error: any) => console.error("Error placing prediction", error));
-    sessionData!.user!.balance! = Number(result!.balanceResult!);
+    setCopy({ name: copy.name, balance: Number(result.newBalance) });
   };
 
   const winProbability =

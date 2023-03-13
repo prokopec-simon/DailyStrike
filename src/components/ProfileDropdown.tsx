@@ -68,8 +68,8 @@ export const ProfileDropdown: React.FC = () => {
             className="rounded-md"
           />
           <div className="ml-2 text-white">
-            <div className="text-sm">{copy.name}</div>
-            <div className="text-xs">{copy.name}</div>
+            <div className="text-sm">{sessionData?.user?.name}</div>
+            <div className="text-xs">{copy.balance}</div>
           </div>
         </div>
         <DownOutlined className="ml-2 text-white" />

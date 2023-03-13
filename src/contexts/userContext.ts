@@ -12,15 +12,7 @@ export type userContext = {
 };
 export const GlobalUserContext = createContext<userContext | null>(null);
 
-// export const MyGlobalContext = createContext<userContextSchema>({
-//   user: null, // set a default value
-//   setUser: () => {
-//     //.
-//   },
-// });
-// export const useGlobalContext = () => useContext(MyGlobalContext);
-
-export type userModel = { name: string };
+export type userModel = { name: string | null; balance: number | null };
 
 export type GlobalContent = {
   copy: userModel;
@@ -28,7 +20,7 @@ export type GlobalContent = {
 };
 
 export const MyGlobalContext = createContext<GlobalContent>({
-  copy: { name: "Hello World" },
+  copy: { name: null, balance: null },
   setCopy: () => {
     //
   },

@@ -28,7 +28,7 @@ export const matchRouter = t.router({
     .mutation(async ({ input }) => {
       const matchId = (await prisma?.match.findFirst({ where: { winner: 0 } }))
         ?.id;
-      await prisma?.user.update({
+      const updatedUser = await prisma?.user.update({
         where: { id: input.userId },
         data: { balance: { decrement: input.predictionAmount } },
       });
@@ -36,6 +36,6 @@ export const matchRouter = t.router({
         data: { ...input, balanceResult: null, matchId: matchId ?? "" },
       });
 
-      return predictionInDb;
+      return { ...predictionInDb, newBalance: updatedUser?.balance };
     }),
 });
