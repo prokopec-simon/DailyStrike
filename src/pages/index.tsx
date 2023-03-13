@@ -14,16 +14,17 @@ const Home = () => {
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
 
-  const { copy, setCopy } = useGlobalContext();
+  const { setCopy } = useGlobalContext();
   const { data: sessionData, status: sessionStatus } = useSession();
-  const { data: userData, isLoading: userLoading } =
-    trpc.user.getUserData.useQuery(sessionData?.user?.id ?? "");
+  const { data: userData } = trpc.user.getUserData.useQuery(
+    sessionData?.user?.id ?? ""
+  );
 
   useEffect(() => {
     if (userData && sessionStatus === "authenticated") {
       setCopy({ name: userData.name, balance: Number(userData.balance) });
     }
-  }, [userData, sessionStatus]);
+  }, [userData, sessionStatus, setCopy]);
 
   return (
     <>
