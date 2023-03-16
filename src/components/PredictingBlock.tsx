@@ -2,7 +2,7 @@ import { Match } from "@prisma/client";
 import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
-import { useGlobalContext } from "../contexts/userContext";
+import { useGlobalUserContext } from "../contexts/userContext";
 import { trpc } from "../utils/trpc";
 
 const PredictingBlock: React.FC<{
@@ -10,16 +10,13 @@ const PredictingBlock: React.FC<{
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
   const { data: sessionData } = useSession();
-  const [input, setInput] = useState<number>(
-    sessionData?.user?.livePredictionAmount ?? 0
-  );
 
-  const { copy, setCopy } = useGlobalContext();
+  const { user: user, setUser: setUser } = useGlobalUserContext();
+  const [input, setInput] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const predictionMutation = trpc.match.placePrediction.useMutation();
-
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -41,7 +38,7 @@ const PredictingBlock: React.FC<{
       predictionOdds,
       predictionAmount: input,
     });
-    setCopy({ name: copy.name, balance: Number(result.newBalance) });
+    setUser({ ...user, name: user.name, balance: Number(result.newBalance) });
   };
 
   const winProbability =
@@ -109,12 +106,12 @@ const PredictingBlock: React.FC<{
       <div>Expected win: {winProbability.toFixed(3)}</div>
       <InputNumber
         value={input}
-        disabled={sessionData?.user?.livePredictionAmount != null}
+        disabled={user.dailyMatchupPickedTeam != null}
         onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
         controls={false}
       />
       <Button
-        disabled={sessionData?.user?.livePredictionAmount != null}
+        disabled={user.dailyMatchupPickedTeam != null}
         onClick={() => {
           placePrediction();
         }}

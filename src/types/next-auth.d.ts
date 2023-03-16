@@ -7,9 +7,6 @@ declare module "next-auth" {
   interface Session {
     user?: {
       id: string;
-      balance: number;
-      livePredictionTeam: number?;
-      livePredictionAmount: number?;
     } & DefaultSession["user"];
   }
 }

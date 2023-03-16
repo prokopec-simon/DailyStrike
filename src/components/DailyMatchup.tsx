@@ -2,13 +2,16 @@
 import { Match } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useGlobalUserContext } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
 import PredictingBlock from "./PredictingBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const session = useSession();
+  const { user: user } = useGlobalUserContext();
+
   const [selectedTeam, setSelectedTeam] = useState<string | null>(
-    session.data?.user?.livePredictionTeam == 0
+    user.dailyMatchupPickedTeam == 0
       ? props.match.teamA_name
       : props.match.teamB_name
   );
@@ -17,16 +20,14 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
     <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
       <div
         className={`${
-          session.data?.user?.livePredictionAmount == null
-            ? "cursor-pointer"
-            : ""
+          user.dailyMatchupPickedTeam == null ? "cursor-pointer" : ""
         } flex h-full w-1/3  flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamA_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
         onClick={() =>
-          session.data?.user?.livePredictionAmount == null
+          user.dailyMatchupPickedTeam == null
             ? setSelectedTeam(props.match.teamA_name)
             : null
         }
@@ -59,16 +60,14 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
       </div>
       <div
         className={`${
-          session.data?.user?.livePredictionAmount == null
-            ? "cursor-pointer"
-            : ""
+          user.dailyMatchupPickedTeam == null ? "cursor-pointer" : ""
         } flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamB_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
         onClick={() =>
-          session.data?.user?.livePredictionAmount == null
+          user.dailyMatchupPickedTeam == null
             ? setSelectedTeam(props.match.teamB_name)
             : null
         }

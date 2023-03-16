@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import { HistoryMatch } from "../components/HistoryMatch";
 import Header from "../components/Header";
 import { useSession } from "next-auth/react";
-import { useGlobalContext } from "../contexts/userContext";
+import { useGlobalUserContext } from "../contexts/userContext";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
@@ -14,17 +14,33 @@ const Home = () => {
   const { data: lastNMatches, isLoading: isLoadingLastNMatches } =
     trpc.match.getLastNMatches.useQuery({ matchCount: 3 });
 
-  const { setCopy } = useGlobalContext();
   const { data: sessionData, status: sessionStatus } = useSession();
-  const { data: userData } = trpc.user.getUserData.useQuery(
+  const { user: user, setUser: setUser } = useGlobalUserContext();
+
+  const fetchedUser = trpc.user.getUserData.useQuery(
     sessionData?.user?.id ?? ""
   );
 
   useEffect(() => {
-    if (userData && sessionStatus === "authenticated") {
-      setCopy({ name: userData.name, balance: Number(userData.balance) });
-    }
-  }, [userData, sessionStatus, setCopy]);
+    console.log("user");
+    console.log(fetchedUser);
+  }, []);
+
+  const updateTheThing = () => {
+    console.log(fetchedUser.data);
+    setUser({
+      ...fetchedUser.data,
+      name: fetchedUser.data?.user.name ?? "",
+      balance: Number(fetchedUser.data?.user.balance),
+      dailyMatchupPickedTeam: null,
+      dailyMatchupPlacedAmount: null,
+    });
+  };
+  useEffect(() => {
+    console.log("sessionStatusto:" + sessionStatus);
+    console.log("adas:" + sessionData?.user?.id);
+    updateTheThing();
+  }, [sessionStatus]);
 
   return (
     <>
