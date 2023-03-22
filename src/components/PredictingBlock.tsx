@@ -1,22 +1,24 @@
 import { Match } from "@prisma/client";
 import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
-import { useCallback, useState } from "react";
-import { useGlobalUserContext } from "../contexts/userContext";
-import { trpc } from "../utils/trpc";
+import { useCallback, useEffect, useState } from "react";
+import { useUserDetail } from "../contexts/userContext";
 
 const PredictingBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
   const { data: sessionData } = useSession();
+  const [secretQuery, placePredictionMutation] = useUserDetail();
 
-  const { user: user, setUser: setUser } = useGlobalUserContext();
+  useEffect(() => {
+    setInput(Number(secretQuery.data?.dailyPrediction.predictionAmount));
+  }, [secretQuery.data?.dailyPrediction.predictionAmount]);
+
   const [input, setInput] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const predictionMutation = trpc.match.placePrediction.useMutation();
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -32,13 +34,12 @@ const PredictingBlock: React.FC<{
       selectedTeam === match.teamA_name
         ? Number(match.teamA_odds)
         : Number(match.teamB_odds);
-    const result = await predictionMutation.mutateAsync({
+    const result = await placePredictionMutation.mutateAsync({
       userId: sessionData?.user?.id ?? "",
       pickedTeam,
       predictionOdds,
       predictionAmount: input,
     });
-    setUser({ ...user, name: user.name, balance: Number(result.newBalance) });
   };
 
   const winProbability =
@@ -57,16 +58,16 @@ const PredictingBlock: React.FC<{
         onOk={handleOk}
         onCancel={handleCancel}
         open={isModalOpen}
-        closable={predictionMutation.status !== "loading"}
-        maskClosable={predictionMutation.status !== "loading"}
+        closable={placePredictionMutation.status !== "loading"}
+        maskClosable={placePredictionMutation.status !== "loading"}
         footer={
-          predictionMutation.status === "success" ? (
+          placePredictionMutation.status === "success" ? (
             <div>
               <Button>Ok</Button>
             </div>
           ) : (
             <div>
-              {predictionMutation.status === "error" && (
+              {placePredictionMutation.status === "error" && (
                 <>
                   <Button>Send report</Button>
                   <Button>Ok</Button>
@@ -77,41 +78,41 @@ const PredictingBlock: React.FC<{
         }
         maskStyle={{ backgroundColor: "rgba(160,160,160, 0.7)" }}
       >
-        {predictionMutation.status === "loading" && (
+        {placePredictionMutation.status === "loading" && (
           <div className="flex">
             <Spin className="self-center" size="large" />
           </div>
         )}
-        {predictionMutation.status === "success" && (
+        {placePredictionMutation.status === "success" && (
           <div>
             <>
               Prediction placed successfully, placed amount:
-              {predictionMutation.data?.predictionAmount} at
-              {predictionMutation.data?.predictionOdds}. Possible win:
+              {placePredictionMutation.data?.predictionAmount} at
+              {placePredictionMutation.data?.predictionOdds}. Possible win:
               {(
-                Number(predictionMutation.data?.predictionAmount) *
-                Number(predictionMutation.data?.predictionOdds)
+                Number(placePredictionMutation.data?.predictionAmount) *
+                Number(placePredictionMutation.data?.predictionOdds)
               ).toFixed(3)}
               Good luck!
             </>
           </div>
         )}
-        {predictionMutation.status === "error" && (
+        {placePredictionMutation.status === "error" && (
           <div>
             There was an error while placing your bet. Details:
-            {predictionMutation.error?.message}
+            {placePredictionMutation.error?.message}
           </div>
         )}
       </Modal>
-      <div>Expected win: {winProbability.toFixed(3)}</div>
+      <div>Possible win: {winProbability.toFixed(3)}</div>
       <InputNumber
         value={input}
-        disabled={user.dailyMatchupPickedTeam != null}
+        disabled={secretQuery.data?.dailyPrediction.pickedTeam != null}
         onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
         controls={false}
       />
       <Button
-        disabled={user.dailyMatchupPickedTeam != null}
+        disabled={secretQuery.data?.dailyPrediction.pickedTeam != null}
         onClick={() => {
           placePrediction();
         }}

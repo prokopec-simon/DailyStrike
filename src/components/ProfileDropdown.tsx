@@ -7,7 +7,7 @@ import {
 import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useGlobalUserContext } from "../contexts/userContext";
+import { useUserDetail } from "../contexts/userContext";
 
 const items: MenuProps["items"] = [
   {
@@ -36,7 +36,7 @@ const items: MenuProps["items"] = [
 ];
 export const ProfileDropdown: React.FC = () => {
   const { data: sessionData, status: sessionStatus } = useSession();
-  const { user: copy } = useGlobalUserContext();
+  const [query] = useUserDetail();
 
   if (sessionStatus === "loading") {
     return null;
@@ -67,7 +67,11 @@ export const ProfileDropdown: React.FC = () => {
           />
           <div className="ml-2 text-white">
             <div className="text-sm">{sessionData?.user?.name}</div>
-            <div className="text-xs">{copy.balance}</div>
+            <div className="text-xs">
+              {query.data?.user?.balance
+                ? query.data?.user.balance?.toString()
+                : ""}
+            </div>
           </div>
         </div>
         <DownOutlined className="ml-2 text-white" />

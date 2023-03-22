@@ -17,14 +17,37 @@ export const userRouter = t.router({
   }),
 
   updateUserBalance: t.procedure
-    .input(z.object({ userId: z.string(), balanceChange: z.number() }))
+    .input(z.number())
     .mutation(async ({ input }) => {
       const updatedUser = await prisma?.user.update({
-        where: { id: input.userId },
-        data: { balance: { decrement: input.balanceChange } },
+        where: { id: "" },
+        data: { balance: { decrement: input } },
         select: { id: true, balance: true },
       });
 
       return { user: updatedUser };
+    }),
+
+  placePrediction: t.procedure
+    .input(
+      z.object({
+        userId: z.string(),
+        pickedTeam: z.number().int(),
+        predictionOdds: z.number(),
+        predictionAmount: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const matchId = (await prisma?.match.findFirst({ where: { winner: 0 } }))
+        ?.id;
+      const updatedUser = await prisma?.user.update({
+        where: { id: input.userId },
+        data: { balance: { decrement: input.predictionAmount } },
+      });
+      const predictionInDb = await prisma?.userMatchPrediction.create({
+        data: { ...input, balanceResult: null, matchId: matchId ?? "" },
+      });
+
+      return { ...predictionInDb, newBalance: updatedUser?.balance };
     }),
 });

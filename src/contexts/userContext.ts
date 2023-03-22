@@ -1,26 +1,18 @@
-import { createContext, useContext } from "react";
+import { useSession } from "next-auth/react";
+import { trpc } from "../utils/trpc";
 
-export type userModel = {
-  name: string | null;
-  balance: number | null;
-  dailyMatchupPickedTeam: number | null;
-  dailyMatchupPlacedAmount: number | null;
-};
-export type UserContent = {
-  user: userModel;
-  setUser: (user: userModel) => void;
-};
+export function useUserDetail() {
+  const { data: sessionData } = useSession();
+  const secretQuery = trpc.user.getUserData.useQuery(
+    sessionData?.user?.id ?? "",
+    { enabled: sessionData?.user !== undefined }
+  );
+  const utils = trpc.useContext();
+  const placePredictionMutation = trpc.user.placePrediction.useMutation({
+    onSuccess() {
+      utils.user.invalidate();
+    },
+  });
 
-export const UserContext = createContext<UserContent>({
-  user: {
-    name: null,
-    balance: null,
-    dailyMatchupPickedTeam: null,
-    dailyMatchupPlacedAmount: null,
-  },
-  setUser: () => {
-    //
-  },
-});
-
-export const useGlobalUserContext = () => useContext(UserContext);
+  return [secretQuery, placePredictionMutation] as const;
+}

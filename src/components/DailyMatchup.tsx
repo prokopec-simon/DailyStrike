@@ -1,33 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
 import { Match } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { useGlobalUserContext } from "../contexts/userContext";
+import { useEffect, useState } from "react";
+import { useUserDetail } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
 import PredictingBlock from "./PredictingBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const session = useSession();
-  const { user: user } = useGlobalUserContext();
+  const [detailedUserInformationQuery] = useUserDetail();
 
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(
-    user.dailyMatchupPickedTeam == 0
-      ? props.match.teamA_name
-      : props.match.teamB_name
-  );
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSelectedTeam(props.match.teamA_name);
+  }, [
+    detailedUserInformationQuery.data?.dailyPrediction.pickedTeam,
+    props.match.teamA_name,
+  ]);
 
   return (
     <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
       <div
         className={`${
-          user.dailyMatchupPickedTeam == null ? "cursor-pointer" : ""
+          detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null
+            ? "cursor-pointer"
+            : ""
         } flex h-full w-1/3  flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamA_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
         onClick={() =>
-          user.dailyMatchupPickedTeam == null
+          detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null
             ? setSelectedTeam(props.match.teamA_name)
             : null
         }
@@ -60,14 +65,16 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
       </div>
       <div
         className={`${
-          user.dailyMatchupPickedTeam == null ? "cursor-pointer" : ""
+          detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null
+            ? "cursor-pointer"
+            : ""
         } flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 ${
           selectedTeam === props.match.teamB_name
             ? "border-2 border-solid border-orange-500"
             : ""
         }`}
         onClick={() =>
-          user.dailyMatchupPickedTeam == null
+          detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null
             ? setSelectedTeam(props.match.teamB_name)
             : null
         }
