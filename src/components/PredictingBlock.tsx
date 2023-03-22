@@ -8,48 +8,47 @@ const PredictingBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
-  const { data: sessionData } = useSession();
-  const [secretQuery, placePredictionMutation] = useUserDetail();
-
-  useEffect(() => {
-    setInput(Number(secretQuery.data?.dailyPrediction.predictionAmount));
-  }, [secretQuery.data?.dailyPrediction.predictionAmount]);
-
-  const [input, setInput] = useState<number>(0);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleOk = () => {
     setIsModalOpen(false);
   };
-  const handleCancel = () => setIsModalOpen(false);
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  const { data: sessionData } = useSession();
+  const [userDetail, placePredictionMutation] = useUserDetail();
+  const [input, setInput] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const teamASelected = selectedTeam === match.teamA_name;
+  const predictionOdds = Number(
+    teamASelected ? match.teamA_odds : match.teamB_odds
+  );
+  const pickedTeam = teamASelected ? 0 : 1;
+
+  const winProbability = predictionOdds * input;
+
+  useEffect(() => {
+    setInput(Number(userDetail.data?.dailyPrediction.predictionAmount));
+  }, [userDetail.data?.dailyPrediction.predictionAmount]);
+
+  const setInputCallback = useCallback((value: number) => {
+    setInput(value);
+  }, []);
+
   const placePrediction = async () => {
     showModal();
 
-    const pickedTeam = selectedTeam === match.teamA_name ? 0 : 1;
-    const predictionOdds =
-      selectedTeam === match.teamA_name
-        ? Number(match.teamA_odds)
-        : Number(match.teamB_odds);
-    const result = await placePredictionMutation.mutateAsync({
+    await placePredictionMutation.mutateAsync({
       userId: sessionData?.user?.id ?? "",
       pickedTeam,
       predictionOdds,
       predictionAmount: input,
     });
   };
-
-  const winProbability =
-    selectedTeam === match.teamA_name
-      ? Number(match.teamA_odds) * input
-      : Number(match.teamB_odds) * input;
-
-  const setInputCallback = useCallback((value: number) => {
-    setInput(value);
-  }, []);
 
   return (
     <div>
@@ -107,12 +106,12 @@ const PredictingBlock: React.FC<{
       <div>Possible win: {winProbability.toFixed(3)}</div>
       <InputNumber
         value={input}
-        disabled={secretQuery.data?.dailyPrediction.pickedTeam != null}
+        disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
         onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
         controls={false}
       />
       <Button
-        disabled={secretQuery.data?.dailyPrediction.pickedTeam != null}
+        disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
         onClick={() => {
           placePrediction();
         }}
