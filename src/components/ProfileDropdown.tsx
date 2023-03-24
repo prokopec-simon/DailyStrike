@@ -3,31 +3,39 @@ import {
   DownOutlined,
   LogoutOutlined,
   OrderedListOutlined,
+  MailOutlined,
 } from "@ant-design/icons/lib/icons";
 import { Button, Dropdown, MenuProps } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useUserDetail } from "../contexts/userContext";
 
 const items: MenuProps["items"] = [
   {
-    label: <a href="https://www.antgroup.com">Profile</a>,
+    label: <Link href="profile">Profile</Link>,
     key: "0",
-    disabled: true,
+    //disabled: true,
     icon: <UserOutlined />,
   },
   {
-    label: <a href="https://www.antgroup.com">League</a>,
+    label: <Link href="inbox">Inbox</Link>,
     key: "1",
+    //disabled: true,
+    icon: <MailOutlined />,
+  },
+  {
+    label: <Link href="ladder">Ladder</Link>,
+    key: "2",
     icon: <OrderedListOutlined />,
-    disabled: true,
+    //disabled: true,
   },
   {
     type: "divider",
   },
   {
     label: "Logout",
-    key: "2",
+    key: "3",
     icon: <LogoutOutlined />,
     onClick: () => {
       signOut();

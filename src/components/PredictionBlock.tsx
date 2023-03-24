@@ -32,8 +32,13 @@ const PredictionBlock: React.FC<{
   const winProbability = predictionOdds * input;
 
   useEffect(() => {
-    setInput(Number(userDetail.data?.dailyPrediction.predictionAmount));
-  }, [userDetail.data?.dailyPrediction.predictionAmount]);
+    if (userDetail.data?.dailyPrediction.predictionAmount) {
+      setInput(Number(userDetail.data?.dailyPrediction.predictionAmount));
+    }
+  }, [
+    userDetail.data?.dailyPrediction,
+    userDetail.data?.dailyPrediction.predictionAmount,
+  ]);
 
   const setInputCallback = useCallback((value: number) => {
     setInput(value);
@@ -103,21 +108,25 @@ const PredictionBlock: React.FC<{
           </div>
         )}
       </Modal>
-      <div>Possible win: {winProbability.toFixed(3)}</div>
-      <InputNumber
-        value={input}
-        disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-        onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
-        controls={false}
-      />
-      <Button
-        disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-        onClick={() => {
-          placePrediction();
-        }}
-      >
-        Predict
-      </Button>
+      <div className="flex  rounded-b-md bg-zinc-700 p-3">
+        <InputNumber
+          value={input}
+          disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+          onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
+          controls={false}
+        />
+        <Button
+          disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+          onClick={() => {
+            placePrediction();
+          }}
+        >
+          Predict
+        </Button>
+        <div className="mt-1 ml-3  text-white">
+          Possible win: {winProbability.toFixed(3)}
+        </div>
+      </div>
     </div>
   );
 };
