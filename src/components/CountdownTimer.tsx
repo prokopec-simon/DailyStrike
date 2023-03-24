@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
-  const currentDate = new Date();
   const targetDate = props.targetDate;
-  const timeDifferenceInMs = targetDate.getTime() - currentDate.getTime();
+  const timeDifferenceInMs = targetDate.getTime() - new Date().getTime();
 
   const totalSeconds = Math.floor(timeDifferenceInMs / 1000);
   const seconds = totalSeconds % 60;
@@ -46,15 +45,9 @@ const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
 
   return (
     <div>
-      {remainingHours === 0 &&
-      remainingMinutes === 0 &&
-      remainingSeconds === 0 ? (
-        <div>Live!</div>
-      ) : (
-        <h1>
-          {remainingHours}h {formattedMinutes}m {formattedSeconds}s
-        </h1>
-      )}
+      <h1>
+        {remainingHours}h {formattedMinutes}m {formattedSeconds}s
+      </h1>
     </div>
   );
 };

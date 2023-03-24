@@ -4,10 +4,10 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
-import PredictingBlock from "./PredictingBlock";
+import PredictionBlock from "./PredictionBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
-  const session = useSession();
+  const authSession = useSession();
   const [detailedUserInformationQuery] = useUserDetail();
 
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -52,13 +52,21 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
           BO{props.match.bestOf}
         </div>
         <div className="w-100 mt-3 flex flex-col items-center text-white">
-          <CountdownTimer targetDate={props.match.dateAndTime}></CountdownTimer>
-          {session.data && selectedTeam ? (
+          {props.match.dateAndTime.getTime() - new Date().getTime() > 0 ? (
+            <CountdownTimer
+              targetDate={props.match.dateAndTime}
+            ></CountdownTimer>
+          ) : (
+            <div className="flex h-7 w-16 items-center justify-center rounded-md bg-red-500 align-middle text-white">
+              Live !
+            </div>
+          )}
+          {authSession.data && selectedTeam ? (
             <div className="flex flex-col">
-              <PredictingBlock
+              <PredictionBlock
                 match={props.match}
                 selectedTeam={selectedTeam}
-              ></PredictingBlock>
+              ></PredictionBlock>
             </div>
           ) : null}
         </div>

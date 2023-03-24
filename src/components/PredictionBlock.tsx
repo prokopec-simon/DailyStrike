@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 
-const PredictingBlock: React.FC<{
+const PredictionBlock: React.FC<{
   match: Match;
   selectedTeam: string;
 }> = ({ match, selectedTeam }) => {
@@ -122,4 +122,4 @@ const PredictingBlock: React.FC<{
   );
 };
 
-export default PredictingBlock;
+export default PredictionBlock;
