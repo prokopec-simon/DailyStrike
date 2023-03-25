@@ -19,7 +19,6 @@ const Home = () => {
         <meta name="description" content="Daily CS:GO Match predicting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <div className="m-0 flex w-full flex-col items-center justify-center p-0 align-middle">
         {isLoadingUpcomingMatch || isLoadingLastNMatches ? <Spin /> : null}
         {upcomingMatch ? (

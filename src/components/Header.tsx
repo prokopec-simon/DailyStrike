@@ -1,13 +1,15 @@
+import Link from "next/link";
+import { GameInfo } from "./GameInfo";
 import { ProfileDropdown } from "./ProfileDropdown";
 
 const Header: React.FC = () => {
   return (
     <nav className="flex h-16">
-      <div className="ml-4 flex flex-1 items-center"></div>
+      <div className="ml-4 flex flex-1 items-center">
+        <GameInfo />
+      </div>
       <div className="flex flex-1 items-center justify-center">
-        <a href="#" className="text-2xl text-orange-500">
-          Daily CS:GO
-        </a>
+        <Link href="/"> Daily CS:GO</Link>
       </div>
 
       <div className="mr-4 flex flex-1 items-center justify-end">
