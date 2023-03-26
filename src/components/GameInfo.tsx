@@ -37,7 +37,14 @@ export const GameInfo: React.FC = () => {
       />
       <Modal open={open} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div>
-          <h1>How to play</h1>
+          <h1>How to play?</h1>
+          <ul>
+            <li>Log in</li>
+            <li>Predict a winner of todays match</li>
+            <li>Collect points</li>
+            <li>Compare to others in timed leagues</li>
+            <li>Win cool prizes</li>
+          </ul>
         </div>
       </Modal>
     </>

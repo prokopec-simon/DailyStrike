@@ -5,7 +5,7 @@ import {
   OrderedListOutlined,
   MailOutlined,
 } from "@ant-design/icons/lib/icons";
-import { Button, Dropdown, MenuProps } from "antd";
+import { Button, Dropdown, MenuProps, Spin } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -76,9 +76,11 @@ export const ProfileDropdown: React.FC = () => {
           <div className="ml-2 text-white">
             <div className="text-sm">{sessionData?.user?.name}</div>
             <div className="text-xs">
-              {query.data?.user?.balance
-                ? query.data?.user.balance?.toString()
-                : ""}
+              {query.data?.user?.balance ? (
+                query.data?.user.balance?.toString()
+              ) : (
+                <Spin size="small" />
+              )}
             </div>
           </div>
         </div>

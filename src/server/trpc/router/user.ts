@@ -10,9 +10,27 @@ export const userRouter = t.router({
     const dailyPredictionInfo = await prisma?.userMatchPrediction.findFirst({
       where: { AND: [{ userId: input }, { balanceResult: null }] },
     });
+
+    const lastThreeMatchIds = await prisma?.match.findMany({
+      orderBy: { id: "desc" },
+      take: 3,
+      select: { id: true },
+    });
+
+    const lastThreeMatchesResult =
+      (await prisma?.userMatchPrediction.findMany({
+        where: {
+          AND: [
+            { userId: input },
+            { matchId: { in: lastThreeMatchIds?.map((obj) => obj.id) } },
+          ],
+        },
+      })) ?? [];
+    console.warn(lastThreeMatchesResult);
     return {
       user: { ...userInfo },
       dailyPrediction: { ...dailyPredictionInfo },
+      lastThreeMatchesResult: [...lastThreeMatchesResult],
     };
   }),
 

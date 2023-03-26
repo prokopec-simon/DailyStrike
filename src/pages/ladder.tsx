@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import { trpc } from "../utils/trpc";
 
 const Ladder = () => {
@@ -22,8 +22,17 @@ const Ladder = () => {
 
   return (
     <>
-      <div className="w-3/5">
-        <Table dataSource={ladder} columns={columns} />
+      <div className="flex w-full items-center justify-center">
+        {isLoading ? (
+          <Spin />
+        ) : (
+          <Table
+            className="w-3/5"
+            dataSource={ladder}
+            columns={columns}
+            showHeader={false}
+          />
+        )}
       </div>
     </>
   );
