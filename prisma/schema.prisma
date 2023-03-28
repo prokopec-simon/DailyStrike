@@ -8,10 +8,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Example {
-  id String @id @default(cuid())
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -74,6 +70,8 @@ model Match {
   hltvUrl             String
   winner              Int                   @default(0)
   UserMatchPrediction UserMatchPrediction[]
+  Season              Season?               @relation(fields: [seasonId], references: [id])
+  seasonId            String?
 }
 
 model UserMatchPrediction {
@@ -85,8 +83,25 @@ model UserMatchPrediction {
   predictionOdds   Decimal
   predictionAmount Decimal
   balanceResult    Decimal?
+  seasonId         String?
 
   @@id([userId, matchId])
   @@index([matchId])
   @@index([userId])
+}
+
+model Season {
+  id      String         @id @default(cuid())
+  name    String
+  start   DateTime
+  end     DateTime
+  Matches Match[]
+  Rewards SeasonReward[]
+}
+
+model SeasonReward {
+  itemName  String  @unique
+  itemCount Int
+  Season    Season? @relation(fields: [seasonId], references: [id])
+  seasonId  String?
 }

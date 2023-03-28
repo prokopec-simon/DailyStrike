@@ -31,6 +31,8 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
       : setSelectedTeam(newTeamName);
   };
 
+  
+
   return (
     <>
       <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
