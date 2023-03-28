@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
 import PredictionBlock from "./PredictionBlock";
+import { motion, AnimatePresence } from "framer-motion";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const authSession = useSession();
@@ -25,6 +26,14 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
     props.match.teamB_name,
   ]);
 
+  const pickTeam = (pickedTeam: string) => {
+    if (pickedTeam === selectedTeam) {
+      setSelectedTeam(null);
+      return;
+    }
+    setSelectedTeam(pickedTeam);
+  };
+
   return (
     <>
       <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
@@ -39,6 +48,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               ? "border-2 border-solid border-orange-500"
               : ""
           } sm:flex-row`}
+          onClick={() => pickTeam(props.match.teamA_name)}
         >
           <img
             alt="team A logo"
@@ -83,6 +93,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               ? "border-2 border-solid border-orange-500"
               : ""
           } sm:flex-row`}
+          onClick={() => pickTeam(props.match.teamB_name)}
         >
           <div className="text-center sm:text-right">
             <div className="text-lg text-zinc-100">
@@ -99,14 +110,20 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
           ></img>
         </div>
       </div>
-      {authSession.data && selectedTeam ? (
-        <div>
-          <PredictionBlock
-            match={props.match}
-            selectedTeam={selectedTeam}
-          ></PredictionBlock>
-        </div>
-      ) : null}
+      <div
+        className={`transition-max-height max-h-0 overflow-hidden ${
+          authSession.data && selectedTeam ? "max-h-full" : ""
+        }`}
+      >
+        {authSession.data && selectedTeam ? (
+          <div>
+            <PredictionBlock
+              match={props.match}
+              selectedTeam={selectedTeam}
+            ></PredictionBlock>
+          </div>
+        ) : null}
+      </div>
     </>
   );
 };

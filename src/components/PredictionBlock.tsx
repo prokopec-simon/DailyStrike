@@ -5,6 +5,7 @@ import Image from "next/image";
 import Icon from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 const SvgComponent = (props: any) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673.99 674" {...props}>
@@ -137,31 +138,40 @@ const PredictionBlock: React.FC<{
           </div>
         )}
       </Modal>
-      <div className="flex  rounded-b-md bg-zinc-700 p-3">
-        <InputNumber
-          className="w-1/3"
-          value={input}
-          disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-          onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
-          controls={false}
-          addonAfter={<Icon component={SvgComponent} />}
-        />
-
-        <Button
-          disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-          onClick={() => {
-            placePrediction();
-          }}
+      <AnimatePresence>
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
-          Predict
-        </Button>
+          <div className="flex  rounded-b-md bg-zinc-700 p-3">
+            <InputNumber
+              className="w-1/3"
+              value={input}
+              disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+              onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
+              controls={false}
+              addonAfter={<Icon component={SvgComponent} />}
+            />
 
-        <div className="mt-1 ml-3 flex flex-row text-white">
-          <div> Possible win: {winProbability.toFixed(3)}</div>
+            <Button
+              disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+              onClick={() => {
+                placePrediction();
+              }}
+            >
+              Predict
+            </Button>
 
-          <Icon component={SvgComponent} />
-        </div>
-      </div>
+            <div className="mt-1 ml-3 flex flex-row text-white">
+              <div> Possible win: {winProbability.toFixed(3)}</div>
+
+              <Icon component={SvgComponent} />
+            </div>
+          </div>{" "}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
