@@ -10,6 +10,16 @@ export const GameInfo: React.FC = () => {
     setOpen(true);
   };
 
+  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    setOpen(false);
+  };
+
+  const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    setOpen(false);
+  };
+
   useEffect(() => {
     console.log(localStorage.getItem("gameInfoModalVisited"));
     if (localStorage.getItem("gameInfoModalVisited") != "true") {
@@ -17,13 +27,15 @@ export const GameInfo: React.FC = () => {
     }
   }, []);
 
+  //showModal();
+
   return (
     <>
       <QuestionCircleOutlined
         onClick={showModal}
         className="text-4xl text-white"
       />
-      <Modal open={open} footer={null}>
+      <Modal open={open} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div>
           <h1>How to play?</h1>
           <ul>
@@ -31,8 +43,8 @@ export const GameInfo: React.FC = () => {
             <li>Predict a winner of todays match</li>
             <li>Collect points</li>
             <li>Compare to others in timed leagues</li>
-            <li>Win cool prizes!</li>
-            <p>A new match is then picked at XX:XX every night.</p>
+            <li>Win cool prizes</li>
+            <p>A new match is picked at XX:XX every night.</p>
           </ul>
         </div>
       </Modal>
