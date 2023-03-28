@@ -25,14 +25,6 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
     props.match.teamB_name,
   ]);
 
-  const changeSelectedTeam = (newTeamName: string) => {
-    newTeamName == selectedTeam
-      ? setSelectedTeam(null)
-      : setSelectedTeam(newTeamName);
-  };
-
-  
-
   return (
     <>
       <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
@@ -42,24 +34,18 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             null
               ? "cursor-pointer"
               : ""
-          } flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 ${
+          } flex h-full w-1/3 flex-col items-center justify-center rounded-lg bg-zinc-700 sm:justify-start ${
             selectedTeam === props.match.teamA_name
               ? "border-2 border-solid border-orange-500"
               : ""
           } sm:flex-row`}
-          onClick={() =>
-            detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
-            null
-              ? changeSelectedTeam(props.match.teamA_name)
-              : null
-          }
         >
           <img
             alt="team A logo"
             className="h-1/2 p-1 pt-2 sm:mr-2 sm:ml-3 sm:h-3/4"
             src={props.match.teamA_logoUrl ?? ""}
           ></img>
-          <div>
+          <div className="text-center sm:text-left">
             <div className="text-lg text-zinc-100">
               {props.match.teamA_name}
             </div>
@@ -69,8 +55,8 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
           </div>
         </div>
 
-        <div className="flex h-full w-1/3 flex-col items-center">
-          <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 text-sm text-white">
+        <div className="flex h-full w-1/3 flex-col items-center justify-center sm:justify-end">
+          <div className="mt-5 flex h-7 w-12 items-center justify-center rounded-md bg-zinc-700 text-sm text-white">
             BO{props.match.bestOf}
           </div>
           <div className="w-100 mt-3 flex flex-col items-center text-white">
@@ -85,33 +71,32 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             )}
           </div>
         </div>
+
         <div
           className={`${
             detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
             null
               ? "cursor-pointer"
               : ""
-          } flex h-full w-1/3 flex-col items-center rounded-lg bg-zinc-700 ${
+          } flex h-full w-1/3 flex-col items-center justify-center rounded-lg bg-zinc-700 sm:justify-end ${
             selectedTeam === props.match.teamB_name
               ? "border-2 border-solid border-orange-500"
               : ""
-          }`}
-          onClick={() =>
-            detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
-            null
-              ? changeSelectedTeam(props.match.teamB_name)
-              : null
-          }
+          } sm:flex-row`}
         >
+          <div className="text-center sm:text-right">
+            <div className="text-lg text-zinc-100">
+              {props.match.teamB_name}
+            </div>
+            <div className="text-sm text-zinc-100">
+              {props.match.teamB_odds.toString()}
+            </div>
+          </div>
           <img
             alt="team A logo"
-            className="h-1/2 p-1 pt-2"
+            className="h-1/2 p-1 pt-2 sm:mr-3 sm:ml-2 sm:h-3/4"
             src={props.match.teamB_logoUrl ?? ""}
           ></img>
-          <div className="text-lg text-zinc-100">{props.match.teamB_name}</div>
-          <div className="text-sm text-zinc-100">
-            {props.match.teamB_odds.toString()}
-          </div>
         </div>
       </div>
       {authSession.data && selectedTeam ? (

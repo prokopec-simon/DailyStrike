@@ -4,7 +4,6 @@ import DailyMatchComponent from "../components/DailyMatchup";
 import { trpc } from "../utils/trpc";
 import { Spin } from "antd";
 import { HistoryMatch } from "../components/HistoryMatch";
-import Header from "../components/Header";
 
 const Home = () => {
   const { data: upcomingMatch, isLoading: isLoadingUpcomingMatch } =
@@ -15,8 +14,11 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>CSGOracle</title>
-        <meta name="description" content="Daily CS:GO Match predicting" />
+        <title>DailyStrike</title>
+        <meta
+          name="description"
+          content="Daily Counter Strike match predicting"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="m-0 flex w-full flex-col items-center justify-center p-0 align-middle">
