@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
 import PredictionBlock from "./PredictionBlock";
-import { motion, AnimatePresence } from "framer-motion";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const authSession = useSession();
