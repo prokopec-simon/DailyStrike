@@ -10,7 +10,9 @@ export const ladderRouter = t.router({
   }),
 
   getAllSeasonInfo: t.procedure.query(async () => {
-    return await prisma?.season.findMany({ orderBy: { start: "desc" } });
+    return await prisma?.season.findMany(
+      { orderBy: { start: "desc" }, include: { Rewards: true } } ?? []
+    );
   }),
 
   getSeasonInfoById: t.procedure

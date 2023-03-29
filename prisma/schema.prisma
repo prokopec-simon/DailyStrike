@@ -100,6 +100,8 @@ model Season {
 }
 
 model SeasonReward {
+  order     Int
+  places    String
   itemName  String  @unique
   itemCount Int
   Season    Season? @relation(fields: [seasonId], references: [id])

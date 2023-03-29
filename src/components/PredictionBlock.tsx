@@ -1,7 +1,6 @@
 import { Match } from "@prisma/client";
-import { Button, Input, InputNumber, Modal, Spin } from "antd";
+import { Button, InputNumber, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Icon from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
@@ -169,7 +168,7 @@ const PredictionBlock: React.FC<{
 
               <Icon component={SvgComponent} />
             </div>
-          </div>{" "}
+          </div>
         </motion.div>
       </AnimatePresence>
     </div>
