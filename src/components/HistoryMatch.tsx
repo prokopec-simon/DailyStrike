@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Match, UserMatchPrediction } from "@prisma/client";
-import { match } from "assert";
+import { Match } from "@prisma/client";
 import { useUserDetail } from "../contexts/userContext";
 import { CompetitorCard } from "./CompetitorCard";
 

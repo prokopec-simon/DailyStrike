@@ -2,6 +2,18 @@ import { t } from "../trpc";
 import { z } from "zod";
 
 export const userRouter = t.router({
+  getUserMessages: t.procedure.input(z.string()).query(async ({ input }) => {
+    const messages = await prisma?.message.findMany({
+      where: {
+        recipientUserId: input,
+      },
+      include: {
+        recipient: true,
+        sender: true,
+      },
+    });
+    return messages;
+  }),
   getUserData: t.procedure.input(z.string()).query(async ({ input }) => {
     const userInfo = await prisma?.user.findFirst({
       where: { id: input },
@@ -26,7 +38,6 @@ export const userRouter = t.router({
           ],
         },
       })) ?? [];
-    console.warn(lastThreeMatchesResult);
     return {
       user: { ...userInfo },
       dailyPrediction: { ...dailyPredictionInfo },

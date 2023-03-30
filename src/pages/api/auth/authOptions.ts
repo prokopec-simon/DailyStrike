@@ -1,9 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { TokenSet } from "openid-client";
 import { v4 as uuidv4 } from "uuid";
-
-// Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
@@ -25,6 +23,7 @@ export default async function getOptions(req: NextApiRequest) {
         clientId: env.DISCORD_CLIENT_ID,
         clientSecret: env.DISCORD_CLIENT_SECRET,
       }),
+      //Steam auth workaround prototype
       {
         id: "steam",
         name: "Steam",

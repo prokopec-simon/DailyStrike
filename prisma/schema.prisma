@@ -48,7 +48,8 @@ model User {
   accounts            Account[]
   sessions            Session[]
   UserMatchPrediction UserMatchPrediction[]
-  Message             Message[]
+  ReceivedMessages    Message[]             @relation("recipient")
+  SentMessages        Message[]             @relation("sender")
 }
 
 model VerificationToken {
@@ -74,6 +75,8 @@ model Match {
   UserMatchPrediction UserMatchPrediction[]
   Season              Season?               @relation(fields: [seasonId], references: [id])
   seasonId            String?
+
+  @@index([seasonId])
 }
 
 model UserMatchPrediction {
@@ -108,13 +111,19 @@ model SeasonReward {
   itemCount Int
   Season    Season? @relation(fields: [seasonId], references: [id])
   seasonId  String?
+
+  @@index([seasonId])
 }
 
 model Message {
-  from            String
-  recipientUserId String
-  user            User    @relation(fields: [recipientUserId], references: [id])
   id              String  @id @default(cuid())
   content         String
   seen            Boolean
+  senderUserId    String?
+  recipientUserId String
+  sender          User?   @relation("sender", fields: [senderUserId], references: [id])
+  recipient       User    @relation("recipient", fields: [recipientUserId], references: [id])
+
+  @@index([recipientUserId])
+  @@index([senderUserId])
 }

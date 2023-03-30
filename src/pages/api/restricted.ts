@@ -6,7 +6,7 @@ import { getServerAuthSession } from "../../server/common/get-server-auth-sessio
 const restricted = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerAuthSession({ req, res });
 
-  if (true) {
+  if (session) {
     res.send({
       content:
         "This is protected content. You can access this content because you are signed in.",
