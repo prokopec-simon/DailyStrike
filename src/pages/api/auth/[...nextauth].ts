@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { TokenSet } from "openid-client";
 import { v4 as uuidv4 } from "uuid";
