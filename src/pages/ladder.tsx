@@ -81,7 +81,7 @@ const Ladder = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        width="50%"
+        className="w-3/5 md:w-1/2"
       >
         <div>
           <ol>
@@ -101,59 +101,67 @@ const Ladder = () => {
       </Modal>
       <div className="w-100 flex items-center justify-center">
         <div className="flex w-3/5 flex-col items-center justify-center">
-          <div className="flex w-full flex-row text-white">
-            <Select
-              value={selectedValue}
-              onChange={(value) => setSelectedValue(value)}
-              defaultActiveFirstOption
-              className="w-2/5"
-              defaultValue={seasonDropdown ? seasonDropdown[0]?.value : null}
-            >
-              {seasonDropdown
-                ? seasonDropdown.map((option) => (
-                    <Select.Option key={option.label} value={option.value}>
-                      {option.label}
-                    </Select.Option>
-                  ))
-                : null}
-            </Select>
-
-            <div className="flex w-1/5 flex-row">
-              <div> Season start: </div>
-              <div>
-                {allSeasonsInfo != undefined
-                  ? allSeasonsInfo
-                      .find((item) => item.id == selectedValue)
-                      ?.start.toLocaleDateString()
+          <div className="flex  w-full flex-col pt-4 pb-4 text-white">
+            <div className="flex flex-col md:flex-row md:py-2">
+              <Select
+                value={selectedValue}
+                onChange={(value) => setSelectedValue(value)}
+                defaultActiveFirstOption
+                className="w-100 mt-3 md:mt-0 md:w-1/2"
+                defaultValue={seasonDropdown ? seasonDropdown[0]?.value : null}
+              >
+                {seasonDropdown
+                  ? seasonDropdown.map((option) => (
+                      <Select.Option key={option.label} value={option.value}>
+                        {option.label}
+                      </Select.Option>
+                    ))
                   : null}
+              </Select>
+              <div className="w-100 mt-3 md:mt-0  md:w-1/2">
+                <Button
+                  className="w-full"
+                  onClick={() => setRewardModalOpen(true)}
+                >
+                  Show season rewards
+                </Button>
               </div>
             </div>
-            <div className="flex w-1/5 flex-row">
-              <div>Season ends in:</div>
-              {allSeasonsInfo != undefined && selectedValue ? (
-                <CountdownTimer
-                  targetDate={
-                    allSeasonsInfo.find((item) => item.id == selectedValue)!.end
-                  }
-                ></CountdownTimer>
-              ) : null}
-            </div>
-            <div className="w-1/5">
-              <Button onClick={() => setRewardModalOpen(true)}>Rewards</Button>
+            <div className="mt-3 flex  flex-col md:mt-0 md:flex-row  md:py-2">
+              <div className="w-100 flex flex-col rounded-md border-2 border-solid border-gray-800 p-1 md:w-1/2">
+                <div className="flex flex-row text-sm">Season started on</div>
+                <div className="flex flex-row text-xl">
+                  {allSeasonsInfo != undefined && selectedValue
+                    ? allSeasonsInfo
+                        .find((item) => item.id == selectedValue)
+                        ?.start.toLocaleDateString()
+                    : null}
+                </div>
+              </div>
+              <div className="w:100 mt-3 flex flex-col rounded-md border-2 border-solid border-gray-800 p-1 md:mt-0  md:w-1/2">
+                <div className="flex flex-row text-sm">Season ends in</div>
+                <div className="flex flex-row text-xl">
+                  {allSeasonsInfo != undefined && selectedValue ? (
+                    <CountdownTimer
+                      targetDate={
+                        allSeasonsInfo.find((item) => item.id == selectedValue)!
+                          .end
+                      }
+                    ></CountdownTimer>
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
           {isLoading ? (
             <Spin />
           ) : (
-            <>
-              <h1 className="mt-2 text-white">Standings:</h1>
-              <Table
-                className="mt-1 w-full"
-                dataSource={ladder}
-                columns={columns}
-                showHeader={false}
-              />
-            </>
+            <Table
+              className="mt-1 w-full"
+              dataSource={ladder}
+              columns={columns}
+              showHeader={false}
+            />
           )}
         </div>
       </div>

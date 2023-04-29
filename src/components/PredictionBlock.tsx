@@ -132,7 +132,7 @@ const PredictionBlock: React.FC<{
         )}
         {placePredictionMutation.status === "error" && (
           <div>
-            There was an error while placing your bet. Details:
+            There was an error while placing your prediction. Details:
             {placePredictionMutation.error?.message}
           </div>
         )}
