@@ -61,7 +61,6 @@ const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
     };
   });
 
-  const formattedMonths = remainingMonths > 0 ? `${remainingMonths}m ` : "";
   const formattedDays = remainingDays > 0 ? `${remainingDays}d ` : "";
   const formattedHours =
     remainingHours < 10 ? `0${remainingHours}` : remainingHours;
@@ -73,7 +72,6 @@ const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
   return (
     <div>
       <h1>
-        {formattedMonths}
         {formattedDays}
         {formattedHours}h {formattedMinutes}m {formattedSeconds}s
       </h1>
