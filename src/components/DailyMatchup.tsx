@@ -115,10 +115,10 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
       </div>
       <div
         className={`transition-max-height max-h-0 overflow-hidden ${
-          authSession.data && selectedTeam ? "max-h-full" : ""
+          selectedTeam ? "max-h-full" : ""
         }`}
       >
-        {authSession.data && selectedTeam ? (
+        {selectedTeam ? (
           <div>
             <PredictionBlock
               match={props.match}

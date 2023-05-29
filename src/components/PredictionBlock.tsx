@@ -1,6 +1,6 @@
 import { Match } from "@prisma/client";
 import { Button, InputNumber, Modal, Spin } from "antd";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Icon from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
@@ -111,31 +111,62 @@ const PredictionBlock: React.FC<{
         }
         maskStyle={{ backgroundColor: "rgba(160,160,160, 0.7)" }}
       >
-        {placePredictionMutation.status === "loading" && (
-          <div className="flex">
-            <Spin className="self-center" size="large" />
+        <div className="flex">
+          <div className="w-2/3">
+            {/* <div className="flex flex-col">
+              <h2>Prediction placed successfully</h2>
+              <div>
+                Placed amount:
+                {placePredictionMutation.data?.predictionAmount?.toString()}
+              </div>
+              <div>
+                At {placePredictionMutation.data?.predictionOdds?.toString()}.
+                Possible win:
+                {(
+                  Number(placePredictionMutation.data?.predictionAmount) *
+                  Number(placePredictionMutation.data?.predictionOdds)
+                ).toFixed(3)}
+              </div>
+              <div>Good luck!</div>
+            </div>
+            {placePredictionMutation.status === "error" && (
+              <div>
+                There was an error while placing your prediction. Details:{" "}
+                {placePredictionMutation.error?.message}
+              </div>
+            )} */}
+
+            {placePredictionMutation.status === "success" && (
+              <div>
+                <p>Prediction placed successfully</p>
+              </div>
+            )}
+            {placePredictionMutation.status === "loading" && (
+              <div>
+                <p>Placing prediction...</p>
+              </div>
+            )}
+            {placePredictionMutation.status === "error" && (
+              <div>
+                <p>
+                  There was an error while placing your prediction. Details:
+                  {placePredictionMutation.error?.message}
+                </p>
+              </div>
+            )}
           </div>
-        )}
-        {placePredictionMutation.status === "success" && (
-          <div>
-            <>
-              Prediction placed successfully, placed amount:
-              {placePredictionMutation.data?.predictionAmount} at
-              {placePredictionMutation.data?.predictionOdds}. Possible win:
-              {(
-                Number(placePredictionMutation.data?.predictionAmount) *
-                Number(placePredictionMutation.data?.predictionOdds)
-              ).toFixed(3)}
-              Good luck!
-            </>
+          <div className="w-1/3">
+            {placePredictionMutation.status === "success" && (
+              <div>Svg component here</div>
+            )}
+            {placePredictionMutation.status === "loading" && (
+              <Spin className="self-center" size="large" />
+            )}
+            {placePredictionMutation.status === "error" && (
+              <div>Svg component here</div>
+            )}
           </div>
-        )}
-        {placePredictionMutation.status === "error" && (
-          <div>
-            There was an error while placing your prediction. Details:
-            {placePredictionMutation.error?.message}
-          </div>
-        )}
+        </div>
       </Modal>
       <AnimatePresence>
         <motion.div
@@ -157,7 +188,7 @@ const PredictionBlock: React.FC<{
             <Button
               disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
               onClick={() => {
-                placePrediction();
+                sessionData != null ? placePrediction() : signIn();
               }}
             >
               Predict
