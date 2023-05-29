@@ -56,7 +56,7 @@ const PredictionBlock: React.FC<{
   const predictionOdds = Number(
     teamASelected ? match.teamA_odds : match.teamB_odds
   );
-  const pickedTeam = teamASelected ? 0 : 1;
+  const pickedTeam = teamASelected ? 1 : 2;
 
   const winProbability = predictionOdds * input;
 

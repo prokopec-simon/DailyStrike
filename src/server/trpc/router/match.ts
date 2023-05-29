@@ -3,17 +3,16 @@ import { z } from "zod";
 
 export const matchRouter = t.router({
   getUpcomingMatch: t.procedure.query(async () => {
-    return await prisma?.match.findFirst({ where: { winner: 0 } });
+    return await prisma?.match.findFirst({ orderBy: { dateAndTime: "asc" } });
   }),
 
   getLastNMatches: t.procedure
     .input(z.object({ matchCount: z.number() }))
     .query(async ({ input }) => {
       return await prisma?.match.findMany({
-        where: { NOT: { winner: 0 } },
+        where: { NOT: { winner: undefined } },
         orderBy: { dateAndTime: "desc" },
         take: input.matchCount,
       });
     }),
-
 });

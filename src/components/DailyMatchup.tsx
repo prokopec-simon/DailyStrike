@@ -73,9 +73,9 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               <CountdownTimer
                 targetDate={props.match.dateAndTime}
               ></CountdownTimer>
-            ) : props.match.winner > 0 ? (
-              <div className="flex h-7 w-16 items-center justify-center rounded-md bg-red-500 align-middle text-white">
-                Over !
+            ) : props.match.winner != null && props.match.winner > 0 ? (
+              <div className="flex h-7 w-16 items-center justify-center rounded-md bg-gray-500 align-middle text-white">
+                Over
               </div>
             ) : (
               <div className="flex h-7 w-16 items-center justify-center rounded-md bg-red-500 align-middle text-white">

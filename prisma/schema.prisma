@@ -44,7 +44,7 @@ model User {
   email               String?               @unique
   emailVerified       DateTime?
   image               String?
-  balance             BigInt                @default(100)
+  balance             BigInt
   accounts            Account[]
   sessions            Session[]
   UserMatchPrediction UserMatchPrediction[]
@@ -71,7 +71,7 @@ model Match {
   bestOf              Int
   dateAndTime         DateTime
   hltvUrl             String
-  winner              Int                   @default(0)
+  winner              Int?
   UserMatchPrediction UserMatchPrediction[]
   Season              Season?               @relation(fields: [seasonId], references: [id])
   seasonId            String?
@@ -82,13 +82,12 @@ model Match {
 model UserMatchPrediction {
   userId           String
   matchId          String
-  user             User     @relation(fields: [userId], references: [id])
-  match            Match    @relation(fields: [matchId], references: [id])
+  user             User    @relation(fields: [userId], references: [id])
+  match            Match   @relation(fields: [matchId], references: [id])
   pickedTeam       Int
   predictionOdds   Decimal
-  predictionAmount Decimal
-  balanceResult    Decimal?
-  seasonId         String?
+  predictionAmount BigInt
+  balanceResult    BigInt?
 
   @@id([userId, matchId])
   @@index([matchId])
