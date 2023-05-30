@@ -35,7 +35,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
 
   return (
     <>
-      <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:w-1/2">
+      <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:h-40 md:w-1/2">
         <div
           className={`${
             detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
@@ -59,13 +59,13 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               {props.match.teamA_name}
             </div>
             <div className="text-sm text-zinc-100">
-              {props.match.teamA_odds.toString()}
+              {Number(props.match.teamB_odds).toFixed(2)}
             </div>
           </div>
         </div>
 
-        <div className="flex h-full w-1/3 flex-col items-center justify-center sm:justify-end">
-          <div className="mt-5 flex h-7 w-12 items-center justify-center rounded-md bg-zinc-700 text-sm text-white">
+        <div className="flex h-full w-1/3 flex-col items-center justify-center">
+          <div className="flex h-7 w-12 items-center justify-center rounded-md bg-zinc-700 text-sm text-white">
             BO{props.match.bestOf}
           </div>
           <div className="w-100 mt-3 flex flex-col items-center text-white">
@@ -91,7 +91,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             null
               ? "cursor-pointer"
               : ""
-          } flex h-full w-1/3 flex-col items-center justify-center rounded-lg bg-zinc-700 sm:justify-end ${
+          } flex h-full w-1/3 flex-col-reverse items-center justify-center rounded-lg bg-zinc-700 sm:justify-end ${
             selectedTeam === props.match.teamB_name
               ? "border-2 border-solid border-orange-500"
               : ""
@@ -103,7 +103,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               {props.match.teamB_name}
             </div>
             <div className="text-sm text-zinc-100">
-              {props.match.teamB_odds.toString()}
+              {Number(props.match.teamB_odds).toFixed(2)}
             </div>
           </div>
           <img

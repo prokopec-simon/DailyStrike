@@ -1,8 +1,9 @@
 import { User } from ".prisma/client";
-import { Spin, Table } from "antd";
+import { ConfigProvider, Spin, Table } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { trpc } from "../utils/trpc";
+import { InboxOutlined } from "@ant-design/icons";
 
 const Inbox = () => {
   const { data: sessionData } = useSession();
@@ -10,6 +11,14 @@ const Inbox = () => {
     sessionData?.user?.id ?? "",
     { enabled: sessionData?.user !== undefined }
   );
+
+  const customizeRenderEmpty = () => (
+    <div style={{ textAlign: "center" }}>
+      <InboxOutlined style={{ fontSize: 50 }} />
+      <p className="text-lg">You have no messages</p>
+    </div>
+  );
+
   const modalRewardColumns = [
     {
       title: "From",
@@ -37,10 +46,16 @@ const Inbox = () => {
   return (
     <>
       {secretQuery.data ? (
-        <Table
-          dataSource={secretQuery.data}
-          columns={modalRewardColumns}
-        ></Table>
+        <div className="mx-auto flex  w-4/5 md:w-3/5">
+          <ConfigProvider renderEmpty={customizeRenderEmpty}>
+            <Table
+              dataSource={secretQuery.data}
+              columns={modalRewardColumns}
+              showHeader={false}
+              className="w-full"
+            ></Table>
+          </ConfigProvider>
+        </div>
       ) : (
         <Spin />
       )}

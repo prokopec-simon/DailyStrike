@@ -23,7 +23,9 @@ export const CompetitorCard: React.FC<{
       >
         {props.teamName}
       </div>
-      <div className="text-sm text-white">{props.teamOdds.toString()}</div>
+      <div className="text-sm text-white">
+        {Number(props.teamOdds).toFixed(2)}
+      </div>
     </div>
   );
 };

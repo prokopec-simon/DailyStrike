@@ -112,7 +112,7 @@ const Ladder = () => {
         </div>
       </Modal>
       <div className="w-100 flex items-center justify-center">
-        <div className="flex w-3/5 flex-col items-center justify-center">
+        <div className="flex w-4/5 flex-col items-center justify-center md:w-3/5">
           <div className="flex  w-full flex-col pt-4 pb-4 text-white">
             <div className="flex flex-col md:flex-row md:py-2">
               <Select
