@@ -3,6 +3,7 @@ import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import { trpc } from "../utils/trpc";
+import Image from "next/image";
 
 const Ladder = () => {
   const { data: allSeasonsInfo, isLoading: areSeasonsLoading } =
@@ -55,16 +56,27 @@ const Ladder = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text: string) => <a>{text}</a>,
+      title: "Profile",
+      dataIndex: "profile",
+      key: "profile",
+      render: (text: string, record: any) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Image
+            alt="profile image"
+            width={30}
+            height={30}
+            src={record.image}
+            loader={({ src }) => src}
+          />
+          <p style={{ marginLeft: "10px" }}>{record.name}</p>
+        </div>
+      ),
     },
     {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (text: bigint) => <a>{text.toString()}</a>,
+      render: (text: bigint) => <p>{text.toString()}</p>,
     },
   ];
 
