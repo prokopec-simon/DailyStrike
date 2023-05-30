@@ -166,7 +166,7 @@ const Ladder = () => {
             </div>
           </div>
           {isLoading ? (
-            <Spin />
+            <Spin size="large" className="mt-10" />
           ) : (
             <Table
               className="mt-1 w-full"

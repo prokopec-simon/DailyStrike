@@ -46,7 +46,7 @@ const Inbox = () => {
   return (
     <>
       {secretQuery.data ? (
-        <div className="mx-auto flex  w-4/5 md:w-3/5">
+        <div className="mx-auto mt-12  flex w-4/5 md:w-3/5">
           <ConfigProvider renderEmpty={customizeRenderEmpty}>
             <Table
               dataSource={secretQuery.data}
@@ -57,7 +57,9 @@ const Inbox = () => {
           </ConfigProvider>
         </div>
       ) : (
-        <Spin />
+        <div className="mt-20 flex items-center justify-center">
+          <Spin size="large" />
+        </div>
       )}
     </>
   );
