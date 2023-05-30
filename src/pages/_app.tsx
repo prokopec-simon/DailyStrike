@@ -10,11 +10,7 @@ import Header from "../components/Header";
 const customTheme = {
   algorithm: theme.darkAlgorithm,
   token: {
-    colorPrimary: "#52C41A",
-    colorInfo: "#49aa19",
-    colorInfoTextActive: "#ffffff",
-    colorPrimaryTextActive: "#ffffff",
-    colorPrimaryActive: "#ffffff",
+    colorPrimary: "#ff6700",
   },
 };
 

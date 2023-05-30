@@ -5,6 +5,9 @@ import Icon from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 import { AnimatePresence, motion } from "framer-motion";
+import Lottie from "lottie-react";
+import successAnimation from "../../public/lottie_success.json";
+import failAnimation from "../../public/lottie_fail.json";
 
 const SvgComponent = (props: any) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673.99 674" {...props}>
@@ -84,26 +87,43 @@ const PredictionBlock: React.FC<{
     });
   };
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const style = {
+    height: isMobile ? "80px" : "200px",
+  };
   return (
     <div>
       <Modal
-        title={<div>Placing prediction</div>}
+        bodyStyle={style}
+        width={isMobile ? "80%" : "50%"}
+        title={null}
         onOk={handleOk}
+        centered={true}
         onCancel={handleCancel}
         open={isModalOpen}
         closable={placePredictionMutation.status !== "loading"}
         maskClosable={placePredictionMutation.status !== "loading"}
         footer={
-          placePredictionMutation.status === "success" ? (
-            <div>
-              <Button>Ok</Button>
-            </div>
-          ) : (
+          placePredictionMutation.status === "success" ? null : (
             <div>
               {placePredictionMutation.status === "error" && (
                 <>
                   <Button>Send report</Button>
-                  <Button>Ok</Button>
                 </>
               )}
             </div>
@@ -111,63 +131,67 @@ const PredictionBlock: React.FC<{
         }
         maskStyle={{ backgroundColor: "rgba(160,160,160, 0.7)" }}
       >
-        <div className="flex">
-          <div className="w-2/3">
-            {/* <div className="flex flex-col">
-              <h2>Prediction placed successfully</h2>
-              <div>
-                Placed amount:
-                {placePredictionMutation.data?.predictionAmount?.toString()}
-              </div>
-              <div>
-                At {placePredictionMutation.data?.predictionOdds?.toString()}.
-                Possible win:
-                {(
-                  Number(placePredictionMutation.data?.predictionAmount) *
-                  Number(placePredictionMutation.data?.predictionOdds)
-                ).toFixed(3)}
-              </div>
-              <div>Good luck!</div>
-            </div>
-            {placePredictionMutation.status === "error" && (
-              <div>
-                There was an error while placing your prediction. Details:{" "}
-                {placePredictionMutation.error?.message}
-              </div>
-            )} */}
-
+        <div className="flex h-full">
+          <div className="flex w-2/3 items-center justify-center">
             {placePredictionMutation.status === "success" && (
               <div>
-                <p>Prediction placed successfully</p>
+                <p className="text-xl font-medium">
+                  Prediction placed successfully !
+                </p>
+                <p className="mt-4">
+                  Placed a{" "}
+                  {Number(
+                    placePredictionMutation.data.predictionAmount
+                  ).toFixed(3) ?? 0}{" "}
+                  prediction on{" "}
+                  {placePredictionMutation.data.pickedTeam == 0
+                    ? match.teamA_name
+                    : match.teamB_name}{" "}
+                  at {placePredictionMutation.data.predictionOdds?.toString()}{" "}
+                  odds, possibly winning{" "}
+                  {(
+                    Number(placePredictionMutation.data.predictionOdds) *
+                      Number(placePredictionMutation.data.predictionAmount) ?? 0
+                  ).toFixed(3)}
+                </p>
               </div>
             )}
             {placePredictionMutation.status === "loading" && (
               <div>
-                <p>Placing prediction...</p>
+                <p className="text-xl font-medium">Placing prediction...</p>
               </div>
             )}
             {placePredictionMutation.status === "error" && (
               <div>
-                <p>
-                  There was an error while placing your prediction. Details:
+                <p className="text-xl font-medium">
+                  There was an error while placing your prediction. Details:{" "}
                   {placePredictionMutation.error?.message}
                 </p>
               </div>
             )}
           </div>
-          <div className="w-1/3">
+          <div className="flex w-1/3 items-center justify-center">
             {placePredictionMutation.status === "success" && (
-              <div>Svg component here</div>
+              <Lottie
+                className="w-3/5"
+                animationData={successAnimation}
+                loop={false}
+              />
             )}
             {placePredictionMutation.status === "loading" && (
-              <Spin className="self-center" size="large" />
+              <Spin size="large" />
             )}
             {placePredictionMutation.status === "error" && (
-              <div>Svg component here</div>
+              <Lottie
+                className="w-3/5"
+                animationData={failAnimation}
+                loop={false}
+              />
             )}
           </div>
         </div>
       </Modal>
+
       <AnimatePresence>
         <motion.div
           initial={{ height: 0, opacity: 0 }}
