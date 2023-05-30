@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Match } from "@prisma/client";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useUserDetail } from "../contexts/userContext";
 import CountdownTimer from "./CountdownTimer";
 import PredictionBlock from "./PredictionBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
-  const authSession = useSession();
+  // const authSession = useSession();
   const [detailedUserInformationQuery] = useUserDetail();
 
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -38,10 +38,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
       <div className="flex h-32 w-11/12 justify-between rounded-lg bg-zinc-800 p-3 text-white md:h-40 md:w-1/2">
         <div
           className={`${
-            detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
-            null
-              ? "cursor-pointer"
-              : ""
+            props.match.winner == null ? "cursor-pointer" : ""
           } flex h-full w-1/3 flex-col items-center justify-center rounded-lg bg-zinc-700 sm:justify-start ${
             selectedTeam === props.match.teamA_name
               ? "border-2 border-solid border-orange-500"
@@ -59,7 +56,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
               {props.match.teamA_name}
             </div>
             <div className="text-sm text-zinc-100">
-              {Number(props.match.teamB_odds).toFixed(2)}
+              {Number(props.match.teamA_odds).toFixed(2)}
             </div>
           </div>
         </div>
@@ -87,10 +84,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
 
         <div
           className={`${
-            detailedUserInformationQuery.data?.dailyPrediction.pickedTeam ==
-            null
-              ? "cursor-pointer"
-              : ""
+            props.match.winner == null ? "cursor-pointer" : ""
           } flex h-full w-1/3 flex-col-reverse items-center justify-center rounded-lg bg-zinc-700 sm:justify-end ${
             selectedTeam === props.match.teamB_name
               ? "border-2 border-solid border-orange-500"
@@ -119,7 +113,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
         }`}
       >
         {selectedTeam ? (
-          <div>
+          <div className="mx-auto w-4/5 md:w-full">
             <PredictionBlock
               match={props.match}
               selectedTeam={selectedTeam}

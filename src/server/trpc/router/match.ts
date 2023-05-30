@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const matchRouter = t.router({
   getUpcomingMatch: t.procedure.query(async () => {
-    return await prisma?.match.findFirst({ orderBy: { dateAndTime: "asc" } });
+    return await prisma?.match.findFirst({ orderBy: { dateAndTime: "desc" } });
   }),
 
   getLastNMatches: t.procedure
@@ -12,6 +12,7 @@ export const matchRouter = t.router({
       return await prisma?.match.findMany({
         where: { NOT: { winner: undefined } },
         orderBy: { dateAndTime: "desc" },
+        skip: 1,
         take: input.matchCount,
       });
     }),

@@ -199,7 +199,7 @@ const PredictionBlock: React.FC<{
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex  rounded-b-md bg-zinc-700 p-3">
+          <div className="flex rounded-b-md bg-zinc-700 p-3">
             <InputNumber
               className="w-1/3"
               value={input}
@@ -218,10 +218,8 @@ const PredictionBlock: React.FC<{
               Predict
             </Button>
 
-            <div className="mt-1 ml-3 flex flex-row text-white">
-              <div> Possible win: {winProbability.toFixed(3)}</div>
-
-              <Icon component={SvgComponent} />
+            <div className="mt-1.5 ml-3 flex flex-row text-sm text-white md:ml-7 md:text-base">
+              <div> Possible win: {winProbability.toFixed(2)}</div>
             </div>
           </div>
         </motion.div>
