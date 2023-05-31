@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DailyMatchComponent from "../components/DailyMatchup";
 import { trpc } from "../utils/trpc";
 import { Spin } from "antd";
@@ -21,7 +21,7 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="m-0 mt-12 flex w-full flex-col items-center justify-center p-0 align-middle md:mt-16">
+      <div className="m-0 mt-8 flex w-full flex-col items-center justify-center p-0 align-middle md:mt-16">
         {isLoadingUpcomingMatch || isLoadingLastNMatches ? <Spin /> : null}
         {upcomingMatch ? (
           <DailyMatchComponent match={upcomingMatch}></DailyMatchComponent>

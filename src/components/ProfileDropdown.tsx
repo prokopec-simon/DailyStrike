@@ -10,6 +10,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUserDetail } from "../contexts/userContext";
+import CoinSvgComponent from "./svg/coin";
+import Icon from "@ant-design/icons";
 
 const items: MenuProps["items"] = [
   {
@@ -71,20 +73,23 @@ export const ProfileDropdown: React.FC = () => {
             src={sessionData?.user?.image ?? ""}
             width={35}
             height={35}
-            className="rounded-md"
+            className="hidden rounded-md md:inline"
           />
           <div className="ml-2 text-white">
             <div className="text-sm">{sessionData?.user?.name}</div>
             <div className="text-xs">
               {query.data?.user?.balance ? (
-                query.data?.user.balance?.toString()
+                <>
+                  {Number(query.data.user.balance).toFixed(2)}{" "}
+                  <Icon component={CoinSvgComponent} />
+                </>
               ) : (
                 <Spin size="small" />
               )}
             </div>
           </div>
         </div>
-        <DownOutlined className="ml-2 text-white" />
+        <DownOutlined className="text-white md:ml-2" />
       </div>
     </Dropdown>
   );

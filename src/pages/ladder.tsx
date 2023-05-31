@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import { trpc } from "../utils/trpc";
 import Image from "next/image";
+import CoinSvgComponent from "../components/svg/coin";
+import Icon from "@ant-design/icons";
 
 const Ladder = () => {
   const { data: allSeasonsInfo, isLoading: areSeasonsLoading } =
@@ -76,7 +78,12 @@ const Ladder = () => {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (text: bigint) => <p>{text.toString()}</p>,
+      render: (text: bigint) => (
+        <div className="flex flex-row">
+          <div className="pr-1">{text.toString()}</div>
+          <Icon className="mt-px" component={CoinSvgComponent}></Icon>
+        </div>
+      ),
     },
   ];
 

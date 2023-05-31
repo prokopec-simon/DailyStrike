@@ -17,13 +17,13 @@ export const CompetitorCard: React.FC<{
         }
       ></img>
       <div
-        className={`text-lg ${
+        className={`overflow-ellipsis text-base md:text-lg ${
           props.isWinner ? "text-green-500" : "text-red-500"
         }`}
       >
         {props.teamName}
       </div>
-      <div className="text-sm text-white">
+      <div className="text-xs text-white md:text-sm">
         {Number(props.teamOdds).toFixed(2)}
       </div>
     </div>
