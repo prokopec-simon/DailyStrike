@@ -39,7 +39,7 @@ export const CompetitorCard: React.FC<{
           {props.teamName}
         </div>
         <div className="text-xs text-white md:text-sm">
-          {Number(props.teamOdds).toFixed(2)}sa
+          {Number(props.teamOdds).toFixed(2)}
         </div>
       </div>
     </div>
