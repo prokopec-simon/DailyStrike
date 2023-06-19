@@ -70,7 +70,7 @@ model Match {
   teamB_logoUrl       String?
   bestOf              Int
   dateAndTime         DateTime
-  hltvUrl             String
+  hltvUrl             String?
   winner              Int?
   UserMatchPrediction UserMatchPrediction[]
   Season              Season?               @relation(fields: [seasonId], references: [id])
