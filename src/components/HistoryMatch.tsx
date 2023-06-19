@@ -17,6 +17,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
         teamName={props.match.teamA_name}
         teamOdds={props.match.teamA_odds}
         logoUrl={props.match.teamA_logoUrl}
+        isFirst={true}
       />
       <div className="flex h-full w-1/3 flex-col items-center">
         <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 text-sm text-white">
@@ -40,6 +41,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
         teamName={props.match.teamB_name}
         teamOdds={props.match.teamB_odds}
         logoUrl={props.match.teamB_logoUrl}
+        isFirst={false}
       />
     </div>
   );
