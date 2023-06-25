@@ -13,7 +13,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
   return (
     <div className="mt-6 flex h-28 w-4/5 justify-between self-center rounded-lg bg-zinc-800 p-3 text-white md:w-1/3">
       <CompetitorCard
-        isWinner={props.match.winner == 0}
+        isWinner={props.match.winner == 1}
         teamName={props.match.teamA_name}
         teamOdds={props.match.teamA_odds}
         logoUrl={props.match.teamA_logoUrl}
@@ -37,7 +37,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
         ) : null}
       </div>
       <CompetitorCard
-        isWinner={props.match.winner == 1}
+        isWinner={props.match.winner == 2}
         teamName={props.match.teamB_name}
         teamOdds={props.match.teamB_odds}
         logoUrl={props.match.teamB_logoUrl}

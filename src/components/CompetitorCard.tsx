@@ -23,22 +23,17 @@ export const CompetitorCard: React.FC<{
         }
       />
       <div
-        className={`flex flex-col ${itemsAlignmentClass} items-center overflow-hidden`}
+        className={`flex flex-col md:px-1 ${itemsAlignmentClass} items-center overflow-hidden`}
       >
         <div
-          className={`text-base md:text-lg ${
+          className={`flex text-sm md:block md:text-base ${
             props.isWinner ? "text-green-500" : "text-red-500"
           }`}
-          style={{
-            maxWidth: "100%",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
         >
-          {props.teamName}
+          <div className="w-20 truncate md:hidden">{props.teamName}</div>
+          <div className="hidden leading-5 md:block">{props.teamName}</div>
         </div>
-        <div className="text-xs text-white md:text-sm">
+        <div className="text-sm text-white md:text-sm">
           {Number(props.teamOdds).toFixed(2)}
         </div>
       </div>

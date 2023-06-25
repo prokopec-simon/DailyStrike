@@ -1,5 +1,4 @@
 import { Button, Modal, Select, Spin, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import { trpc } from "../utils/trpc";
@@ -18,10 +17,19 @@ const Ladder = () => {
   const { data: ladder, isLoading: isLoading } =
     trpc.ladder.getCurrentSeasonLadder.useQuery();
 
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e);
     setRewardModalOpen(false);
   };
+
+  useEffect(() => {
+    if (seasonDropdown && seasonDropdown.length > 0) {
+      setSelectedValue(seasonDropdown[0]!.value);
+    }
+  }, [seasonDropdown]);
 
   const modalRewardColumns = [
     {
@@ -48,13 +56,6 @@ const Ladder = () => {
     console.log(e);
     setRewardModalOpen(false);
   };
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
   const columns = [
     {
@@ -87,16 +88,10 @@ const Ladder = () => {
     },
   ];
 
-  useEffect(() => {
-    if (seasonDropdown && seasonDropdown.length > 0) {
-      setSelectedValue(seasonDropdown[0]!.value);
-    }
-  }, [seasonDropdown]);
-
   return (
     <>
       <Modal
-        open={rewardModalOpen}
+        visible={rewardModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
@@ -104,70 +99,73 @@ const Ladder = () => {
       >
         <div>
           <ol>
-            {allSeasonsInfo !== undefined && (
+            {allSeasonsInfo && (
               <Table
-                dataSource={
-                  allSeasonsInfo
-                    .find((item) => item.id === selectedValue)
-                    ?.Rewards.sort((a, b) => a.order - b.order) // Pass a comparator function to sort by order
-                }
+                dataSource={allSeasonsInfo
+                  .find((item) => item.id === selectedValue)
+                  ?.Rewards.sort((a, b) => a.order - b.order)}
                 columns={modalRewardColumns}
                 pagination={false}
-              ></Table>
+              />
             )}
           </ol>
         </div>
       </Modal>
-      <div className="w-100 flex items-center justify-center">
+      <div className="w-100 flex items-center justify-center md:mt-16">
         <div className="flex w-4/5 flex-col items-center justify-center md:w-3/5">
           <div className="flex  w-full flex-col pt-4 pb-4 text-white">
             <div className="flex flex-col md:flex-row md:py-2">
               <Select
                 value={selectedValue}
-                onChange={(value) => setSelectedValue(value)}
+                size="large"
+                onChange={setSelectedValue}
                 defaultActiveFirstOption
-                className="w-100 mt-3 md:mt-0 md:w-1/2"
-                defaultValue={seasonDropdown ? seasonDropdown[0]?.value : null}
+                className="w-100 mt-3 pr-2 md:mt-0 md:w-1/2"
+                defaultValue={allSeasonsInfo?.[0]?.id}
               >
-                {seasonDropdown
-                  ? seasonDropdown.map((option) => (
-                      <Select.Option key={option.label} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))
-                  : null}
+                {allSeasonsInfo &&
+                  allSeasonsInfo.map((option) => (
+                    <Select.Option key={option.id} value={option.id}>
+                      {option.name}
+                    </Select.Option>
+                  ))}
               </Select>
-              <div className="w-100 mt-3 md:mt-0  md:w-1/2">
+              <div className="w-100 mt-3 pl-2 md:mt-0 md:w-1/2">
                 <Button
-                  className="w-full"
+                  className="h-10 w-full"
                   onClick={() => setRewardModalOpen(true)}
                 >
                   Show season rewards
                 </Button>
               </div>
             </div>
-            <div className="mt-3 flex  flex-col md:mt-0 md:flex-row  md:py-2">
-              <div className="w-100 flex flex-col rounded-md border-2 border-solid border-gray-800 p-1 md:w-1/2">
-                <div className="flex flex-row text-sm">Season started on</div>
-                <div className="flex flex-row text-xl">
-                  {allSeasonsInfo != undefined && selectedValue
-                    ? allSeasonsInfo
-                        .find((item) => item.id == selectedValue)
-                        ?.start.toLocaleDateString()
-                    : null}
+            <div className="mt-3 flex  flex-col pr-4  md:mt-0 md:flex-row md:py-2">
+              <div className="mt-3 w-full justify-center rounded-md bg-zinc-800 md:mt-0 md:w-1/2">
+                <div className="flex flex-col">
+                  <div className="text-xs text-zinc-400">Season started on</div>
+                  <div className="text-2xl">
+                    {allSeasonsInfo != undefined && selectedValue
+                      ? allSeasonsInfo
+                          .find((item) => item.id == selectedValue)
+                          ?.start.toLocaleDateString()
+                      : null}
+                  </div>
                 </div>
               </div>
-              <div className="w:100 mt-3 flex flex-col rounded-md border-2 border-solid border-gray-800 p-1 md:mt-0  md:w-1/2">
-                <div className="flex flex-row text-sm">Season ends in</div>
-                <div className="flex flex-row text-xl">
-                  {allSeasonsInfo != undefined && selectedValue ? (
-                    <CountdownTimer
-                      targetDate={
-                        allSeasonsInfo.find((item) => item.id == selectedValue)!
-                          .end
-                      }
-                    ></CountdownTimer>
-                  ) : null}
+              <div className="mt-3 w-full justify-center rounded-md bg-zinc-800 md:mt-0 md:w-1/2">
+                <div className="flex flex-col">
+                  <div className="text-xs text-zinc-400">Season ends in</div>
+                  <div className="text-2xl">
+                    {allSeasonsInfo != undefined && selectedValue ? (
+                      <CountdownTimer
+                        targetDate={
+                          allSeasonsInfo.find(
+                            (item) => item.id == selectedValue
+                          )!.end
+                        }
+                      ></CountdownTimer>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </div>

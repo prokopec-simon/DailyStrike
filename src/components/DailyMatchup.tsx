@@ -52,7 +52,10 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
             src={props.match.teamA_logoUrl ?? ""}
           ></img>
           <div className="text-center sm:text-left">
-            <div className="text-lg text-zinc-100">
+            <div className="w-24 truncate text-zinc-100 md:hidden">
+              {props.match.teamA_name}
+            </div>
+            <div className=" hidden text-lg text-zinc-100 md:block">
               {props.match.teamA_name}
             </div>
             <div className="text-sm text-zinc-100">
@@ -93,9 +96,13 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
           onClick={() => pickTeam(props.match.teamB_name)}
         >
           <div className="text-center sm:text-right">
-            <div className="text-lg text-zinc-100">
+            <div className="w-24 truncate text-zinc-100 md:hidden">
               {props.match.teamB_name}
             </div>
+            <div className=" hidden text-lg text-zinc-100 md:block">
+              {props.match.teamB_name}
+            </div>
+
             <div className="text-sm text-zinc-100">
               {Number(props.match.teamB_odds).toFixed(2)}
             </div>
