@@ -24,30 +24,31 @@ export default async function handler(
 
     predictionsToResolve.forEach(async (prediction) => {
       //holy f*ck I hate these number types
-      if (prediction.pickedTeam == matchToResolve.winner) {
-        const foundUser = await prisma.user.findFirstOrThrow({
-          where: { id: prediction.userId },
-        });
+      const foundUser = await prisma.user.findFirstOrThrow({
+        where: { id: prediction.userId },
+      });
 
-        const balanceIncrease =
-          Number(prediction.predictionOdds) *
-          Number(prediction.predictionAmount);
+      let balanceIncrease =
+        Number(prediction.predictionOdds) * Number(prediction.predictionAmount);
 
-        await prisma.user.update({
-          where: { id: prediction.userId },
-          data: { balance: foundUser.balance + BigInt(balanceIncrease) },
-        });
-
-        await prisma.userMatchPrediction.update({
-          where: {
-            userId_matchId: {
-              userId: prediction.userId,
-              matchId: prediction.matchId,
-            },
-          },
-          data: { balanceResult: balanceIncrease },
-        });
+      if (matchToResolve.winner !== prediction.pickedTeam) {
+        balanceIncrease = -balanceIncrease;
       }
+
+      await prisma.user.update({
+        where: { id: prediction.userId },
+        data: { balance: foundUser.balance + BigInt(balanceIncrease) },
+      });
+
+      await prisma.userMatchPrediction.update({
+        where: {
+          userId_matchId: {
+            userId: prediction.userId,
+            matchId: prediction.matchId,
+          },
+        },
+        data: { balanceResult: balanceIncrease },
+      });
     });
 
     res.status(200).json({ resultState: "Ok" });

@@ -11,7 +11,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
   );
 
   return (
-    <div className="mt-6 flex h-28 w-4/5 justify-between self-center rounded-lg bg-zinc-800 p-3 text-white md:w-1/3">
+    <div className="mt-6 flex h-24 w-4/5 justify-between self-center rounded-lg bg-zinc-800 bg-opacity-50 p-3 text-white md:w-1/3">
       <CompetitorCard
         isWinner={props.match.winner == 1}
         teamName={props.match.teamA_name}
@@ -20,12 +20,12 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
         isFirst={true}
       />
       <div className="flex h-full w-1/3 flex-col items-center">
-        <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 text-sm text-white">
+        <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 bg-opacity-50 text-sm text-white">
           BO{props.match.bestOf}
         </div>
         {matchPrediction?.balanceResult ? (
           <div
-            className={`mt-5 flex h-7 items-center justify-center rounded-md  bg-zinc-700 px-3 py-2 ${
+            className={`mt-5 flex h-7 items-center justify-center rounded-md  bg-zinc-700 bg-opacity-50 px-3 py-2 ${
               Number(matchPrediction?.balanceResult) >= 0
                 ? "text-green-500"
                 : "text-red-500"

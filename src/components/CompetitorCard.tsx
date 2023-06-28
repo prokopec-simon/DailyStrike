@@ -8,11 +8,13 @@ export const CompetitorCard: React.FC<{
   isFirst: boolean;
 }> = (props) => {
   const flexRowClass = props.isFirst ? "md:flex-row" : "md:flex-row-reverse";
-  const itemsAlignmentClass = props.isFirst ? "md:items-start" : "md:items-end";
+  const itemsAlignmentClass = props.isFirst
+    ? "md:items-start md:text-left"
+    : "md:items-end md:text-right";
 
   return (
     <div
-      className={`flex h-full w-1/3 min-w-0 flex-col items-center rounded-lg border-solid border-orange-500 bg-zinc-700 px-2 ${flexRowClass}`}
+      className={`flex h-full w-1/3 min-w-0 flex-col items-center rounded-lg border-solid border-orange-500 bg-zinc-700 bg-opacity-40 px-2 ${flexRowClass}`}
     >
       <img
         alt="team logo"
