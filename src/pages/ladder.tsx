@@ -5,6 +5,11 @@ import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import CoinSvgComponent from "../components/svg/coin";
 import Icon from "@ant-design/icons";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "DailyStrike - Ladder",
+};
 
 const Ladder = () => {
   const { data: allSeasonsInfo, isLoading: areSeasonsLoading } =
