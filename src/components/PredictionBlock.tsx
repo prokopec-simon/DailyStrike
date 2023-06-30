@@ -173,27 +173,29 @@ const PredictionBlock: React.FC<{
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex rounded-b-md bg-zinc-700 bg-opacity-50 p-3">
-            <InputNumber
-              className="w-1/3"
-              value={input}
-              disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-              onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
-              controls={false}
-              addonAfter={<Icon component={CoinSvgComponent} />}
-            />
-
-            <Button
-              disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-              onClick={() => {
-                sessionData != null ? placePrediction() : signIn();
-              }}
-            >
-              Predict
-            </Button>
-
-            <div className="mt-1.5 ml-3 flex flex-row text-sm text-white md:ml-7 md:text-base">
-              <div>Possible win: {winProbability.toFixed(2)}</div>
+          <div className="flex w-full items-center justify-center rounded-b-md bg-zinc-700 bg-opacity-40">
+            <div className="flex flex-row">
+              <InputNumber
+                className="w-1/3"
+                value={input}
+                disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
+                controls={false}
+                addonAfter={<Icon component={CoinSvgComponent} />}
+              />
+              <Button
+                className="ml-3"
+                disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                onClick={() => {
+                  sessionData != null ? placePrediction() : signIn();
+                }}
+              >
+                Predict
+              </Button>
+              <div className="mt-1.5 ml-3 flex flex-row text-sm text-white md:ml-4 md:text-base">
+                <div>Possible win: {winProbability.toFixed(2)}</div>
+                <Icon component={CoinSvgComponent} />
+              </div>
             </div>
           </div>
         </motion.div>

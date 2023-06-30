@@ -8,6 +8,14 @@ datasource db {
   relationMode = "prisma"
 }
 
+// model Test {
+//   id      String   @id @default(cuid())
+//   integer Int?
+//   bigint  BigInt?
+//   decimal Decimal?
+//   float   Float
+// }
+
 model Account {
   id                String  @id @default(cuid())
   userId            String

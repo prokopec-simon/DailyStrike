@@ -11,7 +11,7 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
   );
 
   return (
-    <div className="mt-6 flex h-24 w-4/5 justify-between self-center rounded-lg bg-zinc-800 bg-opacity-50 p-3 text-white md:w-1/3">
+    <div className="mt-6 flex h-28 w-4/5 justify-between self-center rounded-lg bg-zinc-800 bg-opacity-50 p-3 text-white md:h-24 md:w-1/3">
       <CompetitorCard
         isWinner={props.match.winner == 1}
         teamName={props.match.teamA_name}

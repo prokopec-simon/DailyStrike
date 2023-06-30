@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { trpc } from "../utils/trpc";
 import { InboxOutlined } from "@ant-design/icons";
-
+import Head from "next/head";
 const Inbox = () => {
   const { data: sessionData } = useSession();
   const secretQuery = trpc.user.getUserMessages.useQuery(
@@ -45,6 +45,13 @@ const Inbox = () => {
   ];
   return (
     <>
+      <Head>
+        <title>DailyStrike - Inbox</title>
+        <meta
+          name="DailyStrike Inbox"
+          content="Your DailyStrike message inbox"
+        />
+      </Head>
       {secretQuery.data ? (
         <div className="mx-auto mt-12  flex w-4/5 md:w-3/5">
           <ConfigProvider renderEmpty={customizeRenderEmpty}>

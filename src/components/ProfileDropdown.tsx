@@ -4,6 +4,7 @@ import {
   LogoutOutlined,
   OrderedListOutlined,
   MailOutlined,
+  TrophyOutlined
 } from "@ant-design/icons/lib/icons";
 import { Button, Dropdown, MenuProps, Spin } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -15,22 +16,19 @@ import Icon from "@ant-design/icons";
 
 const items: MenuProps["items"] = [
   {
-    label: <Link href="profile">Profile</Link>,
+    label: <Link href="history">History</Link>,
     key: "0",
-    //disabled: true,
-    icon: <UserOutlined />,
+    icon: <OrderedListOutlined />,
   },
   {
     label: <Link href="inbox">Inbox</Link>,
     key: "1",
-    //disabled: true,
     icon: <MailOutlined />,
   },
   {
     label: <Link href="ladder">Ladder</Link>,
     key: "2",
-    icon: <OrderedListOutlined />,
-    //disabled: true,
+    icon: <TrophyOutlined />,
   },
   {
     type: "divider",

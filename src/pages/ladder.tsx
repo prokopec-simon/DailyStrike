@@ -5,11 +5,7 @@ import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import CoinSvgComponent from "../components/svg/coin";
 import Icon from "@ant-design/icons";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "DailyStrike - Ladder",
-};
+import Head from "next/head";
 
 const Ladder = () => {
   const { data: allSeasonsInfo, isLoading: areSeasonsLoading } =
@@ -26,7 +22,6 @@ const Ladder = () => {
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     setRewardModalOpen(false);
   };
 
@@ -58,11 +53,16 @@ const Ladder = () => {
   ];
 
   const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     setRewardModalOpen(false);
   };
 
   const columns = [
+    {
+      title: "Profile",
+      dataIndex: "profile",
+      key: "profile",
+      render: (_: any, __: any, index: number) => <div>#{index + 1}</div>,
+    },
     {
       title: "Profile",
       dataIndex: "profile",
@@ -95,6 +95,13 @@ const Ladder = () => {
 
   return (
     <>
+      <Head>
+        <title>DailyStrike - Ladder</title>
+        <meta
+          name="DailyStrike Ladder"
+          content="An overview of the daily strike ladder"
+        />
+      </Head>
       <Modal
         visible={rewardModalOpen}
         onOk={handleOk}
@@ -145,7 +152,7 @@ const Ladder = () => {
               </div>
             </div>
             <div className="mt-3 flex  flex-col pr-4  md:mt-0 md:flex-row md:py-2">
-              <div className="mt-3 w-full justify-center rounded-md bg-zinc-800 md:mt-0 md:w-1/2">
+              <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
                 <div className="flex flex-col">
                   <div className="text-xs text-zinc-400">Season started on</div>
                   <div className="text-2xl">
@@ -157,7 +164,7 @@ const Ladder = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-3 w-full justify-center rounded-md bg-zinc-800 md:mt-0 md:w-1/2">
+              <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
                 <div className="flex flex-col">
                   <div className="text-xs text-zinc-400">Season ends in</div>
                   <div className="text-2xl">

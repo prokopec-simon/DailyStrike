@@ -67,8 +67,10 @@ export const userRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
-      const matchId = (await prisma?.match.findFirst({ where: { winner: 0 } }))
-        ?.id;
+      const matchId = (
+        await prisma?.match.findFirst({ orderBy: { dateAndTime: "desc" } })
+      )?.id;
+
       const updatedUser = await prisma?.user.update({
         where: { id: input.userId },
         data: { balance: { decrement: input.predictionAmount } },
@@ -78,5 +80,17 @@ export const userRouter = t.router({
       });
 
       return { ...predictionInDb, newBalance: updatedUser?.balance };
+    }),
+
+  getUserMatchHistory: t.procedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const userHistory = await prisma?.userMatchPrediction.findMany({
+        where: { userId: input },
+        include: { match: true },
+        orderBy: { match: { dateAndTime: "desc" } },
+      });
+
+      return userHistory;
     }),
 });

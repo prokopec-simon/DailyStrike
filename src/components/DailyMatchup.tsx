@@ -13,10 +13,10 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
   useEffect(() => {
-    if (detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == 0) {
+    if (detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == 1) {
       setSelectedTeam(props.match.teamA_name);
     }
-    if (detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == 1) {
+    if (detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == 2) {
       setSelectedTeam(props.match.teamB_name);
     }
   }, [
@@ -26,11 +26,16 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   ]);
 
   const pickTeam = (pickedTeam: string) => {
-    if (pickedTeam === selectedTeam) {
-      setSelectedTeam(null);
-      return;
+    if (
+      detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null ||
+      detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == undefined
+    ) {
+      if (pickedTeam === selectedTeam) {
+        setSelectedTeam(null);
+        return;
+      }
+      setSelectedTeam(pickedTeam);
     }
-    setSelectedTeam(pickedTeam);
   };
 
   return (
@@ -91,7 +96,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
                 targetDate={props.match.dateAndTime}
               ></CountdownTimer>
             ) : props.match.winner != null && props.match.winner > 0 ? (
-              <div className="flex h-7 w-32 items-center justify-center rounded-md bg-gray-500 align-middle text-white">
+              <div className="flex h-12 w-16 items-center justify-center rounded-md bg-gray-500 bg-opacity-30 text-center align-middle text-sm text-white md:h-7 md:w-32 md:text-base">
                 Match is over
               </div>
             ) : (
