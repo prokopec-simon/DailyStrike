@@ -27,9 +27,9 @@ export const userRouter = t.router({
       await prisma?.match.findFirst({
         orderBy: { dateAndTime: "desc" },
         take: 1,
-        include: { UserMatchPrediction: true },
+        include: { UserMatchPrediction: { where: { userId: input } } },
       })
-    )?.UserMatchPrediction;
+    )?.UserMatchPrediction[0];
 
     const lastThreeMatchIds = await prisma?.match.findMany({
       orderBy: { id: "desc" },

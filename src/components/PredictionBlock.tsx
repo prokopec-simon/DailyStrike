@@ -185,6 +185,7 @@ const PredictionBlock: React.FC<{
                   addonAfter={<Icon component={CoinSvgComponent} />}
                 />
                 <Button
+                  type="primary"
                   className="ml-3 w-1/3 md:hidden"
                   disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
                   onClick={() => {
@@ -209,7 +210,7 @@ const PredictionBlock: React.FC<{
                 </div>
 
                 <Button
-                  className="ml-3 hidden md:block md:w-2/3  "
+                  className="ml-3 hidden md:block md:w-2/3"
                   disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
                   onClick={() => {
                     sessionData != null ? placePrediction() : signIn();
