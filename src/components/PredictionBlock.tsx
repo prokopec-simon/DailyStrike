@@ -35,7 +35,7 @@ const PredictionBlock: React.FC<{
   );
   const pickedTeam = teamASelected ? 1 : 2;
 
-  const winProbability = predictionOdds * input;
+  const possibleWinnings = predictionOdds * input;
 
   useEffect(() => {
     if (userDetail.data?.dailyPrediction.predictionAmount) {
@@ -173,28 +173,50 @@ const PredictionBlock: React.FC<{
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex w-full items-center justify-center rounded-b-md bg-zinc-700 bg-opacity-40">
-            <div className="flex flex-row">
-              <InputNumber
-                className="w-1/3"
-                value={input}
-                disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-                onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
-                controls={false}
-                addonAfter={<Icon component={CoinSvgComponent} />}
-              />
-              <Button
-                className="ml-3"
-                disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
-                onClick={() => {
-                  sessionData != null ? placePrediction() : signIn();
-                }}
-              >
-                Predict
-              </Button>
-              <div className="mt-1.5 ml-3 flex flex-row text-sm text-white md:ml-4 md:text-base">
-                <div>Possible win: {winProbability.toFixed(2)}</div>
-                <Icon component={CoinSvgComponent} />
+          <div className="flex w-full items-center justify-center rounded-b-md bg-zinc-700 bg-opacity-40 py-1 px-2 pt-2 md:px-4 md:py-2">
+            <div className="flex flex-col md:flex-row">
+              <div className="flex flex-row md:w-1/3">
+                <InputNumber
+                  value={input}
+                  className="md:w-full"
+                  disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                  onChange={(numberInput) => setInputCallback(numberInput ?? 0)}
+                  controls={false}
+                  addonAfter={<Icon component={CoinSvgComponent} />}
+                />
+                <Button
+                  className="ml-3 w-1/3 md:hidden"
+                  disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                  onClick={() => {
+                    sessionData != null ? placePrediction() : signIn();
+                  }}
+                >
+                  Predict
+                </Button>
+              </div>
+              <div className="flex flex-row text-sm text-white md:w-full md:text-base">
+                <div className="flex w-full flex-row md:ml-4 md:items-center md:justify-center">
+                  <div className="flex w-full flex-row justify-between px-1 pt-1 md:px-0 md:pt-0">
+                    <div className="md:mr-1">Potential winnings:</div>
+                    <div className="md:mr-1">
+                      {possibleWinnings.toFixed(2)}
+                      <Icon
+                        className="mt-1 md:mt-0.5 md:pl-1"
+                        component={CoinSvgComponent}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  className="ml-3 hidden md:block md:w-2/3  "
+                  disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                  onClick={() => {
+                    sessionData != null ? placePrediction() : signIn();
+                  }}
+                >
+                  Predict
+                </Button>
               </div>
             </div>
           </div>

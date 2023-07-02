@@ -19,9 +19,17 @@ export const userRouter = t.router({
       where: { id: input },
     });
 
-    const dailyPredictionInfo = await prisma?.userMatchPrediction.findFirst({
-      where: { AND: [{ userId: input }, { balanceResult: null }] },
-    });
+    // const dailyPredictionInfo = await prisma?.userMatchPrediction.findFirst({
+    //   where: { AND: [{ userId: input }, { balanceResult: null }] },
+    // });
+
+    const dailyPrediction = (
+      await prisma?.match.findFirst({
+        orderBy: { dateAndTime: "desc" },
+        take: 1,
+        include: { UserMatchPrediction: true },
+      })
+    )?.UserMatchPrediction;
 
     const lastThreeMatchIds = await prisma?.match.findMany({
       orderBy: { id: "desc" },
@@ -40,7 +48,7 @@ export const userRouter = t.router({
       })) ?? [];
     return {
       user: { ...userInfo },
-      dailyPrediction: { ...dailyPredictionInfo },
+      dailyPrediction: { ...dailyPrediction },
       lastThreeMatchesResult: [...lastThreeMatchesResult],
     };
   }),
