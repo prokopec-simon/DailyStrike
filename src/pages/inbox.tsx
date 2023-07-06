@@ -15,7 +15,7 @@ const Inbox = () => {
   const customizeRenderEmpty = () => (
     <div style={{ textAlign: "center" }}>
       <InboxOutlined style={{ fontSize: 50 }} />
-      <p className="text-lg">You have no messages</p>
+      <p className="text-lg">You have no messages yet.</p>
     </div>
   );
 
@@ -32,7 +32,7 @@ const Inbox = () => {
             width={30}
             height={30}
           />
-          <div>{sender.name}</div>
+          <div className="mt-1">{sender.name}</div>
         </div>
       ),
     },

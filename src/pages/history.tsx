@@ -236,7 +236,7 @@ const History = () => {
               />
             </div>
           )}
-          <div className="mt-8 h-2/3 w-full md:mr-3 md:mt-0 md:w-3/5">
+          <div className="mt-8 flex h-2/3 w-full items-center justify-center md:mr-3 md:mt-0 md:w-3/5">
             {isMatchHistoryLoading ? (
               <Spin size="large" className="mt-10" />
             ) : (
