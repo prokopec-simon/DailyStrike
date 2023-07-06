@@ -23,16 +23,16 @@ export const HistoryMatch: React.FC<{ match: Match }> = (props) => {
         <div className="mt-5 flex h-7 w-12 items-center justify-center  rounded-md bg-zinc-700 bg-opacity-50 text-sm text-white">
           BO{props.match.bestOf}
         </div>
-        {matchPrediction?.balanceResult ? (
+        {matchPrediction?.balanceChange ? (
           <div
             className={`mt-5 flex h-7 items-center justify-center rounded-md  bg-zinc-700 bg-opacity-50 px-3 py-2 ${
-              Number(matchPrediction?.balanceResult) >= 0
+              Number(matchPrediction?.balanceChange) >= 0
                 ? "text-green-500"
                 : "text-red-500"
             }`}
           >
-            {Number(matchPrediction?.balanceResult) >= 0 ? "+" : ""}
-            {matchPrediction?.balanceResult?.toString()}
+            {Number(matchPrediction?.balanceChange) >= 0 ? "+" : ""}
+            {matchPrediction?.balanceChange?.toString()}
           </div>
         ) : null}
       </div>

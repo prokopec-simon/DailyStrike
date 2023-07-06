@@ -47,7 +47,7 @@ export default async function handler(
             matchId: prediction.matchId,
           },
         },
-        data: { balanceResult: balanceIncrease },
+        data: { balanceChange: balanceIncrease,  },
       });
     });
 
