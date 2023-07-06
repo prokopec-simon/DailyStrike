@@ -9,3 +9,16 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.compact-table {
+  @media (max-width: 960px) {
+    .ant-table-tbody {
+      padding: 0 !important;
+    }
+
+    .ant-table-tbody>tr>td {
+      padding-right: 0px !important;
+      padding-left: 0px !important;
+    }
+  }
+}

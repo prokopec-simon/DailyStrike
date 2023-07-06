@@ -84,7 +84,7 @@ export const userRouter = t.router({
         data: { balance: { decrement: input.predictionAmount } },
       });
       const predictionInDb = await prisma?.userMatchPrediction.create({
-        data: { ...input, balanceResult: null, matchId: matchId ?? "" },
+        data: { ...input, matchId: matchId ?? "" },
       });
 
       return { ...predictionInDb, newBalance: updatedUser?.balance };
@@ -100,5 +100,32 @@ export const userRouter = t.router({
       });
 
       return userHistory;
+    }),
+
+  getUserBalanceHistory: t.procedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const userHistory = await prisma?.userMatchPrediction.findMany({
+        where: { AND: { userId: input, NOT: { balanceAfter: null } } },
+        include: { match: true },
+        orderBy: { match: { dateAndTime: "asc" } },
+      });
+
+      const seasonStart = await prisma?.season.findFirstOrThrow({
+        orderBy: { end: "desc" },
+      });
+
+      const result = userHistory?.map((prediction) => {
+        return {
+          balanceAfter: Number(prediction.balanceAfter),
+          dateAndTime: prediction.match.dateAndTime,
+        };
+      });
+      return [
+        {
+          balanceAfter: 100,
+          dateAndTime: seasonStart!.start!,
+        },
+      ].concat(result!);
     }),
 });

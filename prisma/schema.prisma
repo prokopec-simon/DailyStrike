@@ -95,7 +95,8 @@ model UserMatchPrediction {
   pickedTeam       Int
   predictionOdds   Decimal
   predictionAmount BigInt
-  balanceResult    BigInt?
+  balanceChange    BigInt?
+  balanceAfter     BigInt?
 
   @@id([userId, matchId])
   @@index([matchId])
