@@ -66,9 +66,15 @@ export const GameInfo: React.FC = () => {
             just talk to me, feel free to contact me on:
           </div>
           <div className="flex items-center">
-            <DiscordSvgComponent />
-            <EmailSvgComponent />
-            <GithubSvgComponent />
+            <a>
+              <DiscordSvgComponent />
+            </a>
+            <a>
+              <EmailSvgComponent />
+            </a>
+            <a>
+              <GithubSvgComponent />
+            </a>
           </div>
         </div>
       </Modal>
