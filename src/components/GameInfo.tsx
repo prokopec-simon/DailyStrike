@@ -35,7 +35,7 @@ export const GameInfo: React.FC = () => {
       />
       <Modal open={open} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div>
-          <h1>What is DailyStrike?</h1>
+          <h1 className="py-2 text-xl">What is DailyStrike?</h1>
           <p>
             DailyStrike is a game that combines predicting Counter-Strike
             matches with daily challenges like Wordle. Every day, a high-level
@@ -43,13 +43,8 @@ export const GameInfo: React.FC = () => {
             by placing a prediction. You can test your gaming knowledge and have
             a chance to win rewards!
           </p>
-          <p>
-            DailyStrike is a non-profit project created by passionate gamers
-            like you. It&apos;s mostly open-source and built as a side project.
-            All the rewards were provided either by me or a sponsor.
-          </p>
-          <h1>How to play?</h1>
-          <ul>
+          <h1 className="py-2 text-xl">How to play?</h1>
+          <ol className="list-inside list-decimal py-1 text-base">
             <li>Login to your account</li>
             <li>Predict the winner of today&apos;s Counter-Strike match</li>
             <li>Earn points based on the accuracy of your predictions</li>
@@ -60,12 +55,16 @@ export const GameInfo: React.FC = () => {
             <li>
               Win exciting prizes based on your final position on the ladder
             </li>
-          </ul>
-          <div>
-            If you want to work on the project, become a possible sponsor or
-            just talk to me, feel free to contact me on:
+          </ol>
+          <div className="py-2 text-xs md:text-sm">
+            DailyStrike is a non-profit project developed by fellow passionate
+            gamers and is mostly open-source, created as a side project. The
+            rewards are generously provided by either me or from a sponsor.
+            <br />
+            If you want to contribute, become a possible sponsor or just talk to
+            me, feel free to contact me on:
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <a>
               <DiscordSvgComponent />
             </a>
