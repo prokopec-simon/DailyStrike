@@ -21,7 +21,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 const customizeRenderEmptyPredictions = () => (
   <div className="text-center">
@@ -42,21 +42,21 @@ const History = () => {
       enabled: sessionData?.user !== undefined,
     });
 
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 767);
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsMobile(window.innerWidth <= 767);
+  //   };
 
-    handleResize();
+  //   handleResize();
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   ChartJS.register(
     CategoryScale,
@@ -179,7 +179,7 @@ const History = () => {
           <div className="flex flex-row items-center justify-end">
             <div className={textClass}>{balanceResultFormatted}</div>
             <Icon
-              className="mr-2 ml-0.5 mt-0.5 mt-1 md:ml-1"
+              className="mr-2 ml-0.5 mt-0.5 md:ml-1"
               component={CoinSvgComponent}
             ></Icon>
           </div>

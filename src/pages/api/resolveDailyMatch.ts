@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
-import { bigint } from "zod";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
@@ -22,7 +21,7 @@ export default async function handler(
       where: { matchId: matchToResolve.id },
     });
 
-    predictionsToResolve.forEach(async (prediction) => {
+    predictionsToResolve.forEach(async (prediction: any) => {
       //holy f*ck I hate these number types
       const foundUser = await prisma.user.findFirstOrThrow({
         where: { id: prediction.userId },
@@ -47,7 +46,7 @@ export default async function handler(
             matchId: prediction.matchId,
           },
         },
-        data: { balanceChange: balanceIncrease,  },
+        data: { balanceChange: balanceIncrease },
       });
     });
 
