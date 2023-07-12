@@ -35,26 +35,22 @@ export const GameInfo: React.FC = () => {
       />
       <Modal open={open} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div>
-          <h1 className="py-2 text-xl">What is DailyStrike?</h1>
+          <h1 className="text-l py-2">What is DailyStrike?</h1>
           <p>
-            DailyStrike is a game that combines predicting Counter-Strike
-            matches with daily challenges like Wordle. Every day, a high-level
-            Counter-Strike match is picked, and you can predict the winning team
-            by placing a prediction. You can test your gaming knowledge and have
-            a chance to win rewards!
+            Every day a competitive Counter-Strike match is picked and you place
+            a prediction on one of the teams. You can test your competitive CS
+            knowledge and have a chance to win rewards!
           </p>
           <h1 className="py-2 text-xl">How to play?</h1>
           <ol className="list-inside list-decimal py-1 text-base">
             <li>Login to your account</li>
-            <li>Predict the winner of today&apos;s Counter-Strike match</li>
-            <li>Earn points based on the accuracy of your predictions</li>
+            <li>Predict the winner of today&apos;s match</li>
+            <li>Earn points based on your predictions</li>
             <li>Return daily to place new predictions and earn more points</li>
             <li>
               Compare your performance with other players throughout the season
             </li>
-            <li>
-              Win exciting prizes based on your final position on the ladder
-            </li>
+            <li>Win prizes based on your final position on the ladder</li>
           </ol>
           <div className="py-2 text-xs md:text-sm">
             DailyStrike is a non-profit project developed by fellow passionate
@@ -65,13 +61,16 @@ export const GameInfo: React.FC = () => {
             me, feel free to contact me on:
           </div>
           <div className="flex items-center gap-3">
-            <a>
+            <a
+              href="https://discord.com/users/1019685794740453386"
+              target="_blank"
+            >
               <DiscordSvgComponent />
             </a>
-            <a>
+            <a href="mailto:ic.prokopec@gmail.com">
               <EmailSvgComponent />
             </a>
-            <a>
+            <a href="https://github.com/prokopec-simon" target="_blank">
               <GithubSvgComponent />
             </a>
           </div>
