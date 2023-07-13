@@ -14,15 +14,11 @@ export const userRouter = t.router({
     });
     return messages;
   }),
+
   getUserData: t.procedure.input(z.string()).query(async ({ input }) => {
     const userInfo = await prisma?.user.findFirst({
       where: { id: input },
     });
-
-    // const dailyPredictionInfo = await prisma?.userMatchPrediction.findFirst({
-    //   where: { AND: [{ userId: input }, { balanceResult: null }] },
-    // });
-
     const dailyPrediction = (
       await prisma?.match.findFirst({
         orderBy: { dateAndTime: "desc" },
@@ -111,9 +107,13 @@ export const userRouter = t.router({
         orderBy: { match: { dateAndTime: "asc" } },
       });
 
-      const seasonStart = await prisma?.season.findFirstOrThrow({
+      const currentSeason = await prisma?.season.findFirstOrThrow({
         orderBy: { end: "desc" },
       });
+
+      if (!currentSeason) {
+        return [];
+      }
 
       const result = userHistory?.map((prediction) => {
         return {
@@ -124,8 +124,8 @@ export const userRouter = t.router({
       return [
         {
           balanceAfter: 100,
-          dateAndTime: seasonStart!.start!,
+          dateAndTime: currentSeason.start,
         },
-      ].concat(result!);
+      ].concat(result ?? []);
     }),
 });

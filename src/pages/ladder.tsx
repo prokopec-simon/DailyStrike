@@ -6,10 +6,10 @@ import Image from "next/image";
 import CoinSvgComponent from "../components/svg/coin";
 import Icon from "@ant-design/icons";
 import Head from "next/head";
+import { Decimal } from "@prisma/client/runtime";
 
 const Ladder = () => {
-  const { data: allSeasonsInfo, isLoading: areSeasonsLoading } =
-    trpc.ladder.getAllSeasonInfo.useQuery();
+  const { data: allSeasonsInfo } = trpc.ladder.getAllSeasonInfo.useQuery();
 
   const seasonDropdown = allSeasonsInfo?.map((season) => {
     return { label: season.name, value: season.id };
@@ -21,13 +21,17 @@ const Ladder = () => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
-  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+  const handleOk = () => {
     setRewardModalOpen(false);
   };
 
   useEffect(() => {
-    if (seasonDropdown && seasonDropdown.length > 0) {
-      setSelectedValue(seasonDropdown[0]!.value);
+    if (
+      seasonDropdown &&
+      seasonDropdown.length > 0 &&
+      seasonDropdown[0]?.value
+    ) {
+      setSelectedValue(seasonDropdown[0]?.value);
     }
   }, [seasonDropdown]);
 
@@ -52,7 +56,7 @@ const Ladder = () => {
     },
   ];
 
-  const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
+  const handleCancel = () => {
     setRewardModalOpen(false);
   };
 
@@ -61,22 +65,34 @@ const Ladder = () => {
       title: "Profile",
       dataIndex: "profile",
       key: "profile",
-      render: (_: any, __: any, index: number) => <div>#{index + 1}</div>,
+      render: (index: number) => <div>#{index + 1}</div>,
     },
     {
       title: "Profile",
       dataIndex: "profile",
       key: "profile",
-      render: (text: string, record: any) => (
+      render: (
+        record:
+          | {
+              name: string | null;
+              image: string | null;
+              balance: Decimal;
+            }
+          | undefined
+      ) => (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image
-            alt="profile image"
-            width={30}
-            height={30}
-            src={record.image}
-            loader={({ src }) => src}
-          />
-          <p style={{ marginLeft: "10px" }}>{record.name}</p>
+          {record && record.image && (
+            <Image
+              alt="profile image"
+              width={30}
+              height={30}
+              src={record.image}
+              loader={({ src }) => src}
+            />
+          )}
+          {record && record.name && (
+            <p style={{ marginLeft: "10px" }}>{record.name}</p>
+          )}
         </div>
       ),
     },
@@ -84,7 +100,7 @@ const Ladder = () => {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (text: bigint) => (
+      render: (text: Decimal) => (
         <div className="flex flex-row">
           <div className="pr-1">{text.toString()}</div>
           <Icon className="mt-px" component={CoinSvgComponent}></Icon>
@@ -168,15 +184,20 @@ const Ladder = () => {
                 <div className="flex flex-col">
                   <div className="text-xs text-zinc-400">Season ends in</div>
                   <div className="text-2xl">
-                    {allSeasonsInfo != undefined && selectedValue ? (
-                      <CountdownTimer
-                        targetDate={
-                          allSeasonsInfo.find(
-                            (item) => item.id == selectedValue
-                          )!.end
-                        }
-                      ></CountdownTimer>
-                    ) : null}
+                    <div className="text-2xl">
+                      {allSeasonsInfo !== undefined && selectedValue ? (
+                        allSeasonsInfo.find((item) => item.id === selectedValue)
+                          ?.end !== undefined ? (
+                          <CountdownTimer
+                            targetDate={
+                              allSeasonsInfo.find(
+                                (item) => item.id === selectedValue
+                              )?.end as Date
+                            }
+                          ></CountdownTimer>
+                        ) : null
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>

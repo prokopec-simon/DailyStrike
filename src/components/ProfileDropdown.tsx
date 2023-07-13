@@ -1,10 +1,9 @@
-import { UserOutlined } from "@ant-design/icons";
 import {
   DownOutlined,
   LogoutOutlined,
   OrderedListOutlined,
   MailOutlined,
-  TrophyOutlined
+  TrophyOutlined,
 } from "@ant-design/icons/lib/icons";
 import { Button, Dropdown, MenuProps, Spin } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";

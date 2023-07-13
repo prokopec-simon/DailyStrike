@@ -21,7 +21,6 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-// import { useEffect, useState } from "react";
 
 const customizeRenderEmptyPredictions = () => (
   <div className="text-center">
@@ -41,22 +40,6 @@ const History = () => {
     trpc.user.getUserBalanceHistory.useQuery(sessionData?.user?.id ?? "", {
       enabled: sessionData?.user !== undefined,
     });
-
-  // const [isMobile, setIsMobile] = useState(false);
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setIsMobile(window.innerWidth <= 767);
-  //   };
-
-  //   handleResize();
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
 
   ChartJS.register(
     CategoryScale,
@@ -169,7 +152,7 @@ const History = () => {
         if (!balanceResult) {
           return null;
         } else {
-          isPositive = balanceResult > 0;
+          isPositive = Number(balanceResult) > 0;
         }
 
         const textClass = (isPositive ? "text-green-500" : "text-red-500") + "";
@@ -199,11 +182,11 @@ const History = () => {
 
         let resultIcon = QuestionMarkIcon;
 
-        if (balanceResult && balanceResult > 0) {
+        if (balanceResult && Number(balanceResult) > 0) {
           resultIcon = CheckmarkIcon;
         }
 
-        if (balanceResult && balanceResult < 0) {
+        if (balanceResult && Number(balanceResult) < 0) {
           resultIcon = ErrorIcon;
         }
 
