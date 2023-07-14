@@ -23,6 +23,6 @@ export const defaultLog = (
   });
 };
 
-export const flushLogs = () => {
-  axiom.flush();
+export const flushLogs = async () => {
+  await axiom.flush();
 };

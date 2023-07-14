@@ -9,6 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  defaultLog("Hit match resolving endpoint", "info");
   if (req.method !== "POST") {
     res.status(405).json({ message: "Incorrect HTTP method" });
   }
@@ -16,19 +17,19 @@ export default async function handler(
   const apiKey = req.headers["dailystrike-key"] || req.query.apiKey;
 
   if (apiKey === VALID_API_KEY) {
-    defaultLog(
-      "Valid auth, resolving daily match",
-      "info",
-      undefined,
-      req.body
-    );
-
     const matchToResolve = await prisma?.match.findFirstOrThrow({
       orderBy: { dateAndTime: "asc" },
     });
     const predictionsToResolve = await prisma?.userMatchPrediction.findMany({
       where: { matchId: matchToResolve.id },
     });
+
+    defaultLog(
+      "Valid auth, resolving daily match",
+      "info",
+      undefined,
+      predictionsToResolve
+    );
 
     predictionsToResolve.forEach(async (prediction: any) => {
       const foundUser = await prisma.user.findFirstOrThrow({
@@ -60,7 +61,7 @@ export default async function handler(
       });
     });
 
-    flushLogs();
+    await flushLogs();
     res.status(200).json({ resultState: "Ok" });
   } else {
     res.status(401).json({ error: "Unauthorized" });
