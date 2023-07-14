@@ -15,7 +15,7 @@ export const defaultLog = (
   traceId?: string,
   data?: any
 ) => {
-  axiom.ingest("logs-private", {
+  axiom.ingest("logs-facade", {
     message: message,
     level: level,
     traceId: traceId,

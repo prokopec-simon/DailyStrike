@@ -13,15 +13,16 @@ export default async function handler(
     res.status(405).json({ message: "Incorrect HTTP method" });
   }
 
-  defaultLog(
-    "Got through login, resolving dailym matches",
-    "info",
-    undefined,
-    req.body
-  );
   const apiKey = req.headers["dailystrike-key"] || req.query.apiKey;
 
   if (apiKey === VALID_API_KEY) {
+    defaultLog(
+      "Valid auth, resolving daily match",
+      "info",
+      undefined,
+      req.body
+    );
+
     const matchToResolve = await prisma?.match.findFirstOrThrow({
       orderBy: { dateAndTime: "asc" },
     });
