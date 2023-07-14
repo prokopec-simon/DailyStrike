@@ -49,18 +49,6 @@ export const userRouter = t.router({
     };
   }),
 
-  updateUserBalance: t.procedure
-    .input(z.number())
-    .mutation(async ({ input }) => {
-      const updatedUser = await prisma?.user.update({
-        where: { id: "" },
-        data: { balance: { decrement: input } },
-        select: { id: true, balance: true },
-      });
-
-      return { user: updatedUser };
-    }),
-
   placePrediction: t.procedure
     .input(
       z.object({
