@@ -22,3 +22,7 @@ export const defaultLog = (
     data: data,
   });
 };
+
+export const flushLogs = () => {
+  axiom.flush();
+};

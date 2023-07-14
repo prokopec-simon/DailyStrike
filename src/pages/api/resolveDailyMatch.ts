@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import { Decimal } from "@prisma/client/runtime";
-import { defaultLog } from "../../utils/logging";
+import { defaultLog, flushLogs } from "../../utils/logging";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
@@ -60,6 +60,7 @@ export default async function handler(
       });
     });
 
+    flushLogs();
     res.status(200).json({ resultState: "Ok" });
   } else {
     res.status(401).json({ error: "Unauthorized" });
