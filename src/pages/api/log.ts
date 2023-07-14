@@ -6,6 +6,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   defaultLog("Logging API example", "info");
-  flushLogs();
+  await flushLogs();
   res.status(200).json({ message: "Logs flushed" });
 }
