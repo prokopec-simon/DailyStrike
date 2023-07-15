@@ -1,14 +1,11 @@
 import { NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import { Decimal } from "@prisma/client/runtime";
-import { AxiomAPIRequest, log } from "next-axiom";
+import { AxiomAPIRequest, log, withAxiom } from "next-axiom";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
-export default async function handler(
-  req: AxiomAPIRequest,
-  res: NextApiResponse
-) {
+async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
   req.log.info("Loggin request using Axiom ");
   if (req.method !== "POST") {
     res.status(405).json({ message: "Incorrect HTTP method" });
@@ -60,3 +57,5 @@ export default async function handler(
     res.status(401).json({ error: "Unauthorized" });
   }
 }
+
+export default withAxiom(handler);
