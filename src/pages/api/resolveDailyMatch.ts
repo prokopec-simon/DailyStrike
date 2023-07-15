@@ -1,16 +1,15 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import { Decimal } from "@prisma/client/runtime";
-import { log } from "next-axiom";
+import { AxiomAPIRequest, log } from "next-axiom";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
 export default async function handler(
-  req: NextApiRequest,
+  req: AxiomAPIRequest,
   res: NextApiResponse
 ) {
-  log.debug("Hit resolving EP");
-
+  req.log.info("Loggin request using Axiom ");
   if (req.method !== "POST") {
     res.status(405).json({ message: "Incorrect HTTP method" });
   }

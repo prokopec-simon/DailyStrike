@@ -1,8 +1,11 @@
+import { log } from "next-axiom";
 import { t } from "../trpc";
 import { z } from "zod";
 
 export const userRouter = t.router({
   getUserMessages: t.procedure.input(z.string()).query(async ({ input }) => {
+    log.debug("Getting user messages using TRPC");
+
     const messages = await prisma?.message.findMany({
       where: {
         recipientUserId: input,
