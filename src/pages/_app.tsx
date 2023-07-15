@@ -7,6 +7,8 @@ import { trpc } from "../utils/trpc";
 import { ConfigProvider, theme } from "antd";
 import Header from "../components/Header";
 
+export { reportWebVitals } from "next-axiom";
+
 const customTheme = {
   algorithm: theme.darkAlgorithm,
   token: {
