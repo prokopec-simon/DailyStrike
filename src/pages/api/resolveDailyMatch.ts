@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import { Decimal } from "@prisma/client/runtime";
-import { defaultLog, flushLogs } from "../../utils/logging";
+import { log } from "next-axiom";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
@@ -9,7 +9,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  defaultLog("Hit match resolving endpoint", "info");
+  log.debug("Hit resolving EP");
+
   if (req.method !== "POST") {
     res.status(405).json({ message: "Incorrect HTTP method" });
   }
@@ -23,13 +24,6 @@ export default async function handler(
     const predictionsToResolve = await prisma?.userMatchPrediction.findMany({
       where: { matchId: matchToResolve.id },
     });
-
-    defaultLog(
-      "Valid auth, resolving daily match",
-      "info",
-      undefined,
-      predictionsToResolve
-    );
 
     predictionsToResolve.forEach(async (prediction: any) => {
       const foundUser = await prisma.user.findFirstOrThrow({
@@ -61,7 +55,7 @@ export default async function handler(
       });
     });
 
-    await flushLogs();
+    log.flush();
     res.status(200).json({ resultState: "Ok" });
   } else {
     res.status(401).json({ error: "Unauthorized" });

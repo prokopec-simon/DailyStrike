@@ -1,5 +1,6 @@
 // @ts-check
 import { env } from "./src/env/server.mjs";
+import { withAxiom } from "next-axiom";
 
 /**
  * Don't be scared of the generics here.
@@ -13,19 +14,20 @@ function defineNextConfig(config) {
   return config;
 }
 
-export default defineNextConfig({
-  reactStrictMode: true,
-  swcMinify: true,
-  // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
-  images: {
-    domains: [
-      "cdn.discordapp.com",
-      "img-cdn.hltv.org",
-      "avatars.akamai.steamstatic.com",
-    ],
-  },
-});
+export default defineNextConfig(
+  withAxiom({
+    reactStrictMode: true,
+    swcMinify: true,
+    i18n: {
+      locales: ["en"],
+      defaultLocale: "en",
+    },
+    images: {
+      domains: [
+        "cdn.discordapp.com",
+        "img-cdn.hltv.org",
+        "avatars.akamai.steamstatic.com",
+      ],
+    },
+  })
+);
