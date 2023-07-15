@@ -51,7 +51,7 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
       });
     });
 
-    log.flush();
+    req.log.flush();
     res.status(200).json({ resultState: "Ok" });
   } else {
     res.status(401).json({ error: "Unauthorized" });
