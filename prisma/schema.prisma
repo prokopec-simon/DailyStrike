@@ -66,8 +66,8 @@ model Match {
   teamB_name          String
   teamA_odds          Decimal
   teamB_odds          Decimal
-  teamA_logoUrl       String?
-  teamB_logoUrl       String?
+  teamA_logoUrl       String?               @default("https://www.hltv.org/img/static/team/placeholder.svg")
+  teamB_logoUrl       String?               @default("https://www.hltv.org/img/static/team/placeholder.svg")
   bestOf              Int
   dateAndTime         DateTime
   hltvUrl             String?
@@ -82,8 +82,8 @@ model Match {
 model UserMatchPrediction {
   userId           String
   matchId          String
-  user             User    @relation(fields: [userId], references: [id])
-  match            Match   @relation(fields: [matchId], references: [id])
+  user             User     @relation(fields: [userId], references: [id])
+  match            Match    @relation(fields: [matchId], references: [id])
   pickedTeam       Int
   predictionOdds   Decimal
   predictionAmount Decimal
