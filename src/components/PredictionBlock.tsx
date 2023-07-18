@@ -187,7 +187,7 @@ const PredictionBlock: React.FC<{
                 <Button
                   type="primary"
                   className="ml-3 w-1/3 md:hidden"
-                  disabled={userDetail.data?.dailyPrediction.pickedTeam != null}
+                  disabled={(userDetail.data?.dailyPrediction.pickedTeam != null) && match.dateAndTime.getTime() - new Date().getTime() > 0}
                   onClick={() => {
                     sessionData != null ? placePrediction() : signIn();
                   }}

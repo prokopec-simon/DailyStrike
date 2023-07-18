@@ -100,7 +100,7 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
                 Match is over
               </div>
             ) : (
-              <div className="flex h-7 w-16 animate-pulse items-center justify-center rounded-md bg-red-500 align-middle text-white hover:animate-ping">
+              <div className="flex h-7 w-16 animate-pulse items-center justify-center rounded-md bg-red-500 align-middle text-white">
                 Live !
               </div>
             )}

@@ -17,7 +17,6 @@ const Ladder = () => {
 
   const { data: ladder, isLoading: isLoading } =
     trpc.ladder.getCurrentSeasonLadder.useQuery();
-
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
@@ -62,24 +61,15 @@ const Ladder = () => {
 
   const columns = [
     {
-      title: "Profile",
-      dataIndex: "profile",
-      key: "profile",
-      render: (index: number) => <div>#{index + 1}</div>,
+      title: "Index",
+      dataIndex: "index",
+      key: "index",
+      render: (_: any, __: any, index: number) => <div>#{index + 1}</div>,
     },
     {
       title: "Profile",
-      dataIndex: "profile",
       key: "profile",
-      render: (
-        record:
-          | {
-              name: string | null;
-              image: string | null;
-              balance: Decimal;
-            }
-          | undefined
-      ) => (
+      render: (record: any) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           {record && record.image && (
             <Image
@@ -100,9 +90,9 @@ const Ladder = () => {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (text: Decimal) => (
+      render: (userBalance: Decimal) => (
         <div className="flex flex-row">
-          <div className="pr-1">{text.toString()}</div>
+          <div className="pr-1">{Number(userBalance).toFixed(2)}</div>
           <Icon className="mt-px" component={CoinSvgComponent}></Icon>
         </div>
       ),
@@ -119,7 +109,7 @@ const Ladder = () => {
         />
       </Head>
       <Modal
-        visible={rewardModalOpen}
+        open={rewardModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
@@ -209,6 +199,7 @@ const Ladder = () => {
             <Table
               className="mt-1 w-full"
               dataSource={ladder}
+              rowKey={(record) => record.image ?? ""}
               columns={columns}
               showHeader={false}
             />
