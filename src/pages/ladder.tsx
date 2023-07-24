@@ -7,6 +7,7 @@ import CoinSvgComponent from "../components/svg/coin";
 import Icon from "@ant-design/icons";
 import Head from "next/head";
 import { Decimal } from "@prisma/client/runtime";
+import SeasonRewardCard from "../components/SeasonRewardCard";
 
 const Ladder = () => {
   const { data: allSeasonsInfo } = trpc.ladder.getAllSeasonInfo.useQuery();
@@ -121,7 +122,9 @@ const Ladder = () => {
               <Table
                 dataSource={allSeasonsInfo
                   .find((item) => item.id === selectedValue)
-                  ?.Rewards.sort((a, b) => a.order - b.order)}
+                  ?.Rewards.sort(
+                    (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
+                  )}
                 columns={modalRewardColumns}
                 pagination={false}
               />
@@ -129,16 +132,16 @@ const Ladder = () => {
           </ol>
         </div>
       </Modal>
-      <div className="w-100 flex items-center justify-center md:mt-16">
-        <div className="flex w-4/5 flex-col items-center justify-center md:w-3/5">
-          <div className="flex  w-full flex-col pt-4 pb-4 text-white">
-            <div className="flex flex-col md:flex-row md:py-2">
+      <div className="flex items-center justify-center md:mt-16">
+        <div className="flex w-4/5 flex-col justify-center md:flex-row">
+          <div className="flex  w-full flex-col pt-4 pb-4 text-white md:w-2/5 md:pt-0">
+            <div className="flex w-full flex-col  md:flex-row md:py-2">
               <Select
                 value={selectedValue}
                 size="large"
                 onChange={setSelectedValue}
                 defaultActiveFirstOption
-                className="w-100 mt-3 pr-2 md:mt-0 md:w-1/2"
+                className="mt-3 w-full pr-2 md:mt-0"
                 defaultValue={allSeasonsInfo?.[0]?.id}
               >
                 {allSeasonsInfo &&
@@ -148,14 +151,14 @@ const Ladder = () => {
                     </Select.Option>
                   ))}
               </Select>
-              <div className="w-100 mt-3 pl-2 md:mt-0 md:w-1/2">
+              {/* <div className="mt-3 w-full pl-2 md:mt-0 md:w-1/2">
                 <Button
                   className="h-10 w-full"
                   onClick={() => setRewardModalOpen(true)}
                 >
                   Show season rewards
                 </Button>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3 flex  flex-col pr-4  md:mt-0 md:flex-row md:py-2">
               <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
@@ -192,17 +195,34 @@ const Ladder = () => {
                 </div>
               </div>
             </div>
+            <div className="flex flex-row gap-2">
+              {allSeasonsInfo != null
+                ? allSeasonsInfo
+                    .find((item) => item.id === selectedValue)
+                    ?.Rewards.sort(
+                      (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
+                    )
+                    .map((reward, index) => (
+                      <SeasonRewardCard
+                        key={index}
+                        seasonReward={reward}
+                      ></SeasonRewardCard>
+                    ))
+                : null}
+            </div>
           </div>
           {isLoading ? (
             <Spin size="large" className="mt-10" />
           ) : (
-            <Table
-              className="mt-1 w-full"
-              dataSource={ladder}
-              rowKey={(record) => record.image ?? ""}
-              columns={columns}
-              showHeader={false}
-            />
+            <div className="w-full md:w-3/5">
+              <Table
+                className="mt-1"
+                dataSource={ladder}
+                rowKey={(record) => record.image ?? ""}
+                columns={columns}
+                showHeader={false}
+              />
+            </div>
           )}
         </div>
       </div>

@@ -27,6 +27,7 @@ export default defineNextConfig(
         "cdn.discordapp.com",
         "img-cdn.hltv.org",
         "avatars.akamai.steamstatic.com",
+        "community.cloudflare.steamstatic.com",
       ],
     },
   })

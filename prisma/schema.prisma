@@ -105,13 +105,15 @@ model Season {
 }
 
 model SeasonReward {
-  order     Int
-  places    String
-  itemName  String  @unique
-  itemCount Int
-  Season    Season? @relation(fields: [seasonId], references: [id])
-  seasonId  String?
+  ladderPlaceStart Int
+  ladderPlaceEnd   Int
+  itemName         String
+  itemCount        Int     @default(1)
+  itemImageUrl     String? @db.LongText
+  Season           Season? @relation(fields: [seasonId], references: [id])
+  seasonId         String?
 
+  @@id([itemName, ladderPlaceStart, ladderPlaceEnd])
   @@index([seasonId])
 }
 
