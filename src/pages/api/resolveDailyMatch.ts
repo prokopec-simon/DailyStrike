@@ -1,8 +1,7 @@
 import { NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import { Decimal } from "@prisma/client/runtime";
-import { AxiomAPIRequest, log, withAxiom } from "next-axiom";
-import { UserMatchPrediction } from "@prisma/client";
+import { AxiomAPIRequest, withAxiom } from "next-axiom";
 
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
@@ -82,8 +81,8 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
 
     req.log.flush();
     return res.status(200).json({ resultState: "Ok" });
-  } catch (error: any) {
-    req.log.error("An error occurred while processing the request.", error);
+  } catch (error) {
+    req.log.error("An error occurred while processing the request.", error as Error);
     req.log.flush();
     return res.status(500).json({ error: "Internal Server Error" });
   }
