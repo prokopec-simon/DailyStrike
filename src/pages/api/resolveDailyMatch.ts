@@ -6,7 +6,7 @@ import { AxiomAPIRequest, log, withAxiom } from "next-axiom";
 const VALID_API_KEY = process.env.DAILYSTRIKE_PRIVATE_KEY;
 
 async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
-  req.log.info("Loggin request using Axiom ");
+  req.log.info("Received attempt to resolve daily matches.");
   if (req.method !== "POST") {
     res.status(405).json({ message: "Incorrect HTTP method" });
   }
@@ -14,6 +14,8 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
   const apiKey = req.headers["dailystrike-key"] || req.query.apiKey;
 
   if (apiKey === VALID_API_KEY) {
+    req.log.info("All conditions to resolve match fulfilled.");
+
     const matchToResolve = await prisma?.match.findFirstOrThrow({
       orderBy: { dateAndTime: "asc" },
     });
@@ -21,6 +23,7 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
       where: { matchId: matchToResolve.id },
     });
 
+    req.log.info(`Resolving ${predictionsToResolve.length} predictions.`);
     predictionsToResolve.forEach(async (prediction: any) => {
       const foundUser = await prisma.user.findFirstOrThrow({
         where: { id: prediction.userId },
@@ -54,6 +57,7 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
     req.log.flush();
     res.status(200).json({ resultState: "Ok" });
   } else {
+    req.log.flush();
     res.status(401).json({ error: "Unauthorized" });
   }
 }
