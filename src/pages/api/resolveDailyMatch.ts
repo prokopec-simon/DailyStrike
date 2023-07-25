@@ -17,8 +17,19 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
     req.log.info("All conditions to resolve match fulfilled.");
 
     const matchToResolve = await prisma?.match.findFirstOrThrow({
-      orderBy: { dateAndTime: "asc" },
+      orderBy: { dateAndTime: "desc" },
     });
+
+    req.log.info("Resolving match", matchToResolve);
+
+    if (matchToResolve.winner == null) {
+      req.log.info(
+        "Incorrectly called match resolving, match is not finished."
+      );
+      req.log.flush();
+      res.status(400).json({ error: "Match shouldn't have been resolved." });
+    }
+
     const predictionsToResolve = await prisma?.userMatchPrediction.findMany({
       where: { matchId: matchToResolve.id },
     });
@@ -32,16 +43,19 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
       let balanceIncrease =
         Number(prediction.predictionOdds) * Number(prediction.predictionAmount);
 
-      if (matchToResolve.winner !== prediction.pickedTeam) {
+      if (matchToResolve.winner === prediction.pickedTeam) {
+        await prisma.user.update({
+          where: { id: prediction.userId },
+          data: {
+            balance: Decimal.add(
+              foundUser.balance,
+              new Decimal(balanceIncrease)
+            ),
+          },
+        });
+      } else {
         balanceIncrease = -balanceIncrease;
       }
-
-      await prisma.user.update({
-        where: { id: prediction.userId },
-        data: {
-          balance: Decimal.add(foundUser.balance, new Decimal(balanceIncrease)),
-        },
-      });
 
       await prisma.userMatchPrediction.update({
         where: {
@@ -50,7 +64,10 @@ async function handler(req: AxiomAPIRequest, res: NextApiResponse) {
             matchId: prediction.matchId,
           },
         },
-        data: { balanceChange: balanceIncrease },
+        data: {
+          balanceChange: balanceIncrease,
+          balanceAfter: Decimal.add(foundUser.balance, balanceIncrease),
+        },
       });
     });
 
