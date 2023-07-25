@@ -66,6 +66,14 @@ export const userRouter = t.router({
         await prisma?.match.findFirst({ orderBy: { dateAndTime: "desc" } })
       )?.id;
 
+      const userToUpdate = await prisma?.user.findFirstOrThrow({
+        where: { id: input.userId },
+      });
+
+      if (Number(userToUpdate!.balance) - input.predictionAmount < 0) {
+        throw "User balance can't be negative!";
+      }
+
       const updatedUser = await prisma?.user.update({
         where: { id: input.userId },
         data: { balance: { decrement: input.predictionAmount } },
