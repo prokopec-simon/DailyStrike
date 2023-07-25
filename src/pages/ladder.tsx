@@ -8,6 +8,8 @@ import Icon from "@ant-design/icons";
 import Head from "next/head";
 import { Decimal } from "@prisma/client/runtime";
 import SeasonRewardCard from "../components/SeasonRewardCard";
+import { SeasonReward } from "@prisma/client";
+import { getOrdinalNum } from "../utils/cardinalPositionFormatter";
 
 const Ladder = () => {
   const { data: allSeasonsInfo } = trpc.ladder.getAllSeasonInfo.useQuery();
@@ -38,21 +40,25 @@ const Ladder = () => {
   const modalRewardColumns = [
     {
       title: "Places",
-      dataIndex: "places",
-      key: "places",
-      render: (text: string) => <a>{text}</a>,
+      key: "ladderPlaceStart",
+      render: (seasonReward: SeasonReward) => (
+        <p className="ordinal">
+          {seasonReward.ladderPlaceStart +
+            getOrdinalNum(seasonReward.ladderPlaceStart)}
+        </p>
+      ),
     },
     {
       title: "Item name",
       dataIndex: "itemName",
       key: "itemName",
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string) => <p>{text}</p>,
     },
     {
       title: "Reward count",
       dataIndex: "itemCount",
       key: "itemCount",
-      render: (text: string) => <a>{text}x</a>,
+      render: (text: string) => <p>{text}</p>,
     },
   ];
 
@@ -195,13 +201,14 @@ const Ladder = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row gap-2">
+            <div className="grid grid-cols-4 gap-1">
               {allSeasonsInfo != null
                 ? allSeasonsInfo
                     .find((item) => item.id === selectedValue)
                     ?.Rewards.sort(
                       (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
                     )
+                    .slice(0, 7)
                     .map((reward, index) => (
                       <SeasonRewardCard
                         key={index}
@@ -209,6 +216,13 @@ const Ladder = () => {
                       ></SeasonRewardCard>
                     ))
                 : null}
+              <button
+                className="break-all rounded-md border border-solid border-orange-500 bg-zinc-600 bg-opacity-10 px-2 text-xs md:text-base"
+                onClick={() => setRewardModalOpen(true)}
+              >
+                <p>All</p>
+                <p>Rewards</p>
+              </button>
             </div>
           </div>
           {isLoading ? (
