@@ -77,7 +77,7 @@ export const ProfileDropdown: React.FC = () => {
             <div className="text-xs">
               {query.data?.user?.balance ? (
                 <>
-                  {Number(query.data.user.balance).toFixed(2)}{" "}
+                  {Number(query.data.user.balance).toFixed(2)}
                   <Icon component={CoinSvgComponent} />
                 </>
               ) : (

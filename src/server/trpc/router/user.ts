@@ -47,12 +47,6 @@ export const userRouter = t.router({
         },
       })) ?? [];
 
-    console.log({
-      user: { ...userInfo },
-      dailyPrediction: { ...dailyPrediction },
-      lastThreeMatchesResult: [...lastThreeMatchesResult],
-    });
-
     return {
       user: { ...userInfo },
       dailyPrediction: { ...dailyPrediction },
