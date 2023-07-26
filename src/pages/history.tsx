@@ -209,7 +209,7 @@ const History = () => {
             <Spin size="large" className="mt-10" />
           ) : (
             <div className="h-1/3 w-full rounded-xl bg-zinc-700 bg-opacity-20 px-6 pb-4 text-center md:ml-3 md:w-2/5 md:rounded-md md:px-4 md:pb-0">
-              <h2 className="py-4 text-lg font-semibold text-white md:text-xl">
+              <h2 className="py-4 text-lg text-white md:text-xl">
                 Balance history
               </h2>
               <Line
@@ -224,7 +224,7 @@ const History = () => {
               <Spin size="large" className="mt-10" />
             ) : (
               <div className="flex h-full w-full flex-col rounded-md bg-zinc-700 bg-opacity-20 text-center md:px-4 md:pb-8">
-                <h2 className="py-4 text-lg font-semibold text-white md:text-xl">
+                <h2 className="py-4 text-lg text-white md:text-xl">
                   Prediction history
                 </h2>
                 <ConfigProvider renderEmpty={customizeRenderEmptyPredictions}>

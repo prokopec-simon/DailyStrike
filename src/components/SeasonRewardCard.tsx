@@ -11,7 +11,7 @@ const SeasonRewardCard: React.FC<{ seasonReward: SeasonReward }> = (props) => {
   const ladderEndSuffix = getOrdinalNum(seasonReward.ladderPlaceEnd);
 
   return (
-    <div className="items-center justify-start rounded-md bg-zinc-600 bg-opacity-10 px-2">
+    <div className="items-center justify-start rounded-md border border-solid border-orange-500 bg-zinc-600 bg-opacity-40 px-2">
       <div className="absolute text-xs md:text-base">
         {ladderPlaceStart === ladderPlaceEnd ? (
           <>
