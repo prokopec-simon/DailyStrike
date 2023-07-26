@@ -31,7 +31,8 @@ export const userRouter = t.router({
     )?.UserMatchPrediction[0];
 
     const lastThreeMatchIds = await prisma?.match.findMany({
-      orderBy: { id: "desc" },
+      orderBy: { dateAndTime: "desc" },
+      skip: 1,
       take: 3,
       select: { id: true },
     });
@@ -45,6 +46,13 @@ export const userRouter = t.router({
           ],
         },
       })) ?? [];
+
+    console.log({
+      user: { ...userInfo },
+      dailyPrediction: { ...dailyPrediction },
+      lastThreeMatchesResult: [...lastThreeMatchesResult],
+    });
+
     return {
       user: { ...userInfo },
       dailyPrediction: { ...dailyPrediction },

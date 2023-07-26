@@ -3,7 +3,7 @@ import { trpc } from "../utils/trpc";
 
 export function useUserDetail() {
   const { data: sessionData } = useSession();
-  const secretQuery = trpc.user.getUserData.useQuery(
+  const userQuery = trpc.user.getUserData.useQuery(
     sessionData?.user?.id ?? "",
     { enabled: sessionData?.user !== undefined }
   );
@@ -14,5 +14,5 @@ export function useUserDetail() {
     },
   });
 
-  return [secretQuery, placePredictionMutation] as const;
+  return [userQuery, placePredictionMutation] as const;
 }
