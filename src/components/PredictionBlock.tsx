@@ -116,17 +116,17 @@ const PredictionBlock: React.FC<{
                   Placed a{" "}
                   {Number(
                     placePredictionMutation.data.predictionAmount
-                  ).toFixed(3) ?? 0}{" "}
+                  ).toFixed(2) ?? 0}{" "}
                   prediction on{" "}
                   {placePredictionMutation.data.pickedTeam == 0
                     ? match.teamA_name
                     : match.teamB_name}{" "}
-                  at {placePredictionMutation.data.predictionOdds?.toString()}{" "}
+                  at {placePredictionMutation.data.predictionOdds?.toFixed(2)}{" "}
                   odds, possibly winning{" "}
                   {(
                     Number(placePredictionMutation.data.predictionOdds) *
                       Number(placePredictionMutation.data.predictionAmount) ?? 0
-                  ).toFixed(3)}
+                  ).toFixed(2)}
                 </p>
               </div>
             )}
