@@ -14,7 +14,7 @@ export const CompetitorCard: React.FC<{
 
   return (
     <div
-      className={`flex h-full w-1/3 min-w-0 flex-col items-center rounded-lg border-solid border-orange-500 bg-zinc-700 bg-opacity-40 px-2 ${flexRowClass}`}
+      className={`flex h-full w-1/3 min-w-0 flex-col items-center rounded-lg border-solid border-orange-500 bg-zinc-700 bg-opacity-20 px-2 ${flexRowClass}`}
     >
       <img
         alt="team logo"
