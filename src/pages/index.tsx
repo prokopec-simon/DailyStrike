@@ -29,14 +29,12 @@ const Home = () => {
       </div>
       <div className="flex w-full flex-col items-center justify-center">
         <div className="w-4/5 rounded-md bg-zinc-700 bg-opacity-20 pb-2 text-center md:mt-4 md:w-1/3 md:px-4">
+          <h3 className="pt-1 text-white md:-mb-5 md:pt-2 md:pb-1">
+            Recent results
+          </h3>
           {lastNMatches
             ? lastNMatches.map((match, index) => (
-                <>
-                  <h3 className="pt-1 text-white md:-mb-5 md:pt-2 md:pb-1">
-                    Recent results
-                  </h3>
-                  <HistoryMatch key={index} match={match}></HistoryMatch>
-                </>
+                <HistoryMatch key={index} match={match}></HistoryMatch>
               ))
             : null}
         </div>
