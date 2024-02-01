@@ -7,7 +7,6 @@ import CountdownTimer from "./CountdownTimer";
 import PredictionBlock from "./PredictionBlock";
 
 const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
-  // const authSession = useSession();
   const [detailedUserInformationQuery] = useUserDetail();
 
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -26,15 +25,13 @@ const DailyMatchComponent: React.FC<{ match: Match }> = (props) => {
   ]);
 
   const pickTeam = (pickedTeam: string) => {
-    if (
-      detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == null ||
-      detailedUserInformationQuery.data?.dailyPrediction.pickedTeam == undefined
-    ) {
-      if (pickedTeam === selectedTeam) {
-        setSelectedTeam(null);
-        return;
-      }
-      setSelectedTeam(pickedTeam);
+    const hasPickedTeam =
+      detailedUserInformationQuery?.data?.dailyPrediction.pickedTeam != null;
+    const isFutureMatch =
+      props.match.dateAndTime.getTime() > new Date().getTime();
+
+    if (!hasPickedTeam && isFutureMatch) {
+      setSelectedTeam(pickedTeam === selectedTeam ? null : pickedTeam);
     }
   };
 
