@@ -1,80 +1,54 @@
-import React, { useEffect, useState } from "react";
-const CountdownTimer: React.FC<{ targetDate: Date }> = (props) => {
-  const targetDate = props.targetDate;
-  const timeDifferenceInMs = targetDate.getTime() - new Date().getTime();
+import React, { useState, useEffect } from "react";
 
-  const totalSeconds = Math.floor(timeDifferenceInMs / 1000);
-  const seconds = totalSeconds % 60;
-  const totalMinutes = Math.floor(timeDifferenceInMs / (1000 * 60));
-  const minutes = totalMinutes % 60;
-  const totalHours = Math.floor(timeDifferenceInMs / (1000 * 60 * 60));
-  const hours = totalHours % 24;
-  const totalDays = Math.floor(timeDifferenceInMs / (1000 * 60 * 60 * 24));
-  const days = totalDays % 30;
-  const totalMonths = Math.floor(
-    timeDifferenceInMs / (1000 * 60 * 60 * 24 * 30)
-  );
-  const months = totalMonths;
+const CountdownTimer: React.FC<{ targetDate: Date }> = ({ targetDate }) => {
+  const calculateTimeLeft = () => {
+    const difference = targetDate.getTime() - new Date().getTime();
 
-  const [remainingMonths, setRemainingMonths] = useState(months);
-  const [remainingDays, setRemainingDays] = useState(days);
-  const [remainingHours, setRemainingHours] = useState(hours);
-  const [remainingMinutes, setRemainingMinutes] = useState(minutes);
-  const [remainingSeconds, setRemainingSeconds] = useState(seconds);
+    if (difference > 0) {
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      return { days, hours, minutes, seconds };
+    }
+
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (remainingSeconds > 0) {
-        setRemainingSeconds(remainingSeconds - 1);
-      } else {
-        if (remainingMinutes === 0) {
-          if (remainingHours === 0) {
-            if (remainingDays === 0) {
-              if (remainingMonths === 0) {
-                clearInterval(intervalId);
-              } else {
-                setRemainingMonths(remainingMonths - 1);
-                setRemainingDays(29);
-                setRemainingHours(23);
-                setRemainingMinutes(59);
-                setRemainingSeconds(59);
-              }
-            } else {
-              setRemainingDays(remainingDays - 1);
-              setRemainingHours(23);
-              setRemainingMinutes(59);
-              setRemainingSeconds(59);
-            }
-          } else {
-            setRemainingHours(remainingHours - 1);
-            setRemainingMinutes(59);
-            setRemainingSeconds(59);
-          }
-        } else {
-          setRemainingMinutes(remainingMinutes - 1);
-          setRemainingSeconds(59);
-        }
-      }
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  });
 
-  const formattedDays = remainingDays > 0 ? `${remainingDays}d ` : "";
-  const formattedHours =
-    remainingHours < 10 ? `0${remainingHours}` : remainingHours;
-  const formattedMinutes =
-    remainingMinutes < 10 ? `0${remainingMinutes}` : remainingMinutes;
-  const formattedSeconds =
-    remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
+    return () => clearTimeout(timer);
+  });
 
   return (
     <div>
-      <h1>
-        {formattedDays}
-        {formattedHours}h {formattedMinutes}m {formattedSeconds}s
-      </h1>
+      {timeLeft.days > 0 && (
+        <span>
+          {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m{" "}
+          {timeLeft.seconds}s
+        </span>
+      )}
+      {timeLeft.days === 0 && timeLeft.hours > 0 && (
+        <span>
+          {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+        </span>
+      )}
+      {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes > 0 && (
+        <span>
+          {timeLeft.minutes}m {timeLeft.seconds}s
+        </span>
+      )}
+      {timeLeft.days === 0 &&
+        timeLeft.hours === 0 &&
+        timeLeft.minutes === 0 && <span>{timeLeft.seconds}s</span>}
     </div>
   );
 };

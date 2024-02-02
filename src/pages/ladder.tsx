@@ -12,12 +12,24 @@ import { SeasonReward } from "@prisma/client";
 import { getOrdinalNum } from "../utils/cardinalPositionFormatter";
 
 const Ladder = () => {
+  const { data: ladder, isLoading: isLoading } =
+    trpc.ladder.getCurrentSeasonLadder.useQuery();
+
   const { data: allSeasonsInfo, isLoading: seasonsAreLoading } =
     trpc.ladder.getAllSeasonInfo.useQuery();
 
-  const { data: ladder, isLoading: isLoading } =
-    trpc.ladder.getCurrentSeasonLadder.useQuery();
   const [selectedSeasonId, setSelectedSeasonId] = useState<string>();
+
+  useEffect(() => {
+    if (
+      !seasonsAreLoading &&
+      allSeasonsInfo &&
+      allSeasonsInfo.length > 0 &&
+      allSeasonsInfo[0] != undefined
+    ) {
+      setSelectedSeasonId(allSeasonsInfo[0].id);
+    }
+  }, [allSeasonsInfo, seasonsAreLoading]);
 
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
@@ -178,28 +190,27 @@ const Ladder = () => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
-                  <div className="flex flex-col">
-                    <div className="text-xs text-zinc-400">Season ends in</div>
-                    <div className="text-lg md:text-2xl">
+                {selectedSeason != undefined ? (
+                  <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
+                    <div className="flex flex-col">
+                      <div className="text-xs text-zinc-400">
+                        Season
+                        {selectedSeason?.end < new Date()
+                          ? "ends in"
+                          : "ended on"}
+                      </div>
                       <div className="text-lg md:text-2xl">
-                        {allSeasonsInfo !== undefined && selectedSeasonId ? (
-                          allSeasonsInfo.find(
-                            (item) => item.id === selectedSeasonId
-                          )?.end !== undefined ? (
-                            <CountdownTimer
-                              targetDate={
-                                allSeasonsInfo.find(
-                                  (item) => item.id === selectedSeasonId
-                                )?.end as Date
-                              }
-                            ></CountdownTimer>
-                          ) : null
-                        ) : null}
+                        <div className="text-lg md:text-2xl">
+                          {selectedSeason?.end < new Date() ? (
+                            selectedSeason?.end.toLocaleDateString()
+                          ) : (
+                            <CountdownTimer targetDate={selectedSeason?.end} />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
             {selectedSeason?.Rewards && selectedSeason.Rewards.length > 0 ? (
