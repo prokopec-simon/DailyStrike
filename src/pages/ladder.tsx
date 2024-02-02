@@ -12,30 +12,26 @@ import { SeasonReward } from "@prisma/client";
 import { getOrdinalNum } from "../utils/cardinalPositionFormatter";
 
 const Ladder = () => {
-  const { data: allSeasonsInfo } = trpc.ladder.getAllSeasonInfo.useQuery();
-
-  const seasonDropdown = allSeasonsInfo?.map((season) => {
-    return { label: season.name, value: season.id };
-  });
+  const { data: allSeasonsInfo, isLoading: seasonsAreLoading } =
+    trpc.ladder.getAllSeasonInfo.useQuery();
 
   const { data: ladder, isLoading: isLoading } =
     trpc.ladder.getCurrentSeasonLadder.useQuery();
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedSeasonId, setSelectedSeasonId] = useState<string>();
+
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
   const handleOk = () => {
     setRewardModalOpen(false);
   };
 
-  useEffect(() => {
-    if (
-      seasonDropdown &&
-      seasonDropdown.length > 0 &&
-      seasonDropdown[0]?.value
-    ) {
-      setSelectedValue(seasonDropdown[0]?.value);
-    }
-  }, [seasonDropdown]);
+  const handleChange = (value: string) => {
+    setSelectedSeasonId(value);
+  };
+
+  const selectedSeason = allSeasonsInfo?.find(
+    (item) => item.id === selectedSeasonId
+  );
 
   const modalRewardColumns = [
     {
@@ -132,7 +128,7 @@ const Ladder = () => {
             {allSeasonsInfo && (
               <Table
                 dataSource={allSeasonsInfo
-                  .find((item) => item.id === selectedValue)
+                  .find((item) => item.id === selectedSeasonId)
                   ?.Rewards.sort(
                     (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
                   )}
@@ -151,21 +147,23 @@ const Ladder = () => {
                 Season Info
               </h2>
               <div className="flex w-full flex-col  md:flex-row md:py-2">
-                <Select
-                  value={selectedValue}
-                  size="large"
-                  onChange={setSelectedValue}
-                  defaultActiveFirstOption
-                  className="mt-3 w-full md:mt-0"
-                  defaultValue={allSeasonsInfo?.[0]?.id}
-                >
-                  {allSeasonsInfo &&
-                    allSeasonsInfo.map((option) => (
-                      <Select.Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Select.Option>
-                    ))}
-                </Select>
+                {!seasonsAreLoading ? (
+                  <Select
+                    size="large"
+                    defaultActiveFirstOption
+                    className="mt-3 w-full md:mt-0"
+                    defaultValue={allSeasonsInfo?.[0]?.id}
+                    value={selectedSeasonId}
+                    onChange={handleChange}
+                  >
+                    {allSeasonsInfo &&
+                      allSeasonsInfo.map((option) => (
+                        <Select.Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                ) : null}
               </div>
               <div className="mt-3 flex  flex-row  items-center md:mt-0 md:py-2">
                 <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
@@ -174,10 +172,8 @@ const Ladder = () => {
                       Season started on
                     </div>
                     <div className="text-lg md:text-2xl">
-                      {allSeasonsInfo != undefined && selectedValue
-                        ? allSeasonsInfo
-                            .find((item) => item.id == selectedValue)
-                            ?.start.toLocaleDateString()
+                      {selectedSeason != undefined
+                        ? selectedSeason.start.toLocaleDateString()
                         : null}
                     </div>
                   </div>
@@ -187,14 +183,14 @@ const Ladder = () => {
                     <div className="text-xs text-zinc-400">Season ends in</div>
                     <div className="text-lg md:text-2xl">
                       <div className="text-lg md:text-2xl">
-                        {allSeasonsInfo !== undefined && selectedValue ? (
+                        {allSeasonsInfo !== undefined && selectedSeasonId ? (
                           allSeasonsInfo.find(
-                            (item) => item.id === selectedValue
+                            (item) => item.id === selectedSeasonId
                           )?.end !== undefined ? (
                             <CountdownTimer
                               targetDate={
                                 allSeasonsInfo.find(
-                                  (item) => item.id === selectedValue
+                                  (item) => item.id === selectedSeasonId
                                 )?.end as Date
                               }
                             ></CountdownTimer>
@@ -206,34 +202,38 @@ const Ladder = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-4 flex flex-col items-center rounded-lg bg-zinc-700 bg-opacity-20 p-2 md:p-3">
-              <h2 className="self-center pb-2.5 text-white md:pb-4 md:pt-1 md:text-xl">
-                Rewards
-              </h2>
-              <div className="grid grid-cols-4 gap-2">
-                {allSeasonsInfo != null
-                  ? allSeasonsInfo
-                      .find((item) => item.id === selectedValue)
-                      ?.Rewards.sort(
-                        (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
-                      )
-                      .slice(0, 7)
-                      .map((reward, index) => (
-                        <SeasonRewardCard
-                          key={index}
-                          seasonReward={reward}
-                        ></SeasonRewardCard>
-                      ))
-                  : null}
-                <button
-                  className="break-all rounded-md border border-solid border-orange-500 bg-zinc-600 bg-opacity-40 px-2 text-xs md:text-base"
-                  onClick={() => setRewardModalOpen(true)}
-                >
-                  <p>All</p>
-                  <p>Rewards</p>
-                </button>
+            {selectedSeason?.Rewards && selectedSeason.Rewards.length > 0 ? (
+              <div className="mt-4 flex flex-col items-center rounded-lg bg-zinc-700 bg-opacity-20 p-2 md:p-3">
+                <h2 className="self-center pb-2.5 text-white md:pb-4 md:pt-1 md:text-xl">
+                  Rewards
+                </h2>
+                <div className="grid grid-cols-4 gap-2">
+                  {allSeasonsInfo != null ? (
+                    <>
+                      {allSeasonsInfo
+                        .find((item) => item.id === selectedSeasonId)
+                        ?.Rewards.sort(
+                          (a, b) => a.ladderPlaceStart - b.ladderPlaceStart
+                        )
+                        .slice(0, 7)
+                        .map((reward, index) => (
+                          <SeasonRewardCard
+                            key={index}
+                            seasonReward={reward}
+                          ></SeasonRewardCard>
+                        ))}
+                      <button
+                        className="break-all rounded-md border border-solid border-orange-500 bg-zinc-600 bg-opacity-40 px-2 text-xs md:text-base"
+                        onClick={() => setRewardModalOpen(true)}
+                      >
+                        <p>All</p>
+                        <p>Rewards</p>
+                      </button>
+                    </>
+                  ) : null}
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
           {isLoading ? (
             <Spin size="large" className="mt-10" />
