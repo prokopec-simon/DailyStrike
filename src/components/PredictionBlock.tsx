@@ -81,23 +81,24 @@ const PredictionBlock: React.FC<{
     height: isMobile ? "80px" : "200px",
   };
 
-  const placedPredictionAmount =
-    placePredictionMutation?.data?.predictionAmount?.toFixed(2);
+  // const placedPredictionAmount =
+  //   placePredictionMutation?.data?.predictionAmount?.toFixed(2);
 
-  const placedPredictionPickedTeam =
-    placePredictionMutation?.data?.pickedTeam === 0
-      ? match.teamA_name
-      : match.teamB_name;
+  // const placedPredictionPickedTeam =
+  //   placePredictionMutation?.data?.pickedTeam === 0
+  //     ? match.teamA_name
+  //     : match.teamB_name;
 
-  const placedPredictionOdds =
-    placePredictionMutation?.data?.predictionOdds?.toFixed(2);
+  // const placedPredictionOdds =
+  //   placePredictionMutation?.data?.predictionOdds?.toFixed(2);
 
-  const placedPredictionPossibleWinEstimation = (
-    Number(placePredictionMutation?.data?.predictionOdds) *
-    Number(placePredictionMutation?.data?.predictionAmount)
-  ).toFixed(2);
+  // const placedPredictionPossibleWinEstimation = (
+  //   Number(placePredictionMutation?.data?.predictionOdds) *
+  //   Number(placePredictionMutation?.data?.predictionAmount)
+  // ).toFixed(2);
 
-  const successfulPredictionText = `Successfully placed a prediction on ${placedPredictionPickedTeam} (${placedPredictionAmount}) at ${placedPredictionOdds}, possibly winning ${placedPredictionPossibleWinEstimation} `;
+  const successfulPredictionText = `Successfully placed a prediction!`;
+  // const successfulPredictionText = `Successfully placed a prediction on ${placedPredictionPickedTeam} (${placedPredictionAmount}) at ${placedPredictionOdds}, possibly winning ${placedPredictionPossibleWinEstimation} `;
 
   return (
     <div>
