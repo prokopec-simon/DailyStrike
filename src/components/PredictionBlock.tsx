@@ -80,6 +80,25 @@ const PredictionBlock: React.FC<{
   const style = {
     height: isMobile ? "80px" : "200px",
   };
+
+  const placedPredictionAmount =
+    placePredictionMutation?.data?.predictionAmount?.toFixed(2);
+
+  const placedPredictionPickedTeam =
+    placePredictionMutation?.data?.pickedTeam === 0
+      ? match.teamA_name
+      : match.teamB_name;
+
+  const placedPredictionOdds =
+    placePredictionMutation?.data?.predictionOdds?.toFixed(2);
+
+  const placedPredictionPossibleWinEstimation = (
+    Number(placePredictionMutation?.data?.predictionOdds) *
+    Number(placePredictionMutation?.data?.predictionAmount)
+  ).toFixed(2);
+
+  const successfulPredictionText = `Successfully placed a prediction on ${placedPredictionPickedTeam} (${placedPredictionAmount}) at ${placedPredictionOdds}, possibly winning ${placedPredictionPossibleWinEstimation} `;
+
   return (
     <div>
       <Modal
@@ -112,22 +131,7 @@ const PredictionBlock: React.FC<{
                 <p className="text-xl font-medium">
                   Prediction placed successfully !
                 </p>
-                <p className="mt-4">
-                  Placed a{" "}
-                  {Number(
-                    placePredictionMutation.data.predictionAmount
-                  ).toFixed(2) ?? 0}{" "}
-                  prediction on{" "}
-                  {placePredictionMutation.data.pickedTeam == 0
-                    ? match.teamA_name
-                    : match.teamB_name}{" "}
-                  at {placePredictionMutation.data.predictionOdds?.toFixed(2)}{" "}
-                  odds, possibly winning{" "}
-                  {(
-                    Number(placePredictionMutation.data.predictionOdds) *
-                      Number(placePredictionMutation.data.predictionAmount) ?? 0
-                  ).toFixed(2)}
-                </p>
+                <p className="mt-4">{successfulPredictionText}</p>
               </div>
             )}
             {placePredictionMutation.status === "loading" && (
