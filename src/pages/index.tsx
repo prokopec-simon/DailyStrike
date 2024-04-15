@@ -20,6 +20,10 @@ const Home = () => {
           content="Daily Counter Strike match predicting"
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="google-site-verification"
+          content="Wj2KBK4oUHJwrU586OY8qqohNEqGQ853G_kbEj1DosQ"
+        />
       </Head>
       <div className="m-0 mt-8 flex w-full flex-col items-center justify-center p-0 align-middle md:mt-16">
         {isLoadingUpcomingMatch || isLoadingLastNMatches ? <Spin /> : null}
@@ -46,4 +50,3 @@ const Home = () => {
 };
 
 export default Home;
- 
