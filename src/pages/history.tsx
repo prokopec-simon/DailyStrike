@@ -169,30 +169,30 @@ const History = () => {
         );
       },
     },
-    {
-      render: (
-        width: "10%",
-        matchUserPrediction:
-          | (UserMatchPrediction & {
-              match: Match;
-            })
-          | undefined
-      ) => {
-        const balanceResult = matchUserPrediction?.balanceChange;
+    // {
+    //   render: (
+    //     width: "10%",
+    //     matchUserPrediction:
+    //       | (UserMatchPrediction & {
+    //           match: Match;
+    //         })
+    //       | undefined
+    //   ) => {
+    //     const balanceResult = matchUserPrediction?.balanceChange;
 
-        let resultIcon = QuestionMarkIcon;
+    //     let resultIcon = QuestionMarkIcon;
 
-        if (balanceResult && Number(balanceResult) > 0) {
-          resultIcon = CheckmarkIcon;
-        }
+    //     if (balanceResult && Number(balanceResult) > 0) {
+    //       resultIcon = CheckmarkIcon;
+    //     }
 
-        if (balanceResult && Number(balanceResult) < 0) {
-          resultIcon = ErrorIcon;
-        }
+    //     if (balanceResult && Number(balanceResult) < 0) {
+    //       resultIcon = ErrorIcon;
+    //     }
 
-        return <Icon className="w-6 md:w-8" component={resultIcon} />;
-      },
-    },
+    //     return <Icon className="w-6 md:w-8" component={resultIcon} />;
+    //   },
+    // },
   ];
   return (
     <>

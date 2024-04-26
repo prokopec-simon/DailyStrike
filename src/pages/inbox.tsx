@@ -15,7 +15,7 @@ const Inbox = () => {
   const customizeRenderEmpty = () => (
     <div style={{ textAlign: "center" }}>
       <InboxOutlined style={{ fontSize: 50 }} />
-      <p className="text-lg">You have no messages yet.</p>
+      <p className="text-lg">You have no messages.</p>
     </div>
   );
 

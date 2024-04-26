@@ -154,12 +154,12 @@ const Ladder = () => {
       <div className="flex items-center justify-center md:mt-16">
         <div className="flex w-4/5 flex-col justify-center md:flex-row md:gap-5">
           <div className="flex  w-full flex-col pt-4 pb-4 text-white md:w-2/5 md:pt-0 md:pb-0">
-            <div className="flex flex-col rounded-lg bg-zinc-700 bg-opacity-20 p-2">
-              <h2 className="self-center text-white md:pb-4 md:pt-1 md:text-xl">
-                Season Info
-              </h2>
-              <div className="flex w-full flex-col  md:flex-row md:py-2">
-                {!seasonsAreLoading ? (
+            {!seasonsAreLoading ? (
+              <div className="flex flex-col rounded-lg bg-zinc-700 bg-opacity-20 p-2">
+                <h2 className="self-center text-white md:pb-4 md:pt-1 md:text-xl">
+                  Season Info
+                </h2>
+                <div className="flex w-full flex-col  md:flex-row md:py-2">
                   <Select
                     size="large"
                     defaultActiveFirstOption
@@ -175,44 +175,46 @@ const Ladder = () => {
                         </Select.Option>
                       ))}
                   </Select>
-                ) : null}
-              </div>
-              <div className="mt-3 flex  flex-row  items-center md:mt-0 md:py-2">
-                <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
-                  <div className="flex flex-col">
-                    <div className="text-xs text-zinc-400">
-                      Season started on
-                    </div>
-                    <div className="text-lg md:text-2xl">
-                      {selectedSeason != undefined
-                        ? selectedSeason.start.toLocaleDateString()
-                        : null}
-                    </div>
-                  </div>
                 </div>
-                {selectedSeason != undefined ? (
+                <div className="mt-3 flex  flex-row  items-center md:mt-0 md:py-2">
                   <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
                     <div className="flex flex-col">
                       <div className="text-xs text-zinc-400">
-                        Season
-                        {selectedSeason?.end < new Date()
-                          ? "ends in"
-                          : "ended on"}
+                        Season started on
                       </div>
                       <div className="text-lg md:text-2xl">
-                        <div className="text-lg md:text-2xl">
-                          {selectedSeason?.end < new Date() ? (
-                            selectedSeason?.end.toLocaleDateString()
-                          ) : (
-                            <CountdownTimer targetDate={selectedSeason?.end} />
-                          )}
-                        </div>
+                        {selectedSeason != undefined
+                          ? selectedSeason.start.toLocaleDateString()
+                          : null}
                       </div>
                     </div>
                   </div>
-                ) : null}
+                  {selectedSeason != undefined ? (
+                    <div className="mt-3 w-full justify-center rounded-md md:mt-0 md:w-1/2">
+                      <div className="flex flex-col">
+                        <div className="text-xs text-zinc-400">
+                          Season
+                          {selectedSeason?.end < new Date()
+                            ? "ends in"
+                            : "ended on"}
+                        </div>
+                        <div className="text-lg md:text-2xl">
+                          <div className="text-lg md:text-2xl">
+                            {selectedSeason?.end < new Date() ? (
+                              selectedSeason?.end.toLocaleDateString()
+                            ) : (
+                              <CountdownTimer
+                                targetDate={selectedSeason?.end}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
+            ) : null}
             {selectedSeason?.Rewards && selectedSeason.Rewards.length > 0 ? (
               <div className="mt-4 flex flex-col items-center rounded-lg bg-zinc-700 bg-opacity-20 p-2 md:p-3">
                 <h2 className="self-center pb-2.5 text-white md:pb-4 md:pt-1 md:text-xl">
