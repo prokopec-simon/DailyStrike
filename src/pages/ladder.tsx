@@ -246,7 +246,9 @@ const Ladder = () => {
                   ) : null}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <Spin size="large" className="mt-10" />
+            )}
           </div>
           {isLoading ? (
             <Spin size="large" className="mt-10" />
