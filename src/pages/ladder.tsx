@@ -247,7 +247,9 @@ const Ladder = () => {
                 </div>
               </div>
             ) : (
-              <Spin size="large" className="mt-10" />
+              selectedSeason!.Rewards.length != 0 && (
+                <Spin size="large" className="mt-10" />
+              )
             )}
           </div>
           {isLoading ? (
