@@ -247,7 +247,7 @@ const Ladder = () => {
                 </div>
               </div>
             ) : (
-              selectedSeason!.Rewards.length != 0 && (
+              selectedSeason?.Rewards.length != 0 && (
                 <Spin size="large" className="mt-10" />
               )
             )}
