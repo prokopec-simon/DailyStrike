@@ -194,9 +194,9 @@ const Ladder = () => {
                       <div className="flex flex-col">
                         <div className="text-xs text-zinc-400">
                           Season
-                          {selectedSeason?.end < new Date()
-                            ? "ends in"
-                            : "ended on"}
+                          {selectedSeason?.end > new Date()
+                            ? " ends in"
+                            : " ended on"}
                         </div>
                         <div className="text-lg md:text-2xl">
                           <div className="text-lg md:text-2xl">
